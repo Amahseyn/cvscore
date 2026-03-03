@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+python-multipart
+pymupdf
+pytesseract
+pdf2image
+pypdf
+pdfminer.six
+pdfplumber
+pillow
+openai
+python-dotenv
+sqlalchemy
+passlib[bcrypt]
+python-jose[cryptography]

@@ -1,0 +1,650 @@
+
+==================== PyMuPDF ====================
+Mohammad Hossein Hashemi
+Yerevan, Armenia
++37455571353
+GitHub: https://github.com/amahseyn
+Email: mhhashemi1379@gmail.com
+LinkedIn: https://linkedin.com/in/smhhashemi
+Medium: https://medium.com/@mhhashemi1379
+ResearchGate: https://www.researchgate.net/profile/Mohammad-Hashemi-38
+PROFESSIONAL SUMMARY
+Results-driven Machine Learning Engineer with 5+ years of experience architecting and deploying production-grade AI
+solutions. Proven expertise in deep learning, computer vision, and LLMs. Track record of building end-to-end ML systems and
+distributed data pipelines that drive business impact. Passionate about solving complex challenges in Computer Vision,
+Reinforcement Learning, and Large Language Models.
+EXPERIENCE
+AI Engineer (Freelancer) | Remote
+Jun 2025 – Jan 2026
+– Architected real-time forecasting systems for crypto and gold using Binance API and WebSocket streams for
+sub-second latency processing.
+– Implemented multi-horizon forecasting with ensemble models (LSTM, GRU, Transformer, N-BEATS, TFT, Prophet,
+XGBoost), achieving 45% RMSE reduction and R2 up to 0.97.
+– Engineered feature pipelines with technical indicators (TA-Lib) and rolling statistics using Pandas, NumPy, and
+scikit-learn.
+– Optimized inference with CUDA, ONNX, and TensorRT, reducing latency by 30% for live trading deployment.
+– Built real-time monitoring dashboards using Weights & Biases, Matplotlib, and Plotly for drift detection and performance
+tracking.
+– Implemented automated retraining with Optuna and MLflow, ensuring continuous model improvement.
+– Designed C++ optimization algorithms for Maximum Clique Problem using Genetic Algorithms and RL. Created Python
+bindings with PyBind11, achieving 38% improvement over baselines.
+– Established CI/CD pipelines with GitHub Actions and Docker for reproducible builds and automated testing.
+AI Engineer | Rayan Pezhohan (Remote)
+Nov 2023 – Jun 2025
+– Architected real-time LLM platform for real estate using GPT-3.5/4, LangChain, Haystack, and local models (LLaMA,
+Falcon) for structured queries and multi-use workflows.
+– Implemented RAG with FAISS and Milvus, reducing hallucinations by 45%
+and improving factual accuracy.
+– Designed low-latency inference pipelines with optimized prompting, context management, and batching for concurrent
+request handling.
+– Built containerized backend with Docker, Django, FastAPI, and PostgreSQL, exposing RESTful APIs for inference and
+session management.
+– Developed React frontend interfaces for intuitive user interaction with LLM-powered features and real-time response
+visualization.
+– Benchmarked cloud and local LLMs, implementing model selection and hybrid routing to optimize cost and latency.
+– Applied caching and API optimizations with Redis and Celery, achieving 30% latency reduction .
+– Implemented enterprise security with JWT, OAuth2, and role-based access control for multi-tenant deployments.
+– Trained YOLOv8 models for license plate detection (95% accuracy) and character recognition (92.5% accuracy) using
+PyTorch and OpenCV.
+– Optimized training with CUDA and mixed-precision, reducing training time by 60%
+and achieving <160 ms inference
+per frame.
+– Built high-performance backend with Flask, asyncio, and socket programming, supporting 100+ concurrent users with
+<50 ms response times.
+– Used MLflow for experiment tracking and model versioning, ensuring full reproducibility.
+Computer Vision Engineer | Arooj (On-Site)
+Dec 2021 – Nov 2023
+– Engineered Hand Vein Detection Device using U-Net (89% IoU), SegNet, and YOLOv5 on Raspberry Pi with PyTorch,
+TensorFlow, ONNX, and TensorRT for edge inference.
+– Developed Shrimp Head Cutter System using OpenCV and image processing, achieving >95% real-time accuracy
+in
+industrial settings.
+– Reduced inference time by 30% through quantization, pruning, and multi-threaded optimization while maintaining
+accuracy.
+RESEARCH & ACADEMIC EXPERIENCE
+AI Researcher (Part-Time) | Liverpool John Moores University (Remote)
+Jul 2024 – Present
+– Lead deep learning research in healthcare (infant cry analysis) and animal behaviour, specializing in signal processing,
+feature extraction, and model optimisation.
+– Published in IEEE Transactions on Affective Computing (Q1 Journal) and currently submitting 7 additional Q1 papers,
+demonstrating strong research impact.
+AI & Python Mentor (Part-Time) | Persian Gulf University (Remote)
+Aug 2025 – Present
+– Deliver instruction in Python and AI concepts, providing hands-on projects to build strong foundations for students and
+junior researchers.
+– Mentor student teams in developing and deploying AI applications and backend systems, guiding projects from concept
+to production.
+EDUCATION
+Persian Gulf University
+Bachelor of Electrical Engineering (Telecommunications) |
+2018 – 2023
+PROJECTS
+Car Dealing Platform
+– Engineered full-stack web app using React and Django with vehicle listings, multi-parameter search, JWT
+authentication, and dealer dashboards for inventory management. Implemented microservices architecture for
+scalability.
+Cat Voice Translator Mobile App
+– Launched cross-platform mobile app using React Native leveraging audio analysis and neural networks to classify
+feline vocalizations into emotional states. Built end-to-end data pipelines for model training and deployment.
+OCR
+– Benchmarked Vision Language Models including DeepSeekOCR, Ollama-OCR, QWEN2-VL, and PaddleOCR for
+document processing. Designed experimentation frameworks to optimize accuracy and inference performance.
+Tomato Leaf Disease Detection
+– Developed CNN-based classifier using PyTorch and OpenCV to detect diseases in tomato plants, enabling precision
+agriculture through computer vision. Built production ML systems for real-time field deployment.
+PUBLICATIONS
+Infant Cry Analysis: A Survey of Datasets, Features, and Machine Learning Techniques
+| IEEE Transactions on Affective Computing (Q1 Journal)
+2025
+– Published in IEEE Transactions on Affective Computing (Q1 Journal). Currently submitting 7 additional Q1 papers in
+healthcare, animal behaviour, and intelligent systems.
+TECHNICAL SKILLS
+Languages : Python, C, C++, JavaScript, MATLAB
+Machine Learning : PyTorch, TensorFlow, Scikit-learn, XGBoost, Transformers, LangChain, Haystack, Optuna, MLflow
+MLOps & Production : MLflow, CI/CD, Model Deployment, Model Monitoring, Docker, Kubernetes, AWS, Distributed Systems,
+Microservices Architecture
+Computer Vision : OpenCV, YOLO, U-Net, SegNet, Albumentations, ONNX, TensorRT
+Backend & Data Pipelines : FastAPI, Flask, Django, PostgreSQL, Redis, MongoDB, RabbitMQ, Celery, Data Pipelines,
+Experimentation Frameworks
+Frontend : React, React Native
+Specialized : LLMs, RAG, Vector Databases (FAISS, Milvus), Time Series Forecasting, Reinforcement Learning, Edge AI,
+Production ML Systems
+
+
+
+==================== pypdf ====================
+Mohammad Hossein Hashemi
+Yerevan, Armenia
++37455571353
+GitHub: https://github.com/amahseyn
+Email: mhhashemi1379@gmail.com
+LinkedIn: https://linkedin.com/in/smhhashemi
+Medium: https://medium.com/@mhhashemi1379
+ResearchGate: https://www.researchgate.net/profile/Mohammad-Hashemi-38
+PROFESSIONAL SUMMARY
+Results-drivenMachine Learning Engineerwith5+ years of experiencearchitecting and deploying production-grade AI
+solutions. Proven expertise indeep learning,computer vision, andLLMs. Track record of building end-to-endML systemsand
+distributed data pipelinesthat drive business impact. Passionate about solving complex challenges inComputer Vision,
+Reinforcement Learning, andLarge Language Models.
+EXPERIENCE
+AI Engineer (Freelancer)|Remote Jun 2025 – Jan 2026
+–Architectedreal-time forecasting systemsfor crypto and gold usingBinance APIandWebSocket streamsfor
+sub-second latency processing.
+–Implementedmulti-horizon forecastingwith ensemble models (LSTM, GRU, Transformer, N-BEATS, TFT , Prophet,
+XGBoost), achieving45% RMSE reductionandR2up to 0.97.
+–Engineered feature pipelines withtechnical indicators (TA-Lib)and rolling statistics using Pandas, NumPy, and
+scikit-learn.
+–Optimized inference withCUDA, ONNX, and TensorRT, reducing latency by30%for live trading deployment.
+–Builtreal-time monitoring dashboardsusing Weights & Biases, Matplotlib, and Plotly for drift detection and performance
+tracking.
+–Implementedautomated retrainingwith Optuna and MLflow, ensuring continuous model improvement.
+–DesignedC++ optimization algorithmsfor Maximum Clique Problem using Genetic Algorithms and RL. CreatedPython
+bindings with PyBind11, achieving38% improvementover baselines.
+–EstablishedCI/CD pipelineswith GitHub Actions and Docker for reproducible builds and automated testing.
+AI Engineer|Rayan Pezhohan (Remote) Nov 2023 – Jun 2025
+–Architectedreal-time LLM platformfor real estate usingGPT-3.5/4, LangChain, Haystack, and local models (LLaMA,
+Falcon) for structured queries and multi-use workflows.
+–ImplementedRAG with FAISS and Milvus, reducing hallucinations by45%and improving factual accuracy.
+–Designedlow-latency inference pipelineswith optimized prompting, context management, and batching for concurrent
+request handling.
+–Builtcontainerized backendwith Docker, Django, FastAPI, and PostgreSQL, exposing RESTful APIs for inference and
+session management.
+–DevelopedReact frontend interfacesfor intuitive user interaction with LLM-powered features and real-time response
+visualization.
+–Benchmarked cloud and local LLMs, implementingmodel selection and hybrid routingto optimize cost and latency.
+–Appliedcaching and API optimizationswith Redis and Celery, achieving30% latency reduction.
+–Implementedenterprise securitywith JWT , OAuth2, and role-based access control for multi-tenant deployments.
+–TrainedYOLOv8 modelsfor license plate detection (95% accuracy) and character recognition (92.5% accuracy) using
+PyTorch and OpenCV.
+–Optimized training withCUDA and mixed-precision, reducing training time by60%and achieving<160 ms inferenceper frame.
+–Builthigh-performance backendwith Flask, asyncio, and socket programming, supporting100+ concurrent userswith
+<50 ms response times.
+–UsedMLflowfor experiment tracking and model versioning, ensuring full reproducibility.
+Computer Vision Engineer|Arooj (On-Site) Dec 2021 – Nov 2023
+–EngineeredHand Vein Detection DeviceusingU-Net (89% IoU), SegNet, and YOLOv5onRaspberry Piwith PyTorch,
+TensorFlow, ONNX, and TensorRT for edge inference.
+–DevelopedShrimp Head Cutter Systemusing OpenCV and image processing, achieving>95% real-time accuracyinindustrial settings.
+–Reduced inference time by30%throughquantization, pruning, and multi-threaded optimizationwhile maintaining
+accuracy.RESEARCH & ACADEMIC EXPERIENCE
+AI Researcher (Part-Time)|Liverpool John Moores University (Remote) Jul 2024 – Present
+–Leaddeep learning researchin healthcare (infant cry analysis) and animal behaviour, specializing insignal processing,
+feature extraction, and model optimisation.
+–Published inIEEE Transactions on Affective Computing (Q1 Journal)and currently submitting7 additional Q1 papers,
+demonstrating strong research impact.
+AI & Python Mentor (Part-Time)|Persian Gulf University (Remote) Aug 2025 – Present
+–Deliver instruction inPython and AI concepts, providing hands-on projects to build strong foundations for students and
+junior researchers.
+–Mentor student teams in developing and deployingAI applications and backend systems, guiding projects from concept
+to production.
+EDUCATION
+Persian Gulf UniversityBachelor of Electrical Engineering (Telecommunications)|2018 – 2023
+PROJECTS
+Car Dealing Platform
+–Engineeredfull-stack web appusingReact and Djangowith vehicle listings, multi-parameter search,JWT
+authentication, and dealer dashboards for inventory management. Implementedmicroservices architecturefor
+scalability.
+Cat Voice Translator Mobile App
+–Launchedcross-platform mobile appusingReact Nativeleveragingaudio analysis and neural networksto classify
+feline vocalizations into emotional states. Built end-to-enddata pipelinesfor model training and deployment.
+OCR
+–BenchmarkedVision Language ModelsincludingDeepSeekOCR, Ollama-OCR, QWEN2-VL, and PaddleOCRfor
+document processing. Designedexperimentation frameworksto optimize accuracy and inference performance.
+Tomato Leaf Disease Detection
+–DevelopedCNN-based classifierusing PyTorch and OpenCV to detect diseases in tomato plants, enablingprecision
+agriculturethrough computer vision. Builtproduction ML systemsfor real-time field deployment.
+PUBLICATIONS
+Infant Cry Analysis: A Survey of Datasets, Features, and Machine Learning Techniques
+|IEEE Transactions on Affective Computing (Q1 Journal) 2025
+–Published inIEEE Transactions on Affective Computing (Q1 Journal). Currently submitting7 additional Q1 papersin
+healthcare, animal behaviour, and intelligent systems.
+TECHNICAL SKILLS
+Languages: Python, C, C++, JavaScript, MATLAB
+Machine Learning: PyTorch, TensorFlow, Scikit-learn, XGBoost, Transformers, LangChain, Haystack, Optuna, MLflow
+MLOps & Production: MLflow, CI/CD, Model Deployment, Model Monitoring, Docker, Kubernetes, AWS, Distributed Systems,
+Microservices Architecture
+Computer Vision: OpenCV, YOLO, U-Net, SegNet, Albumentations, ONNX, TensorRT
+Backend & Data Pipelines: FastAPI, Flask, Django, PostgreSQL, Redis, MongoDB, RabbitMQ, Celery, Data Pipelines,
+Experimentation Frameworks
+Frontend: React, React Native
+Specialized: LLMs, RAG, Vector Databases (FAISS, Milvus), Time Series Forecasting, Reinforcement Learning, Edge AI,
+Production ML Systems
+
+
+==================== pdfminer.six ====================
+Mohammad Hossein Hashemi
+Yerevan, Armenia
++37455571353
+GitHub: https://github.com/amahseyn
+Email: mhhashemi1379@gmail.com
+LinkedIn: https://linkedin.com/in/smhhashemi
+Medium: https://medium.com/@mhhashemi1379
+ResearchGate: https://www.researchgate.net/profile/Mohammad-Hashemi-38
+PROFESSIONAL SUMMARY
+
+Results-driven Machine Learning Engineer with 5+ years of experience architecting and deploying production-grade AI
+solutions. Proven expertise in deep learning, computer vision, and LLMs. Track record of building end-to-end ML systems and
+distributed data pipelines that drive business impact. Passionate about solving complex challenges in Computer Vision,
+Reinforcement Learning, and Large Language Models.
+
+EXPERIENCE
+
+AI Engineer (Freelancer) | Remote
+
+Jun 2025 – Jan 2026
+
+– Architected real-time forecasting systems for crypto and gold using Binance API and WebSocket streams for
+
+sub-second latency processing.
+
+– Implemented multi-horizon forecasting with ensemble models (LSTM, GRU, Transformer, N-BEATS, TFT, Prophet,
+
+XGBoost), achieving 45% RMSE reduction and R2 up to 0.97.
+
+– Engineered feature pipelines with technical indicators (TA-Lib) and rolling statistics using Pandas, NumPy, and
+
+scikit-learn.
+
+– Optimized inference with CUDA, ONNX, and TensorRT, reducing latency by 30% for live trading deployment.
+– Built real-time monitoring dashboards using Weights & Biases, Matplotlib, and Plotly for drift detection and performance
+
+tracking.
+
+– Implemented automated retraining with Optuna and MLflow, ensuring continuous model improvement.
+– Designed C++ optimization algorithms for Maximum Clique Problem using Genetic Algorithms and RL. Created Python
+
+bindings with PyBind11, achieving 38% improvement over baselines.
+
+– Established CI/CD pipelines with GitHub Actions and Docker for reproducible builds and automated testing.
+
+AI Engineer | Rayan Pezhohan (Remote)
+
+Nov 2023 – Jun 2025
+
+– Architected real-time LLM platform for real estate using GPT-3.5/4, LangChain, Haystack, and local models (LLaMA,
+
+Falcon) for structured queries and multi-use workflows.
+
+– Implemented RAG with FAISS and Milvus, reducing hallucinations by 45% and improving factual accuracy.
+– Designed low-latency inference pipelines with optimized prompting, context management, and batching for concurrent
+
+request handling.
+
+– Built containerized backend with Docker, Django, FastAPI, and PostgreSQL, exposing RESTful APIs for inference and
+
+session management.
+
+– Developed React frontend interfaces for intuitive user interaction with LLM-powered features and real-time response
+
+visualization.
+
+– Benchmarked cloud and local LLMs, implementing model selection and hybrid routing to optimize cost and latency.
+– Applied caching and API optimizations with Redis and Celery, achieving 30% latency reduction .
+– Implemented enterprise security with JWT, OAuth2, and role-based access control for multi-tenant deployments.
+– Trained YOLOv8 models for license plate detection (95% accuracy) and character recognition (92.5% accuracy) using
+
+PyTorch and OpenCV.
+
+– Optimized training with CUDA and mixed-precision, reducing training time by 60% and achieving <160 ms inference
+
+per frame.
+
+– Built high-performance backend with Flask, asyncio, and socket programming, supporting 100+ concurrent users with
+
+<50 ms response times.
+
+– Used MLflow for experiment tracking and model versioning, ensuring full reproducibility.
+
+Computer Vision Engineer | Arooj (On-Site)
+
+Dec 2021 – Nov 2023
+
+– Engineered Hand Vein Detection Device using U-Net (89% IoU), SegNet, and YOLOv5 on Raspberry Pi with PyTorch,
+
+TensorFlow, ONNX, and TensorRT for edge inference.
+
+– Developed Shrimp Head Cutter System using OpenCV and image processing, achieving >95% real-time accuracy
+
+industrial settings.
+
+in
+
+– Reduced inference time by 30% through quantization, pruning, and multi-threaded optimization while maintaining
+
+accuracy.
+
+RESEARCH & ACADEMIC EXPERIENCE
+
+AI Researcher (Part-Time) | Liverpool John Moores University (Remote)
+
+Jul 2024 – Present
+– Lead deep learning research in healthcare (infant cry analysis) and animal behaviour, specializing in signal processing,
+
+feature extraction, and model optimisation.
+
+– Published in IEEE Transactions on Affective Computing (Q1 Journal) and currently submitting 7 additional Q1 papers,
+
+demonstrating strong research impact.
+
+AI & Python Mentor (Part-Time) | Persian Gulf University (Remote)
+
+Aug 2025 – Present
+– Deliver instruction in Python and AI concepts, providing hands-on projects to build strong foundations for students and
+
+junior researchers.
+
+– Mentor student teams in developing and deploying AI applications and backend systems, guiding projects from concept
+
+to production.
+
+EDUCATION
+
+Persian Gulf University
+
+Bachelor of Electrical Engineering (Telecommunications) |
+
+2018 – 2023
+
+PROJECTS
+
+Car Dealing Platform
+
+– Engineered full-stack web app using React and Django with vehicle listings, multi-parameter search, JWT
+
+authentication, and dealer dashboards for inventory management. Implemented microservices architecture for
+scalability.
+
+Cat Voice Translator Mobile App
+
+– Launched cross-platform mobile app using React Native leveraging audio analysis and neural networks to classify
+
+feline vocalizations into emotional states. Built end-to-end data pipelines for model training and deployment.
+
+OCR
+
+– Benchmarked Vision Language Models including DeepSeekOCR, Ollama-OCR, QWEN2-VL, and PaddleOCR for
+document processing. Designed experimentation frameworks to optimize accuracy and inference performance.
+
+Tomato Leaf Disease Detection
+
+– Developed CNN-based classifier using PyTorch and OpenCV to detect diseases in tomato plants, enabling precision
+
+agriculture through computer vision. Built production ML systems for real-time field deployment.
+
+PUBLICATIONS
+
+Infant Cry Analysis: A Survey of Datasets, Features, and Machine Learning Techniques
+| IEEE Transactions on Affective Computing (Q1 Journal)
+
+– Published in IEEE Transactions on Affective Computing (Q1 Journal). Currently submitting 7 additional Q1 papers in
+
+healthcare, animal behaviour, and intelligent systems.
+
+TECHNICAL SKILLS
+
+Languages : Python, C, C++, JavaScript, MATLAB
+Machine Learning : PyTorch, TensorFlow, Scikit-learn, XGBoost, Transformers, LangChain, Haystack, Optuna, MLflow
+MLOps & Production : MLflow, CI/CD, Model Deployment, Model Monitoring, Docker, Kubernetes, AWS, Distributed Systems,
+Microservices Architecture
+Computer Vision : OpenCV, YOLO, U-Net, SegNet, Albumentations, ONNX, TensorRT
+Backend & Data Pipelines : FastAPI, Flask, Django, PostgreSQL, Redis, MongoDB, RabbitMQ, Celery, Data Pipelines,
+Experimentation Frameworks
+Frontend : React, React Native
+Specialized : LLMs, RAG, Vector Databases (FAISS, Milvus), Time Series Forecasting, Reinforcement Learning, Edge AI,
+Production ML Systems
+
+2025
+
+
+
+
+==================== pdfplumber ====================
+MohammadHosseinHashemi
+Yerevan,Armenia
++37455571353
+GitHub:https://github.com/amahseyn
+Email:mhhashemi1379@gmail.com
+LinkedIn:https://linkedin.com/in/smhhashemi
+Medium:https://medium.com/@mhhashemi1379
+ResearchGate:https://www.researchgate.net/profile/Mohammad-Hashemi-38
+PROFESSIONALSUMMARY
+Results-drivenMachineLearningEngineerwith5+yearsofexperiencearchitectinganddeployingproduction-gradeAI
+solutions.Provenexpertiseindeeplearning,computervision,andLLMs.Trackrecordofbuildingend-to-endMLsystemsand
+distributeddatapipelinesthatdrivebusinessimpact.PassionateaboutsolvingcomplexchallengesinComputerVision,
+ReinforcementLearning,andLargeLanguageModels.
+EXPERIENCE
+AIEngineer(Freelancer) |Remote Jun2025–Jan2026
+– Architectedreal-timeforecastingsystemsforcryptoandgoldusingBinanceAPIandWebSocketstreamsfor
+sub-secondlatencyprocessing.
+– Implementedmulti-horizonforecastingwithensemblemodels(LSTM,GRU,Transformer,N-BEATS,TFT,Prophet,
+XGBoost),achieving 45%RMSEreduction andR2upto0.97.
+– Engineeredfeaturepipelineswithtechnicalindicators(TA-Lib)androllingstatisticsusingPandas,NumPy,and
+scikit-learn.
+– OptimizedinferencewithCUDA,ONNX,andTensorRT,reducinglatencyby 30% forlivetradingdeployment.
+– Builtreal-timemonitoringdashboardsusingWeights&Biases,Matplotlib,andPlotlyfordriftdetectionandperformance
+tracking.
+– ImplementedautomatedretrainingwithOptunaandMLflow,ensuringcontinuousmodelimprovement.
+– DesignedC++optimizationalgorithmsforMaximumCliqueProblemusingGeneticAlgorithmsandRL.CreatedPython
+bindingswithPyBind11,achieving 38%improvement overbaselines.
+– EstablishedCI/CDpipelineswithGitHubActionsandDockerforreproduciblebuildsandautomatedtesting.
+AIEngineer |RayanPezhohan(Remote) Nov2023–Jun2025
+– Architectedreal-timeLLMplatformforrealestateusingGPT-3.5/4,LangChain,Haystack,andlocalmodels(LLaMA,
+Falcon)forstructuredqueriesandmulti-useworkflows.
+– ImplementedRAGwithFAISSandMilvus,reducinghallucinationsby 45% andimprovingfactualaccuracy.
+– Designedlow-latencyinferencepipelineswithoptimizedprompting,contextmanagement,andbatchingforconcurrent
+requesthandling.
+– BuiltcontainerizedbackendwithDocker,Django,FastAPI,andPostgreSQL,exposingRESTfulAPIsforinferenceand
+sessionmanagement.
+– DevelopedReactfrontendinterfacesforintuitiveuserinteractionwithLLM-poweredfeaturesandreal-timeresponse
+visualization.
+– BenchmarkedcloudandlocalLLMs,implementingmodelselectionandhybridroutingtooptimizecostandlatency.
+– AppliedcachingandAPIoptimizationswithRedisandCelery,achieving 30%latencyreduction.
+– ImplementedenterprisesecuritywithJWT,OAuth2,androle-basedaccesscontrolformulti-tenantdeployments.
+– TrainedYOLOv8modelsforlicenseplatedetection(95%accuracy)andcharacterrecognition(92.5%accuracy)using
+PyTorchandOpenCV.
+– OptimizedtrainingwithCUDAandmixed-precision,reducingtrainingtimeby 60% andachieving<160msinference
+perframe.
+– Builthigh-performancebackendwithFlask,asyncio,andsocketprogramming,supporting100+concurrentuserswith
+<50msresponsetimes.
+– UsedMLflowforexperimenttrackingandmodelversioning,ensuringfullreproducibility.
+ComputerVisionEngineer |Arooj(On-Site) Dec2021–Nov2023
+– EngineeredHandVeinDetectionDeviceusingU-Net(89%IoU),SegNet,andYOLOv5onRaspberryPiwithPyTorch,
+TensorFlow,ONNX,andTensorRTforedgeinference.
+– DevelopedShrimpHeadCutterSystemusingOpenCVandimageprocessing,achieving >95%real-timeaccuracy in
+industrialsettings.
+– Reducedinferencetimeby 30% throughquantization,pruning,andmulti-threadedoptimizationwhilemaintaining
+accuracy.RESEARCH&ACADEMICEXPERIENCE
+AIResearcher(Part-Time) |LiverpoolJohnMooresUniversity(Remote) Jul2024–Present
+– Leaddeeplearningresearchinhealthcare(infantcryanalysis)andanimalbehaviour,specializinginsignalprocessing,
+featureextraction,andmodeloptimisation.
+– PublishedinIEEETransactionsonAffectiveComputing(Q1Journal)andcurrentlysubmitting7additionalQ1papers,
+demonstratingstrongresearchimpact.
+AI&PythonMentor(Part-Time) |PersianGulfUniversity(Remote) Aug2025–Present
+– DeliverinstructioninPythonandAIconcepts,providinghands-onprojectstobuildstrongfoundationsforstudentsand
+juniorresearchers.
+– MentorstudentteamsindevelopinganddeployingAIapplicationsandbackendsystems,guidingprojectsfromconcept
+toproduction.
+EDUCATION
+PersianGulfUniversity BachelorofElectricalEngineering(Telecommunications) | 2018–2023
+PROJECTS
+CarDealingPlatform
+– Engineeredfull-stackwebappusingReactandDjangowithvehiclelistings,multi-parametersearch,JWT
+authentication,anddealerdashboardsforinventorymanagement.Implementedmicroservicesarchitecturefor
+scalability.
+CatVoiceTranslatorMobileApp
+– Launchedcross-platformmobileappusingReactNativeleveragingaudioanalysisandneuralnetworkstoclassify
+felinevocalizationsintoemotionalstates.Builtend-to-enddatapipelinesformodeltraininganddeployment.
+OCR
+– BenchmarkedVisionLanguageModelsincludingDeepSeekOCR,Ollama-OCR,QWEN2-VL,andPaddleOCRfor
+documentprocessing.Designedexperimentationframeworkstooptimizeaccuracyandinferenceperformance.
+TomatoLeafDiseaseDetection
+– DevelopedCNN-basedclassifierusingPyTorchandOpenCVtodetectdiseasesintomatoplants,enablingprecision
+agriculturethroughcomputervision.BuiltproductionMLsystemsforreal-timefielddeployment.
+PUBLICATIONS
+InfantCryAnalysis:ASurveyofDatasets,Features,andMachineLearningTechniques
+|IEEETransactionsonAffectiveComputing(Q1Journal) 2025
+– PublishedinIEEETransactionsonAffectiveComputing(Q1Journal).Currentlysubmitting7additionalQ1papersin
+healthcare,animalbehaviour,andintelligentsystems.
+TECHNICALSKILLS
+Languages:Python,C,C++,JavaScript,MATLAB
+MachineLearning:PyTorch,TensorFlow,Scikit-learn,XGBoost,Transformers,LangChain,Haystack,Optuna,MLflow
+MLOps&Production:MLflow,CI/CD,ModelDeployment,ModelMonitoring,Docker,Kubernetes,AWS,DistributedSystems,
+MicroservicesArchitecture
+ComputerVision:OpenCV,YOLO,U-Net,SegNet,Albumentations,ONNX,TensorRT
+Backend&DataPipelines:FastAPI,Flask,Django,PostgreSQL,Redis,MongoDB,RabbitMQ,Celery,DataPipelines,
+ExperimentationFrameworks
+Frontend:React,ReactNative
+Specialized:LLMs,RAG,VectorDatabases(FAISS,Milvus),TimeSeriesForecasting,ReinforcementLearning,EdgeAI,
+ProductionMLSystems
+
+
+==================== OCR (Tesseract) ====================
+
+--- Page 1 (OCR) ---
+Mohammad Hossein Hashemi
+
+Yerevan, Armenia
+
++37455571353
+
+GitHub: https://github.com/amahseyn
+
+Email: mhhashemi1379@gmail.com
+
+LinkedIn: https://linkedin.com/in/smhhashemi
+
+Medium: https://medium.com/@mhhashemi1379
+
+ResearchGate: https://www.researchgate.net/profile/Mohammad-Hashemi-38
+
+PROFESSIONAL SUMMARY
+
+Results-driven Machine Learning Engineer with 5+ years of experience architecting and deploying production-grade Al
+solutions. Proven expertise in deep learning, computer vision, and LLMs. Track record of building end-to-end ML systems and
+distributed data pipelines that drive business impact. Passionate about solving complex challenges in Computer Vision,
+Reinforcement Learning, and Large Language Models.
+
+EXPERIENCE
+
+Al Engineer (Freelancer) | Remote Jun 2025 - Jan 2026
+
+Architected real-time forecasting systems for crypto and gold using Binance API and WebSocket streams for
+sub-second latency processing.
+
+Implemented multi-horizon forecasting with ensemble models (LSTM, GRU, Transformer, N-BEATS, TFT, Prophet,
+XGBoost), achieving 45% RMSE reduction and R? up to 0.97.
+
+Engineered feature pipelines with technical indicators (TA-Lib) and rolling statistics using Pandas, NumPy, and
+scikit-learn.
+
+Optimized inference with CUDA, ONNX, and TensorRT, reducing latency by 30% for live trading deployment.
+
+Built real-time monitoring dashboards using Weights & Biases, Matplotlib, and Plotly for drift detection and performance
+tracking.
+
+Implemented automated retraining with Optuna and MLflow, ensuring continuous model improvement.
+
+Designed C++ optimization algorithms for Maximum Clique Problem using Genetic Algorithms and RL. Created Python
+bindings with PyBind11, achieving 38% improvement over baselines.
+
+Established Cl/CD pipelines with GitHub Actions and Docker for reproducible builds and automated testing.
+
+Al Engineer | Rayan Pezhohan (Remote) Nov 2023 - Jun 2025
+
+Architected real-time LLM platform for real estate using GPT-3.5/4, LangChain, Haystack, and local models (LLaMA,
+Falcon) for structured queries and multi-use workflows.
+
+Implemented RAG with FAISS and Milvus, reducing hallucinations by 45% and improving factual accuracy.
+
+Designed low-latency inference pipelines with optimized prompting, context management, and batching for concurrent
+request handling.
+
+Built containerized backend with Docker, Django, FastAPI, and PostgreSQL, exposing RESTful APIs for inference and
+session management.
+Developed React frontend interfaces for intuitive user interaction with LLM-powered features and real-time response
+visualization.
+Benchmarked cloud and local LLMs, implementing model selection and hybrid routing to optimize cost and latency.
+Applied caching and API optimizations with Redis and Celery, achieving 30% latency reduction .
+
+Implemented enterprise security with JWT, OAuth2, and role-based access control for multi-tenant deployments.
+Trained YOLOv8 models for license plate detection (95% accuracy) and character recognition (92.5% accuracy) using
+PyTorch and OpenCv.
+
+Optimized training with CUDA and mixed-precision, reducing training time by 60% and achieving <160 ms inference
+per frame.
+
+Built high-performance backend with Flask, asyncio, and socket programming, supporting 100+ concurrent users with
+<50 ms response times.
+Used MLflow for experiment tracking and model versioning, ensuring full reproducibility.
+
+Computer Vision Engineer | Arooj (On-Site) Dec 2021 - Nov 2023
+
+Engineered Hand Vein Detection Device using U-Net (89% IloU), SegNet, and YOLOv5 on Raspberry Pi with PyTorch,
+
+TensorFlow, ONNX, and TensorRT for edge inference.
+
+Developed Shrimp Head Cutter System using OpenCV and image processing, achieving >95% real-time accuracy in
+industrial settings.
+
+Reduced inference time by 30% through quantization, pruning, and multi-threaded optimization while maintaining
+accuracy.
+
+--- Page 2 (OCR) ---
+RESEARCH & ACADEMIC EXPERIENCE
+
+Al Researcher (Part-Time) | Liverpool John Moores University (Remote) Jul 2024 - Present
+- Lead deep learning research in healthcare (infant cry analysis) and animal behaviour, specializing in signal processing,
+feature extraction, and model optimisation.
+- Published in IEEE Transactions on Affective Computing (Q1 Journal) and currently submitting 7 additional Q1 papers,
+demonstrating strong research impact.
+Al & Python Mentor (Part-Time) | Persian Gulf University (Remote) Aug 2025 - Present
+- Deliver instruction in Python and Al concepts, providing hands-on projects to build strong foundations for students and
+junior researchers.
+- Mentor student teams in developing and deploying Al applications and backend systems, guiding projects from concept
+to production.
+
+EDUCATION
+
+Persian Gulf University Bachelor of Electrical Engineering (Telecommunications) | 2018 - 2023
+
+PROJECTS
+
+Car Dealing Platform
+- Engineered full-stack web app using React and Django with vehicle listings, multi-parameter search, JWT
+authentication, and dealer dashboards for inventory management. Implemented microservices architecture for
+scalability.
+Cat Voice Translator Mobile App
+- Launched cross-platform mobile app using React Native leveraging audio analysis and neural networks to classify
+feline vocalizations into emotional states. Built end-to-end data pipelines for model training and deployment.
+OCR
+- Benchmarked Vision Language Models including DeepSeekOCR, Ollama-OCR, QWEN2-VL, and PaddleOCR for
+document processing. Designed experimentation frameworks to optimize accuracy and inference performance.
+Tomato Leaf Disease Detection
+- Developed CNN-based classifier using PyTorch and OpenCV to detect diseases in tomato plants, enabling precision
+agriculture through computer vision. Built production ML systems for real-time field deployment.
+
+PUBLICATIONS
+
+Infant Cry Analysis: A Survey of Datasets, Features, and Machine Learning Techniques
+| IEEE Transactions on Affective Computing (Q1 Journal) 2025
+- Published in IEEE Transactions on Affective Computing (Q1 Journal). Currently submitting 7 additional Q1 papers in
+healthcare, animal behaviour, and intelligent systems.
+
+TECHNICAL SKILLS
+
+Languages : Python, C, C++, JavaScript, MATLAB
+
+Machine Learning : PyTorch, TensorFlow, Scikit-learn, XGBoost, Transformers, LangChain, Haystack, Optuna, MLflow
+MLOps & Production : MLflow, Cl/CD, Model Deployment, Model Monitoring, Docker, Kubernetes, AWS, Distributed Systems,
+Microservices Architecture
+
+Computer Vision : OpenCV, YOLO, U-Net, SegNet, Albumentations, ONNX, TensorRT
+
+Backend & Data Pipelines : FastAPI, Flask, Django, PostgreSQL, Redis, MongoDB, RabbitMQ, Celery, Data Pipelines,
+Experimentation Frameworks
+
+Frontend : React, React Native
+
+Specialized : LLMs, RAG, Vector Databases (FAISS, Milvus), Time Series Forecasting, Reinforcement Learning, Edge Al,
+Production ML Systems
+
+
