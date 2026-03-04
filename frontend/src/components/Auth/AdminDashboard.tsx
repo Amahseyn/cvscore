@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { Users, UserPlus, Shield, Star, Briefcase, User as UserIcon, X, Search, MoreVertical, Trash2, ArrowRight, Loader2 } from 'lucide-react';
+import { Users, UserPlus, Shield, Star, Briefcase, User as UserIcon, X, Search, MoreVertical, Trash2, ArrowRight, Loader2, LogOut } from 'lucide-react';
 import { toast } from 'react-toastify';
 
 interface User {
@@ -18,7 +18,7 @@ interface AdminDashboardProps {
 }
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
-    const { token } = useAuth();
+    const { token, logout } = useAuth();
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
@@ -30,6 +30,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
     const [newRole, setNewRole] = useState('recruiter');
     const [newName, setNewName] = useState('');
     const [submitting, setSubmitting] = useState(false);
+    const [updatingUserId, setUpdatingUserId] = useState<number | null>(null);
+    const [deletingUserId, setDeletingUserId] = useState<number | null>(null);
 
     useEffect(() => {
         fetchUsers();
@@ -48,6 +50,55 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
             toast.error('Failed to fetch user database');
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleChangeRole = async (userId: number, role: string) => {
+        setUpdatingUserId(userId);
+        try {
+            const resp = await fetch(`http://localhost:8000/admin/users/${userId}/role`, {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ role })
+            });
+            if (resp.ok) {
+                toast.success('Role updated');
+                fetchUsers();
+            } else {
+                const err = await resp.json();
+                toast.error(err.detail || 'Failed to update role');
+            }
+        } catch (err) {
+            toast.error('Admin Command Cluster Offline');
+        } finally {
+            setUpdatingUserId(null);
+        }
+    };
+
+    const handleDeleteUser = async (userId: number, email: string) => {
+        if (!window.confirm(`Delete user ${email}? This cannot be undone.`)) return;
+        setDeletingUserId(userId);
+        try {
+            const resp = await fetch(`http://localhost:8000/admin/users/${userId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (resp.ok) {
+                toast.success('User deleted');
+                setUsers(prev => prev.filter(u => u.id !== userId));
+            } else {
+                const err = await resp.json();
+                toast.error(err.detail || 'Failed to delete user');
+            }
+        } catch (err) {
+            toast.error('Admin Command Cluster Offline');
+        } finally {
+            setDeletingUserId(null);
         }
     };
 
@@ -119,6 +170,17 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
                         >
                             <UserPlus className="w-4 h-4" /> Synthesize User
                         </button>
+                        <button
+                            onClick={() => {
+                                logout();
+                                if (onClose) onClose();
+                                toast.info("Logged out successfully");
+                            }}
+                            className="p-4 bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xl hover:shadow-brand-500/10 transition-all text-slate-400 hover:text-rose-500"
+                            title="Logout"
+                        >
+                            <LogOut className="w-6 h-6" />
+                        </button>
                         <button onClick={onClose} className="p-4 bg-slate-100 dark:bg-slate-800 rounded-2xl hover:bg-slate-200 transition-all">
                             <X className="w-6 h-6" />
                         </button>
@@ -169,13 +231,26 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
                                     <div className="w-16 h-16 rounded-[1.5rem] bg-brand-500/10 flex items-center justify-center text-xl font-black text-brand-500 uppercase overflow-hidden">
                                         {user.full_name ? user.full_name[0] : user.email[0]}
                                     </div>
-                                    <div className={`px-4 py-2 rounded-full border flex items-center gap-2 ${user.role === 'admin' ? 'bg-rose-50 border-rose-100 text-rose-500' :
-                                        user.role === 'vip' ? 'bg-amber-50 border-amber-100 text-amber-500' :
-                                            user.role === 'recruiter' ? 'bg-brand-50 border-brand-100 text-brand-500' :
-                                                'bg-slate-50 border-slate-100 text-slate-500'
-                                        }`}>
-                                        {getRoleIcon(user.role)}
-                                        <span className="text-[9px] font-black uppercase tracking-widest">{user.role}</span>
+                                    <div className="flex flex-col items-end gap-2">
+                                        <div className={`px-4 py-2 rounded-full border flex items-center gap-2 ${user.role === 'admin' ? 'bg-rose-50 border-rose-100 text-rose-500' :
+                                            user.role === 'vip' ? 'bg-amber-50 border-amber-100 text-amber-500' :
+                                                user.role === 'recruiter' ? 'bg-brand-50 border-brand-100 text-brand-500' :
+                                                    'bg-slate-50 border-slate-100 text-slate-500'
+                                            }`}>
+                                            {getRoleIcon(user.role)}
+                                            <span className="text-[9px] font-black uppercase tracking-widest">{user.role}</span>
+                                        </div>
+                                        <select
+                                            value={user.role}
+                                            onChange={(e) => handleChangeRole(user.id, e.target.value)}
+                                            disabled={updatingUserId === user.id}
+                                            className="mt-1 text-[10px] font-black uppercase tracking-widest bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-full px-3 py-1 focus:outline-none focus:ring-2 focus:ring-brand-500/30"
+                                        >
+                                            <option value="applier">Free Trial • Candidate</option>
+                                            <option value="recruiter">Free Tier • Recruiter</option>
+                                            <option value="vip">VIP • High Bandwidth</option>
+                                            <option value="admin">Admin</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div className="space-y-1">
@@ -187,8 +262,16 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
                                         <p className="text-[8px] font-black text-slate-400 uppercase tracking-tighter">Organization</p>
                                         <p className="text-[10px] font-bold text-slate-600 dark:text-slate-300">{user.company || 'Private Sector'}</p>
                                     </div>
-                                    <button className="p-3 bg-slate-50 dark:bg-slate-800 rounded-xl hover:bg-rose-500 hover:text-white transition-all">
-                                        <Trash2 className="w-4 h-4" />
+                                    <button
+                                        onClick={() => handleDeleteUser(user.id, user.email)}
+                                        disabled={deletingUserId === user.id}
+                                        className="p-3 bg-slate-50 dark:bg-slate-800 rounded-xl hover:bg-rose-500 hover:text-white transition-all disabled:opacity-50"
+                                    >
+                                        {deletingUserId === user.id ? (
+                                            <Loader2 className="w-4 h-4 animate-spin" />
+                                        ) : (
+                                            <Trash2 className="w-4 h-4" />
+                                        )}
                                     </button>
                                 </div>
                             </div>

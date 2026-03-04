@@ -63,13 +63,13 @@ export const Register: React.FC<RegisterProps> = ({ onSuccess, onSwitchToLogin }
                 return (
                     <div className="space-y-8 animate-in fade-in slide-in-from-right-8 duration-500">
                         <div className="text-center space-y-2">
-                            <h2 className="text-4xl font-black tracking-tighter">Choose Archetype</h2>
+                            <h2 className="text-4xl font-black tracking-tighter">Choose account type</h2>
                             <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">Select your professional role</p>
                         </div>
                         <div className="grid grid-cols-1 gap-4">
                             {[
-                                { id: 'recruiter', label: 'Recruiter', desc: 'Batch analyze and rank talent dossiers', icon: Briefcase },
-                                { id: 'applier', label: 'Candidate', desc: 'Optimize your CV against neural metrics', icon: UserIcon }
+                                { id: 'recruiter', label: 'Recruiter', desc: 'Review and rank candidates for open roles', icon: Briefcase },
+                                { id: 'applier', label: 'Candidate', desc: 'See how your CV scores for a role', icon: UserIcon }
                             ].map((opt) => (
                                 <button
                                     key={opt.id}
@@ -79,8 +79,8 @@ export const Register: React.FC<RegisterProps> = ({ onSuccess, onSwitchToLogin }
                                         setStep('credentials');
                                     }}
                                     className={`group p-6 rounded-[2rem] border-2 text-left transition-all duration-300 flex items-center gap-6 ${role === opt.id
-                                            ? 'bg-brand-500/5 border-brand-500 shadow-xl shadow-brand-500/10'
-                                            : 'bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 hover:border-brand-500/30'
+                                        ? 'bg-brand-500/5 border-brand-500 shadow-xl shadow-brand-500/10'
+                                        : 'bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 hover:border-brand-500/30'
                                         }`}
                                 >
                                     <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-colors ${role === opt.id ? 'bg-brand-500 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-400 group-hover:bg-brand-500/10 group-hover:text-brand-500'
@@ -102,8 +102,8 @@ export const Register: React.FC<RegisterProps> = ({ onSuccess, onSwitchToLogin }
                 return (
                     <div className="space-y-8 animate-in fade-in slide-in-from-right-8 duration-500">
                         <div className="text-center space-y-2">
-                            <h2 className="text-4xl font-black tracking-tighter">Core Access</h2>
-                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">Establish Secure Credentials</p>
+                            <h2 className="text-4xl font-black tracking-tighter">Account details</h2>
+                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">Create your login</p>
                         </div>
                         <div className="space-y-4">
                             <div className="relative group">
@@ -111,7 +111,7 @@ export const Register: React.FC<RegisterProps> = ({ onSuccess, onSwitchToLogin }
                                 <input
                                     type="email"
                                     required
-                                    placeholder="Neural Identifier (Email)"
+                                    placeholder="Email"
                                     className="w-full pl-14 pr-6 py-5 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-[1.5rem] focus:ring-4 focus:ring-brand-500/10 outline-none transition-all font-bold text-sm"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
@@ -122,7 +122,7 @@ export const Register: React.FC<RegisterProps> = ({ onSuccess, onSwitchToLogin }
                                 <input
                                     type="password"
                                     required
-                                    placeholder="Access Key (Password)"
+                                    placeholder="Password"
                                     className="w-full pl-14 pr-6 py-5 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-[1.5rem] focus:ring-4 focus:ring-brand-500/10 outline-none transition-all font-bold text-sm"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
@@ -155,8 +155,8 @@ export const Register: React.FC<RegisterProps> = ({ onSuccess, onSwitchToLogin }
                 return (
                     <div className="space-y-8 animate-in fade-in slide-in-from-right-8 duration-500">
                         <div className="text-center space-y-2">
-                            <h2 className="text-4xl font-black tracking-tighter">Professional Profile</h2>
-                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">Finalize Account Customization</p>
+                            <h2 className="text-4xl font-black tracking-tighter">Professional profile</h2>
+                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">Help us understand your context</p>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="relative group col-span-2">
@@ -226,6 +226,22 @@ export const Register: React.FC<RegisterProps> = ({ onSuccess, onSwitchToLogin }
         }
     };
 
+    const handleGoogleLogin = () => {
+        try {
+            const params = new URLSearchParams({
+                client_id: "996038162784-udrp3areaeda8o342cm8cij83uto0uu6.apps.googleusercontent.com",
+                redirect_uri: "http://localhost:3000",
+                response_type: "code",
+                scope: "openid email profile",
+                access_type: "offline",
+                prompt: "select_account",
+            });
+            window.location.href = `https://accounts.google.com/o/oauth2/auth?${params.toString()}`;
+        } catch {
+            toast.error("Unable to initiate Google sign-in");
+        }
+    };
+
     return (
         <div className="w-full max-w-2xl bg-white/50 dark:bg-slate-900/50 backdrop-blur-3xl p-10 sm:p-14 rounded-[4rem] border border-white/20 dark:border-slate-800/50 shadow-2xl relative overflow-hidden">
             {/* Visual Accents */}
@@ -235,11 +251,28 @@ export const Register: React.FC<RegisterProps> = ({ onSuccess, onSwitchToLogin }
             <div className="relative z-10 transition-all duration-500">
                 {renderStep()}
 
-                <div className="mt-12 text-center">
+                <div className="mt-8 space-y-6 text-center">
+                    <div className="flex items-center gap-3 text-[10px] text-slate-400 font-black uppercase tracking-[0.3em]">
+                        <span className="h-px flex-1 bg-slate-100 dark:bg-slate-800" />
+                        <span>Or continue with</span>
+                        <span className="h-px flex-1 bg-slate-100 dark:bg-slate-800" />
+                    </div>
+
+                    <button
+                        type="button"
+                        onClick={handleGoogleLogin}
+                        className="w-full py-4 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-100 rounded-[1.5rem] border border-slate-200 dark:border-slate-800 font-black text-[10px] uppercase tracking-[0.3em] active:scale-[0.98] transition-all flex items-center justify-center gap-3 hover:bg-slate-50 dark:hover:bg-slate-800"
+                    >
+                        <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-white">
+                            <span className="text-base font-black text-[#4285F4]">G</span>
+                        </span>
+                        Sign up with Google
+                    </button>
+
                     <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                        Already have an identity?{' '}
+                        Already have an account?{' '}
                         <button onClick={onSwitchToLogin} className="text-brand-500 hover:underline inline-flex items-center gap-1">
-                            Access Neural Hub <ArrowRight className="w-3 h-3" />
+                            Sign in <ArrowRight className="w-3 h-3" />
                         </button>
                     </p>
                 </div>

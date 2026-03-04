@@ -21,7 +21,7 @@ export const MetricsDashboard: React.FC<MetricsDashboardProps> = ({
             <div className="absolute top-0 right-0 w-96 h-96 bg-brand-500/5 rounded-full -mr-48 -mt-48 blur-3xl group-hover/metrics:bg-brand-500/10 transition-all duration-700"></div>
             <div className="flex justify-between items-center mb-10">
                 <h3 className="text-[10px] font-black text-brand-500 uppercase tracking-[0.4em] flex items-center gap-3">
-                    <Activity className="w-5 h-5 animate-pulse" /> Weighted Performance Engine
+                    <Activity className="w-5 h-5 animate-pulse" /> Score breakdown
                 </h3>
                 <div className="flex items-center gap-4 bg-slate-800/50 px-5 py-2.5 rounded-2xl border border-slate-700">
                     <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Aggregate Score</span>

@@ -1,5 +1,5 @@
 import React from "react";
-import { X, Trophy, AlertCircle, CheckCircle2, Zap } from "lucide-react";
+import { X, Trophy, AlertCircle, CheckCircle2, Zap, FileSearch } from "lucide-react";
 import { RadarAnalytics } from "./RadarAnalytics";
 
 interface ComparisonViewProps {
@@ -9,12 +9,13 @@ interface ComparisonViewProps {
 
 export const ComparisonView: React.FC<ComparisonViewProps> = ({ candidates, onClose }) => {
     return (
-        <div className="fixed inset-0 bg-slate-900/90 backdrop-blur-xl z-[100] p-10 overflow-auto animate-in fade-in duration-500">
-            <div className="max-w-[1800px] mx-auto space-y-10">
-                <div className="flex justify-between items-center bg-white/10 p-8 rounded-[2.5rem] border border-white/10 backdrop-blur-md">
-                    <div>
-                        <h2 className="text-4xl font-black text-white mb-2 tracking-tight">Intelligence Delta</h2>
-                        <p className="text-xs font-bold text-indigo-400 uppercase tracking-[0.4em]">Side-by-Side Performance Comparison</p>
+        <div className="fixed inset-0 bg-slate-950/95 backdrop-blur-2xl z-[100] p-10 overflow-auto animate-in fade-in duration-700 font-outfit">
+            <div className="max-w-[1800px] mx-auto space-y-12">
+                <div className="flex justify-between items-center glass p-10 rounded-[4rem] relative overflow-hidden group/header">
+                    <div className="absolute inset-0 bg-gradient-to-r from-brand-500/10 to-transparent opacity-0 group-hover/header:opacity-100 transition-opacity"></div>
+                    <div className="relative z-10">
+                        <h2 className="text-5xl font-black text-white mb-3 tracking-tighter">Intelligence <span className="text-brand-500">Delta</span></h2>
+                        <p className="text-xs font-black text-indigo-400 uppercase tracking-[0.5em] italic">Neural Performance Contrast Engine</p>
                     </div>
                     <button
                         onClick={onClose}
@@ -101,6 +102,28 @@ export const ComparisonView: React.FC<ComparisonViewProps> = ({ candidates, onCl
                             </div>
                         </div>
                     ))}
+                </div>
+
+                <div className="bg-indigo-600 dark:bg-slate-950 p-12 rounded-[4rem] border border-indigo-500/30 shadow-3xl relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-white/5 rounded-full blur-[100px] -mr-64 -mt-64"></div>
+                    <div className="relative z-10 flex flex-col md:flex-row gap-12 items-center">
+                        <div className="shrink-0 w-24 h-24 rounded-[2rem] bg-white flex items-center justify-center shadow-2xl">
+                            <FileSearch className="w-12 h-12 text-indigo-600" />
+                        </div>
+                        <div className="flex-1 space-y-4">
+                            <h3 className="text-3xl font-black text-white">Comparative Intelligence Report</h3>
+                            <p className="text-lg text-indigo-100 font-medium leading-relaxed max-w-4xl">
+                                The primary differentiator between the selected candidates lies in their <span className="text-white font-black underline decoration-indigo-300">Technical Depth</span> and <span className="text-white font-black underline decoration-indigo-300">Growth Potential</span>.
+                                while <span className="font-black text-white">{candidates[0]?.ai_data?.full_name}</span> leads in overall match percentage,
+                                {candidates.length > 1 && <span className="font-black text-white"> {candidates[1]?.ai_data?.full_name}</span>}
+                                provides a compelling alternative in terms of stability and soft skills alignment for long-term growth.
+                            </p>
+                            <div className="flex gap-4 pt-4">
+                                <span className="px-4 py-2 bg-white/10 rounded-xl text-[10px] font-black text-white uppercase tracking-widest border border-white/10">Delta Variance: {Math.abs(candidates[0]?.score - (candidates[1]?.score || 0))}%</span>
+                                <span className="px-4 py-2 bg-white/10 rounded-xl text-[10px] font-black text-white uppercase tracking-widest border border-white/10">Cohort Avg: {Math.round(candidates.reduce((a, b: any) => a + b.score, 0) / candidates.length)}%</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

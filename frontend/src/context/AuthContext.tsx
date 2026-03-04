@@ -5,12 +5,13 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 interface User {
     email: string;
     role: string;
+    full_name?: string;
 }
 
 interface AuthContextType {
     user: User | null;
     token: string | null;
-    login: (token: string, role: string) => void;
+    login: (token: string, role: string, email: string, full_name?: string) => void;
     logout: () => void;
     loading: boolean;
 }
@@ -26,21 +27,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const savedToken = localStorage.getItem('cvscore_token');
         const savedRole = localStorage.getItem('cvscore_role');
         const savedEmail = localStorage.getItem('cvscore_email');
+        const savedName = localStorage.getItem('cvscore_full_name');
 
         if (savedToken && savedRole && savedEmail) {
             setToken(savedToken);
-            setUser({ email: savedEmail, role: savedRole });
+            setUser({ email: savedEmail, role: savedRole, full_name: savedName || undefined });
         }
         setLoading(false);
     }, []);
 
-    const login = (newToken: string, role: string) => {
-        // We might want to fetch /auth/me here to get the email accurately, 
-        // but for now we'll assume the login response provides enough info or we'll update it later.
+    const login = (newToken: string, role: string, email: string, full_name?: string) => {
         setToken(newToken);
+        setUser({ email, role, full_name });
         localStorage.setItem('cvscore_token', newToken);
         localStorage.setItem('cvscore_role', role);
-        // Temporary: assume email for now or update after /auth/me
+        localStorage.setItem('cvscore_email', email);
+        if (full_name) localStorage.setItem('cvscore_full_name', full_name);
     };
 
     const logout = () => {
@@ -49,6 +51,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         localStorage.removeItem('cvscore_token');
         localStorage.removeItem('cvscore_role');
         localStorage.removeItem('cvscore_email');
+        localStorage.removeItem('cvscore_full_name');
     };
 
     return (
