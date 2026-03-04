@@ -13,3 +13,7 @@ python-dotenv
 sqlalchemy
 passlib[bcrypt]
 python-jose[cryptography]
+requests
+python-docx
+pandas
+openpyxl

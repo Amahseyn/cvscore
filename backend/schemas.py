@@ -8,6 +8,7 @@ class PerformanceMetrics(BaseModel):
     growth_potential_score: int = Field(..., ge=0, le=100)
     stability_score: int = Field(..., ge=0, le=100)
     readability_score: int = Field(..., ge=0, le=100)
+    keyword_score: int = Field(0, ge=0, le=100)
 
 class RecruiterAnalysis(BaseModel):
     executive_summary: str
@@ -20,10 +21,15 @@ class CandidateAnalysis(BaseModel):
     market_positioning: Union[str, List[str]]
     interview_prep: Union[str, List[str]]
     career_growth: Union[str, List[str]]
+    job_suggestions: List[str] = []
+    keywords_skills: List[str] = []
+    job_targets: List[str] = []
+    cover_letter: Optional[str] = None
 
 class AIScore(BaseModel):
     total_score: int
     match_percentage: Optional[int] = None
+    ats_compatibility_score: Optional[int] = None
     performance_metrics: PerformanceMetrics
     breakdown: Dict[str, int]
     pros: List[str]
@@ -32,15 +38,34 @@ class AIScore(BaseModel):
     overall_feedback: str
     recruiter_analysis: RecruiterAnalysis
     candidate_analysis: CandidateAnalysis
+    seniority_level: Optional[str] = None
+    years_of_experience: Optional[int] = None
+    additional_notes: Optional[str] = None
+
+class ExperienceItem(BaseModel):
+    title: Optional[str] = None
+    company: Optional[str] = None
+    duration: Optional[str] = None
+    summary: Optional[str] = None
+
+class EducationItem(BaseModel):
+    degree: Optional[str] = None
+    institution: Optional[str] = None
+    year: Optional[str] = None
 
 class ExtractedData(BaseModel):
     full_name: Optional[str] = None
     email: Optional[str] = None
     phone: Optional[str] = None
+    linkedin: Optional[str] = None
     location: Optional[str] = None
+    seniority_level: Optional[str] = None
+    years_of_experience: Optional[int] = None
     skills: List[str] = []
-    experience: List[Dict[str, str]] = []
-    education: List[Dict[str, str]] = []
+    keywords: List[str] = []
+    additional_notes: Optional[str] = None
+    experience: List[ExperienceItem] = []
+    education: List[EducationItem] = []
 
 class CVResult(BaseModel):
     filename: str
@@ -100,3 +125,7 @@ class AdminUserAdd(BaseModel):
     role: str # admin, vip, recruiter, applier
     full_name: Optional[str] = None
     company: Optional[str] = None
+
+
+class AdminUserUpdateRole(BaseModel):
+    role: str  # admin, vip, recruiter, applier
