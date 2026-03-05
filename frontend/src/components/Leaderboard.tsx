@@ -94,10 +94,12 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                                     </div>
                                 </td>
                                 <td className="py-6 px-4">
-                                    <div className="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg w-fit">
-                                        <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest leading-none">
-                                            {res.ai_score?.seniority_level || res.ai_data?.seniority_level || "Unknown"}
-                                        </p>
+                                    <div className="flex flex-col gap-1">
+                                        <div className="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg w-fit">
+                                            <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest leading-none">
+                                                {res.ai_score?.seniority_level || res.ai_data?.seniority_level || "Unknown"}
+                                            </p>
+                                        </div>
                                     </div>
                                 </td>
                                 <td className="py-6 px-4">

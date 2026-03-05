@@ -1,0 +1,244 @@
+{
+    "Navbar": {
+        "brand": "CVScore PRO",
+        "intel": "Neural Intelligence",
+        "links": {
+            "services": "Services",
+            "info": "Info",
+            "contact": "Contact"
+        },
+        "profile": {
+            "dashboard": "Dashboard",
+            "history": "Neural Vault",
+            "logout": "End Session"
+        },
+        "auth": {
+            "login": "Login",
+            "getStarted": "Get Started"
+        }
+    },
+    "Home": {
+        "hero": {
+            "badge": "Shortlist better hires, faster",
+            "titlePart1": "Structured, fair",
+            "titlePart2": "Neural",
+            "titlePart3": "review",
+            "description": "CVScore helps you turn a pile of CVs into a clear, defensible shortlist — with consistent scoring, transparent criteria, and interview-ready notes for every candidate.",
+            "cta": "Start for Free"
+        },
+        "engine": {
+            "title": "Neural Engine",
+            "subtitle": "Instant Alignment Score",
+            "balance": "Trial Balance",
+            "scans": "SCANS",
+            "locked": "Neural Core Locked",
+            "lockedDesc": "Identity verification required to initialise neural processing and trial credits.",
+            "unlockBtn": "Try 3 Free Scans",
+            "unlockSub": "3 Free Neural Scans Included",
+            "dropCV": "Drop CV to process",
+            "active": "Neural Link Active...",
+            "awaiting": "Awaiting artifact submission"
+        },
+        "dossier": {
+            "title": "Neural Dossier",
+            "anonymous": "Anonymous Candidate",
+            "exp": "Experience",
+            "observation": "Observation",
+            "newAnalysis": "New Analysis",
+            "universalDashboard": "Universal Dashboard"
+        },
+        "history": {
+            "title": "Search your history",
+            "subtitle": "Reopen past evaluations and manage your shortlisted candidates",
+            "btn": "Open Dashboard"
+        },
+        "howItWorks": {
+            "badge": "How it works",
+            "title": "From raw CVs to a trusted shortlist",
+            "description": "Upload PDF résumés, tune what 'great' looks like for this role, and let the engine extract structured data, score candidates, and surface interview-ready shortlists in seconds.",
+            "step1": {
+                "badge": "01 • Ingest",
+                "title": "Upload your CVs",
+                "desc": "Drag-and-drop one or many PDF résumés. CVScore normalises layouts, runs OCR if needed, and converts each profile into a consistent internal format."
+            },
+            "step2": {
+                "badge": "02 • Align",
+                "title": "Define what 'great' means",
+                "desc": "Paste your job description, pick a profile preset, and dial in scoring weights across impact, depth, communication, stability, and more."
+            },
+            "step3": {
+                "badge": "03 • Decide",
+                "title": "Rank, compare and brief",
+                "desc": "Instantly view ranked candidates, compare profiles side-by-side, and generate structured interview guides that keep every conversation consistent."
+            }
+        }
+    },
+    "Footer": {
+        "description": "High-precision neural artifact evaluator for the next generation of hiring. Fair, fast, and data-driven.",
+        "platform": "Platform",
+        "launchApp": "Launch App",
+        "neuralServices": "Neural Services",
+        "identityVault": "Identity Vault",
+        "securitySpecs": "Security Specs",
+        "governance": "Governance",
+        "privacyProtocol": "Privacy Protocol",
+        "tos": "Terms of Service",
+        "cookiePolicy": "Cookie Policy",
+        "architectInfo": "Architect Info",
+        "copyright": "© 2026 CVScore Evolution • All systems operational",
+        "sslSecure": "SSL Secure",
+        "aiVerified": "AI Verified"
+    },
+    "AboutDeveloper": {
+        "badge": "Architect & Visionary",
+        "title": "Built for the Pragmatic Recruiter",
+        "description": "I'm a software architect passionate about bridging cutting-edge AI with everyday productivity. CVScore PRO was born out of frustration with manual CV screening — designed to be fast, fair, and defensible.",
+        "contact": "Contact",
+        "philosophyTitle": "Core Philosophy",
+        "philosophy": "\"Software should reduce cognitive load, not increase it. If it doesn't solve a problem in 10 seconds, it's not relevant.\"",
+        "stack": "Tech Stack",
+        "status": "Status",
+        "statusText": "Available for SaaS Consulting"
+    },
+    "Services": {
+        "title": "Career & Recruitment",
+        "subtitle": "Services",
+        "description": "We combine AI tools with real human expertise — whether you're searching for a job or building a team.",
+        "forCandidates": {
+            "title": "For Job Seekers",
+            "subtitle": "Personalised Career Support",
+            "items": {
+                "i1": "Professional CV Writing & Personal Branding",
+                "i2": "AI-Powered Job Search Strategy",
+                "i3": "Interview Practice & Coaching Sessions",
+                "i4": "One-on-One Job Application Support"
+            },
+            "cta": "Book a Free Call"
+        },
+        "forCompanies": {
+            "title": "For Companies",
+            "subtitle": "Smart Talent Hiring Solutions",
+            "items": {
+                "i1": "Full-Cycle Executive & Leadership Recruitment",
+                "i2": "AI Screening Built Into Your Workflow",
+                "i3": "Technical Skills Assessment for Dev Teams",
+                "i4": "Bulk CV Processing for High-Volume Roles"
+            },
+            "cta": "Get a Free Quote"
+        },
+        "contact": {
+            "title": "Get in Touch",
+            "subtitle": "Send us a message — we reply within 1 business day",
+            "namePlaceholder": "Your Full Name",
+            "emailPlaceholder": "Your Work or Personal Email",
+            "helpOptions": {
+                "label": "How can we help?",
+                "cv": "CV Writing or Rewriting",
+                "corporate": "Business or Corporate Recruitment",
+                "ai": "Custom AI Hiring Flow",
+                "other": "Something Else"
+            },
+            "messagePlaceholder": "Tell us about your goal or project. Any detail helps!",
+            "submit": "Send My Message"
+        }
+    },
+    "Auth": {
+        "login": {
+            "title": "Welcome back",
+            "subtitle": "Sign in to your account",
+            "email": "Email",
+            "password": "Password",
+            "google": "Sign in with Google",
+            "flow": "Identification Flow",
+            "submit": "Establish Neural Link",
+            "newHere": "New here?",
+            "createAccount": "Create an account",
+            "encrypted": "Biometric Encrypted",
+            "footer": "Neural Session Sync • CVScore PRO v2.5",
+            "success": "Signed in successfully",
+            "error": "Unable to sign in",
+            "serverError": "Unable to reach server",
+            "googleError": "Unable to initiate Google sign-in"
+        },
+        "register": {
+            "archetype": {
+                "title": "Choose account type",
+                "subtitle": "Select your professional role",
+                "recruiter": {
+                    "label": "Recruiter",
+                    "desc": "Review and rank candidates for open roles"
+                },
+                "candidate": {
+                    "label": "Candidate",
+                    "desc": "See how your CV scores for a role"
+                }
+            },
+            "credentials": {
+                "title": "Account details",
+                "subtitle": "Create your login",
+                "email": "Email",
+                "password": "Password"
+            },
+            "profile": {
+                "title": "Professional profile",
+                "subtitle": "Help us understand your context",
+                "name": "Full Legal Name",
+                "company": "Organisation",
+                "industry": "Industry Sector",
+                "phone": "Phone Identifier",
+                "submit": "Forge Identity"
+            },
+            "google": "Sign up with Google",
+            "flow": "Identity Synthesis Flow",
+            "alreadyAccount": "Already have an account?",
+            "signIn": "Sign in",
+            "back": "Back",
+            "continue": "Continue",
+            "footer": "Identity Synthesis Mode • CVScore PRO v2.5",
+            "req": "Credentials Required",
+            "success": "Identity Synthesised Successfully",
+            "error": "Synthesis Failed",
+            "offline": "Identity Forge Offline",
+            "googleError": "Unable to initiate Google sign-up"
+        }
+    },
+    "Admin": {
+        "viewHistory": "View History",
+        "userVault": "User Neural Vault",
+        "archiveSubtitle": "Historical performance artifacts for this identity",
+        "noHistory": "No historical artifacts found for this identity",
+        "backToCluster": "Back to Command Cluster"
+    },
+    "History": {
+        "title": "Neural Archive",
+        "subtitle": "Complete historical record of processed identities and CV scores",
+        "table": {
+            "candidate": "Candidate / Filename",
+            "score": "Neural Score",
+            "seniority": "Seniority",
+            "experience": "Exp",
+            "date": "Timeline",
+            "actions": "Actions"
+        },
+        "searchPlaceholder": "Filter archives by candidate name or profile details...",
+        "noResults": "No historical artifacts match your search query",
+        "viewDetails": "View Details",
+        "reload": "Reload Analysis",
+        "delete": "Delete Archive",
+        "confirmDelete": "Are you sure you want to purge this artifact from the neural net? This action is irreversible.",
+        "purged": "Archive successfully purged",
+        "filters": {
+            "score": "Min Score",
+            "seniority": "Seniority Level",
+            "date": "Timeline Range",
+            "metrics": {
+                "impact": "Impact",
+                "tech": "Technical Depth",
+                "soft": "Soft Skills",
+                "growth": "Growth Potential",
+                "stability": "Stability",
+                "readability": "Readability"
+            }
+        }
+    }
+}

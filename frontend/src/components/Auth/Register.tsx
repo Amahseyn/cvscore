@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import { UserPlus, Mail, Lock, Loader2, ArrowRight, ArrowLeft, Building2, Briefcase, Phone, User as UserIcon, CheckCircle2 } from 'lucide-react';
 import { toast } from 'react-toastify';
+import { Button } from '@/components/Button';
+import { useTranslations, useLocale } from 'next-intl';
 
 interface RegisterProps {
     onSuccess: () => void;
@@ -12,6 +14,8 @@ interface RegisterProps {
 type Step = 'archetype' | 'credentials' | 'profile';
 
 export const Register: React.FC<RegisterProps> = ({ onSuccess, onSwitchToLogin }) => {
+    const t = useTranslations('Auth.register');
+    const locale = useLocale();
     const [step, setStep] = useState<Step>('archetype');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -44,14 +48,14 @@ export const Register: React.FC<RegisterProps> = ({ onSuccess, onSwitchToLogin }
             });
 
             if (resp.ok) {
-                toast.success('Identity Synthesized Successfully');
+                toast.success(t('success'));
                 onSwitchToLogin();
             } else {
                 const err = await resp.json();
-                toast.error(err.detail || 'Synthesis Failed');
+                toast.error(err.detail || t('error'));
             }
         } catch (err) {
-            toast.error('Identity Forge Offline');
+            toast.error(t('offline'));
         } finally {
             setLoading(false);
         }
@@ -63,13 +67,13 @@ export const Register: React.FC<RegisterProps> = ({ onSuccess, onSwitchToLogin }
                 return (
                     <div className="space-y-8 animate-in fade-in slide-in-from-right-8 duration-500">
                         <div className="text-center space-y-2">
-                            <h2 className="text-4xl font-black tracking-tighter">Choose account type</h2>
-                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">Select your professional role</p>
+                            <h2 className="text-4xl font-black tracking-tighter">{t('archetype.title')}</h2>
+                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">{t('archetype.subtitle')}</p>
                         </div>
                         <div className="grid grid-cols-1 gap-4">
                             {[
-                                { id: 'recruiter', label: 'Recruiter', desc: 'Review and rank candidates for open roles', icon: Briefcase },
-                                { id: 'applier', label: 'Candidate', desc: 'See how your CV scores for a role', icon: UserIcon }
+                                { id: 'recruiter', label: t('archetype.recruiter.label'), desc: t('archetype.recruiter.desc'), icon: Briefcase },
+                                { id: 'applier', label: t('archetype.candidate.label'), desc: t('archetype.candidate.desc'), icon: UserIcon }
                             ].map((opt) => (
                                 <button
                                     key={opt.id}
@@ -91,7 +95,7 @@ export const Register: React.FC<RegisterProps> = ({ onSuccess, onSwitchToLogin }
                                         <p className="font-black text-lg">{opt.label}</p>
                                         <p className="text-xs font-bold text-slate-400 mt-1">{opt.desc}</p>
                                     </div>
-                                    <ArrowRight className={`ml-auto w-5 h-5 transition-transform ${role === opt.id ? 'translate-x-1 text-brand-500' : 'text-slate-300 opacity-0 group-hover:opacity-100'}`} />
+                                    <ArrowRight className={`ml-auto w-5 h-5 transition-transform ${role === opt.id ? 'translate-x-1 text-brand-500' : 'text-slate-300 opacity-0 group-hover:opacity-100'} ${locale === 'ar' ? 'rotate-180 group-hover:-translate-x-1' : ''}`} />
                                 </button>
                             ))}
                         </div>
@@ -102,8 +106,8 @@ export const Register: React.FC<RegisterProps> = ({ onSuccess, onSwitchToLogin }
                 return (
                     <div className="space-y-8 animate-in fade-in slide-in-from-right-8 duration-500">
                         <div className="text-center space-y-2">
-                            <h2 className="text-4xl font-black tracking-tighter">Account details</h2>
-                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">Create your login</p>
+                            <h2 className="text-4xl font-black tracking-tighter">{t('credentials.title')}</h2>
+                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">{t('credentials.subtitle')}</p>
                         </div>
                         <div className="space-y-4">
                             <div className="relative group">
@@ -111,7 +115,7 @@ export const Register: React.FC<RegisterProps> = ({ onSuccess, onSwitchToLogin }
                                 <input
                                     type="email"
                                     required
-                                    placeholder="Email"
+                                    placeholder={t('credentials.email')}
                                     className="w-full pl-14 pr-6 py-5 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-[1.5rem] focus:ring-4 focus:ring-brand-500/10 outline-none transition-all font-bold text-sm"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
@@ -122,7 +126,7 @@ export const Register: React.FC<RegisterProps> = ({ onSuccess, onSwitchToLogin }
                                 <input
                                     type="password"
                                     required
-                                    placeholder="Password"
+                                    placeholder={t('credentials.password')}
                                     className="w-full pl-14 pr-6 py-5 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-[1.5rem] focus:ring-4 focus:ring-brand-500/10 outline-none transition-all font-bold text-sm"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
@@ -130,23 +134,25 @@ export const Register: React.FC<RegisterProps> = ({ onSuccess, onSwitchToLogin }
                             </div>
                         </div>
                         <div className="flex gap-4">
-                            <button
+                            <Button
                                 type="button"
                                 onClick={() => setStep('archetype')}
-                                className="flex-1 py-5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-[1.5rem] font-black text-[10px] uppercase tracking-widest hover:bg-slate-200 dark:hover:bg-slate-700 transition-all flex items-center justify-center gap-2"
+                                variant="outline"
+                                className="flex-1"
                             >
-                                <ArrowLeft className="w-4 h-4" /> Back
-                            </button>
-                            <button
+                                <ArrowLeft className={`mr-2 w-4 h-4 ${locale === 'ar' ? 'rotate-180' : ''}`} /> {t('back')}
+                            </Button>
+                            <Button
                                 type="button"
                                 onClick={() => {
                                     if (email && password) setStep('profile');
-                                    else toast.warning('Credentials Required');
+                                    else toast.warning(t('req'));
                                 }}
-                                className="flex-[2] py-5 bg-brand-500 text-white rounded-[1.5rem] font-black text-[10px] uppercase tracking-[0.2em] shadow-xl shadow-brand-500/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3"
+                                variant="primary"
+                                className="flex-[2] group"
                             >
-                                Continue <ArrowRight className="w-4 h-4" />
-                            </button>
+                                {t('continue')} <ArrowRight className={`ml-3 w-4 h-4 group-hover:translate-x-1 transition-transform ${locale === 'ar' ? 'rotate-180 group-hover:-translate-x-1' : ''}`} />
+                            </Button>
                         </div>
                     </div>
                 );
@@ -155,15 +161,15 @@ export const Register: React.FC<RegisterProps> = ({ onSuccess, onSwitchToLogin }
                 return (
                     <div className="space-y-8 animate-in fade-in slide-in-from-right-8 duration-500">
                         <div className="text-center space-y-2">
-                            <h2 className="text-4xl font-black tracking-tighter">Professional profile</h2>
-                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">Help us understand your context</p>
+                            <h2 className="text-4xl font-black tracking-tighter">{t('profile.title')}</h2>
+                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">{t('profile.subtitle')}</p>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="relative group col-span-2">
                                 <UserIcon className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-brand-500 transition-colors" />
                                 <input
                                     type="text"
-                                    placeholder="Full Legal Name"
+                                    placeholder={t('profile.name')}
                                     className="w-full pl-14 pr-6 py-5 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-[1.5rem] focus:ring-4 focus:ring-brand-500/10 outline-none transition-all font-bold text-sm"
                                     value={fullName}
                                     onChange={(e) => setFullName(e.target.value)}
@@ -173,7 +179,7 @@ export const Register: React.FC<RegisterProps> = ({ onSuccess, onSwitchToLogin }
                                 <Building2 className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-brand-500 transition-colors" />
                                 <input
                                     type="text"
-                                    placeholder="Organization"
+                                    placeholder={t('profile.company')}
                                     className="w-full pl-14 pr-6 py-5 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-[1.5rem] focus:ring-4 focus:ring-brand-500/10 outline-none transition-all font-bold text-sm"
                                     value={company}
                                     onChange={(e) => setCompany(e.target.value)}
@@ -183,7 +189,7 @@ export const Register: React.FC<RegisterProps> = ({ onSuccess, onSwitchToLogin }
                                 <Briefcase className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-brand-500 transition-colors" />
                                 <input
                                     type="text"
-                                    placeholder="Industry Sector"
+                                    placeholder={t('profile.industry')}
                                     className="w-full pl-14 pr-6 py-5 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-[1.5rem] focus:ring-4 focus:ring-brand-500/10 outline-none transition-all font-bold text-sm"
                                     value={industry}
                                     onChange={(e) => setIndustry(e.target.value)}
@@ -193,7 +199,7 @@ export const Register: React.FC<RegisterProps> = ({ onSuccess, onSwitchToLogin }
                                 <Phone className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-brand-500 transition-colors" />
                                 <input
                                     type="tel"
-                                    placeholder="Phone Identifier"
+                                    placeholder={t('profile.phone')}
                                     className="w-full pl-14 pr-6 py-5 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-[1.5rem] focus:ring-4 focus:ring-brand-500/10 outline-none transition-all font-bold text-sm"
                                     value={phone}
                                     onChange={(e) => setPhone(e.target.value)}
@@ -201,25 +207,23 @@ export const Register: React.FC<RegisterProps> = ({ onSuccess, onSwitchToLogin }
                             </div>
                         </div>
                         <div className="flex gap-4">
-                            <button
+                            <Button
                                 type="button"
                                 onClick={() => setStep('credentials')}
-                                className="flex-1 py-5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-[1.5rem] font-black text-[10px] uppercase tracking-widest hover:bg-slate-200 dark:hover:bg-slate-700 transition-all flex items-center justify-center gap-2"
+                                variant="outline"
+                                className="flex-1"
                             >
-                                <ArrowLeft className="w-4 h-4" /> Back
-                            </button>
-                            <button
+                                <ArrowLeft className={`mr-2 w-4 h-4 ${locale === 'ar' ? 'rotate-180' : ''}`} /> {t('back')}
+                            </Button>
+                            <Button
                                 type="button"
                                 onClick={handleSubmit}
-                                disabled={loading}
-                                className="flex-[2] py-5 bg-brand-600 hover:bg-brand-700 text-white rounded-[1.5rem] font-black text-[10px] uppercase tracking-[0.2em] shadow-xl shadow-brand-500/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+                                isLoading={loading}
+                                variant="primary"
+                                className="flex-[2]"
                             >
-                                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : (
-                                    <>
-                                        Forge Identity <CheckCircle2 className="w-4 h-4" />
-                                    </>
-                                )}
-                            </button>
+                                {t('profile.submit')} <CheckCircle2 className="ml-2 w-4 h-4" />
+                            </Button>
                         </div>
                     </div>
                 );
@@ -230,7 +234,7 @@ export const Register: React.FC<RegisterProps> = ({ onSuccess, onSwitchToLogin }
         try {
             const params = new URLSearchParams({
                 client_id: "996038162784-udrp3areaeda8o342cm8cij83uto0uu6.apps.googleusercontent.com",
-                redirect_uri: "http://localhost:3000",
+                redirect_uri: `http://localhost:3000/${locale}`,
                 response_type: "code",
                 scope: "openid email profile",
                 access_type: "offline",
@@ -238,7 +242,7 @@ export const Register: React.FC<RegisterProps> = ({ onSuccess, onSwitchToLogin }
             });
             window.location.href = `https://accounts.google.com/o/oauth2/auth?${params.toString()}`;
         } catch {
-            toast.error("Unable to initiate Google sign-in");
+            toast.error(t('googleError'));
         }
     };
 
@@ -248,34 +252,34 @@ export const Register: React.FC<RegisterProps> = ({ onSuccess, onSwitchToLogin }
             <div className="absolute -top-24 -left-24 w-64 h-64 bg-brand-500/10 blur-[100px] rounded-full"></div>
             <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-indigo-500/10 blur-[100px] rounded-full"></div>
 
-            <div className="relative z-10 transition-all duration-500">
+            <div className="mt-8 space-y-6">
+                <Button
+                    type="button"
+                    onClick={handleGoogleLogin}
+                    variant="white"
+                    size="lg"
+                    className="w-full dark:bg-slate-900 dark:border-slate-800"
+                >
+                    <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-slate-50 mr-3 border border-slate-100">
+                        <span className="text-base font-black text-brand-600">G</span>
+                    </span>
+                    {t('google')}
+                </Button>
+
+                <div className="flex items-center gap-3 text-[10px] text-slate-400 font-black uppercase tracking-[0.3em] px-4">
+                    <span className="h-px flex-1 bg-slate-100 dark:bg-slate-800" />
+                    <span>{t('flow')}</span>
+                    <span className="h-px flex-1 bg-slate-100 dark:bg-slate-800" />
+                </div>
+
                 {renderStep()}
 
-                <div className="mt-8 space-y-6 text-center">
-                    <div className="flex items-center gap-3 text-[10px] text-slate-400 font-black uppercase tracking-[0.3em]">
-                        <span className="h-px flex-1 bg-slate-100 dark:bg-slate-800" />
-                        <span>Or continue with</span>
-                        <span className="h-px flex-1 bg-slate-100 dark:bg-slate-800" />
-                    </div>
-
-                    <button
-                        type="button"
-                        onClick={handleGoogleLogin}
-                        className="w-full py-4 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-100 rounded-[1.5rem] border border-slate-200 dark:border-slate-800 font-black text-[10px] uppercase tracking-[0.3em] active:scale-[0.98] transition-all flex items-center justify-center gap-3 hover:bg-slate-50 dark:hover:bg-slate-800"
-                    >
-                        <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-white">
-                            <span className="text-base font-black text-[#4285F4]">G</span>
-                        </span>
-                        Sign up with Google
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">
+                    {t('alreadyAccount')}{' '}
+                    <button onClick={onSwitchToLogin} className="text-brand-500 hover:text-brand-400 transition-colors inline-flex items-center gap-1">
+                        {t('signIn')} <ArrowRight className={`w-3 h-3 ${locale === 'ar' ? 'rotate-180' : ''}`} />
                     </button>
-
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                        Already have an account?{' '}
-                        <button onClick={onSwitchToLogin} className="text-brand-500 hover:underline inline-flex items-center gap-1">
-                            Sign in <ArrowRight className="w-3 h-3" />
-                        </button>
-                    </p>
-                </div>
+                </p>
             </div>
         </div>
     );

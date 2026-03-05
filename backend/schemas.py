@@ -1,5 +1,6 @@
-from pydantic import BaseModel, Field, EmailStr
 from typing import List, Optional, Dict, Union
+from datetime import datetime
+from pydantic import BaseModel, Field, EmailStr, ConfigDict
 
 class PerformanceMetrics(BaseModel):
     impact_score: int = Field(..., ge=0, le=100)
@@ -106,6 +107,7 @@ class UserOut(BaseModel):
     company: Optional[str] = None
     industry: Optional[str] = None
     phone_number: Optional[str] = None
+    scans_remaining: int = 3
     
     class Config:
         from_attributes = True
@@ -129,3 +131,25 @@ class AdminUserAdd(BaseModel):
 
 class AdminUserUpdateRole(BaseModel):
     role: str  # admin, vip, recruiter, applier
+
+class HistoryOut(BaseModel):
+    id: int
+    user_id: int
+    filename: Optional[str] = None
+    text: Optional[str] = None
+    ai_data: Optional[Dict] = None
+    ai_score: Optional[Dict] = None
+    full_name: Optional[str] = None
+    email: Optional[str] = None
+    phone: Optional[str] = None
+    linkedin: Optional[str] = None
+    years_of_experience: Optional[int] = None
+    seniority_level: Optional[str] = None
+    keywords: Optional[str] = None
+    score: Optional[int] = None
+    additional_notes: Optional[str] = None
+    ai_content_score: Optional[float] = None
+    timestamp: datetime
+
+    class Config:
+        from_attributes = True

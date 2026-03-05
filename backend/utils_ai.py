@@ -225,7 +225,7 @@ def generate_interview(cv_text: str, dossier_summary: str, job_description: Opti
         context_jd=context_jd,
         dossier_summary=dossier_summary
     )
-
+    
     response = client.chat.completions.create(
         model="openrouter/auto",
         response_format={"type": "json_object"},

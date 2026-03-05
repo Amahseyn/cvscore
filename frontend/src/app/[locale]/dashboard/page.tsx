@@ -2,10 +2,11 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useLocale } from 'next-intl';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Sun, Moon, ArrowLeft, Shield, LogOut, History, X, Download } from "lucide-react";
+import { Sun, Moon, Shield, LogOut, History, X, Download, ArrowLeft } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useTheme } from "@/context/ThemeContext";
 
@@ -40,9 +41,11 @@ const PRESETS = {
 };
 
 export default function DashboardPage() {
-    const { user, token, logout } = useAuth();
+    const { user, token, logout, login: authLogin } = useAuth();
     const { isDark, toggleTheme } = useTheme();
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const locale = useLocale();
 
     // UI View State
     const [role, setRole] = useState<"recruiter" | "applier" | null>(null);
@@ -97,6 +100,44 @@ export default function DashboardPage() {
             localStorage.setItem('cvscore_weights', JSON.stringify(perfWeights));
         }
     }, [perfWeights]);
+
+    // Handle incoming view params (e.g. from Navbar or Reload)
+    useEffect(() => {
+        const view = searchParams.get("view");
+        const reloadId = searchParams.get("reload");
+
+        if (view === "history") {
+            setShowHistory(true);
+        }
+
+        if (reloadId) {
+            const fetchAndLoad = async () => {
+                setLoading(true);
+                try {
+                    const resp = await fetch(`http://localhost:8000/history/${reloadId}`, {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    if (resp.ok) {
+                        const data = await resp.json();
+                        // Put the historical result into the results array and select it
+                        setResults([data]);
+                        setCurrentIndex(0);
+                        toast.success("Historical analysis restored");
+                    }
+                } catch (err) {
+                    toast.error("Failed to restore tactical data");
+                } finally {
+                    setLoading(false);
+                }
+            };
+            fetchAndLoad();
+        }
+
+        // Handle custom event from Navbar when already on dashboard
+        const handleOpenHistory = () => setShowHistory(true);
+        window.addEventListener('open-history', handleOpenHistory);
+        return () => window.removeEventListener('open-history', handleOpenHistory);
+    }, [searchParams, token]);
 
     // Fetch History
     const fetchHistory = async () => {
@@ -214,6 +255,12 @@ export default function DashboardPage() {
             setResults(data.results || []);
             const successCount = data.batch_summary?.success || 0;
             toast.success(`Synthesized ${successCount} Neural Dossiers`);
+
+            // Refresh scan count locally
+            if (user && user.role !== 'admin' && user.scans_remaining !== undefined) {
+                const newScans = Math.max(0, user.scans_remaining - successCount);
+                authLogin(token!, user.role, user.email, user.full_name, newScans);
+            }
         } catch (err) {
             toast.error("Neural Link Failure: Connection to Backend Lost");
         } finally {
@@ -312,60 +359,6 @@ export default function DashboardPage() {
         <div className={`min-h-screen ${isDark ? 'dark bg-slate-950 text-white' : 'bg-slate-50 text-slate-900'} transition-all duration-700 font-outfit`}>
             <ToastContainer position="bottom-right" theme={isDark ? "dark" : "light"} />
 
-            <nav className="fixed top-0 left-0 right-0 h-24 glass z-50 flex items-center px-10">
-                <div className="max-w-[1600px] w-full mx-auto flex justify-between items-center">
-                    <div className="flex items-center gap-6">
-                        <button
-                            onClick={() => router.push('/')}
-                            className="p-3 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-all group shadow-sm bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800"
-                            title="Return Home"
-                        >
-                            <ArrowLeft className="w-6 h-6 group-active:-translate-x-1 transition-transform" />
-                        </button>
-                        <Link href="/" className="group">
-                            <h1 className="text-2xl font-black tracking-tight flex items-center gap-3">
-                                CVScore <span className="text-brand-500 group-hover:text-brand-600 transition-colors">PRO</span>
-                            </h1>
-                            <p className="text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.4em] mt-1 group-hover:tracking-[0.5em] transition-all">Neural Artifact Evaluator</p>
-                        </Link>
-                    </div>
-                    <div className="flex items-center gap-4">
-                        <nav className="hidden lg:flex items-center gap-8 mr-12 border-r border-slate-200/50 dark:border-slate-800/50 pr-8">
-                            <Link href="/" className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 hover:text-brand-500 transition-colors">Home</Link>
-                            <a href="#history" onClick={(e) => { e.preventDefault(); setShowHistory(true); }} className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 hover:text-brand-500 transition-colors">Vault</a>
-                            <button
-                                onClick={handleExportExcel}
-                                className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-500 hover:text-emerald-600 transition-colors flex items-center gap-2"
-                            >
-                                <Download className="w-3.5 h-3.5" /> Export Data
-                            </button>
-                        </nav>
-                        {user?.role === 'admin' && (
-                            <button
-                                onClick={() => router.push('/admin')}
-                                className="px-6 py-3 bg-brand-500/10 text-brand-500 border border-brand-500/20 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-brand-500 hover:text-white transition-all flex items-center gap-2 shadow-xl shadow-brand-500/10"
-                            >
-                                <Shield className="w-4 h-4" /> Admin Console
-                            </button>
-                        )}
-                        <button onClick={toggleTheme} className="p-4 bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-xl hover:shadow-brand-500/10 transition-all">
-                            {isDark ? <Sun className="w-6 h-6 text-amber-500" /> : <Moon className="w-6 h-6 text-indigo-500" />}
-                        </button>
-                        <button
-                            onClick={() => {
-                                logout();
-                                router.push('/');
-                                toast.info("Logged out successfully");
-                            }}
-                            className="p-4 bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-xl hover:shadow-brand-500/10 transition-all text-slate-400 hover:text-rose-500"
-                            title="Logout"
-                        >
-                            <LogOut className="w-6 h-6" />
-                        </button>
-                    </div>
-                </div>
-            </nav>
-
             <main className="max-w-[1600px] mx-auto pt-32 p-10 grid grid-cols-1 lg:grid-cols-12 gap-10">
                 {user?.role === "admin" && (
                     <section className="lg:col-span-12 space-y-4">
@@ -379,7 +372,7 @@ export default function DashboardPage() {
                                 </h2>
                             </div>
                             <button
-                                onClick={() => router.push('/admin')}
+                                onClick={() => router.push(`/${locale}/admin`)}
                                 className="px-5 py-3 bg-brand-500 text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] shadow-md shadow-brand-500/30 hover:bg-brand-600 active:scale-95 transition-all"
                             >
                                 Open Full Admin Console
@@ -453,7 +446,6 @@ export default function DashboardPage() {
                     applyPreset={applyPreset} PRESETS={PRESETS}
                     loading={loading} handleUpload={handleUpload}
                     currentResult={currentResult}
-                    onShowHistory={() => setShowHistory(true)}
                     jdText={jdText}
                     setJdText={setJdText}
                 />
@@ -528,7 +520,7 @@ export default function DashboardPage() {
                                             </div>
                                             <div>
                                                 <h4 className="text-sm font-black text-slate-800 dark:text-white group-hover:text-brand-500 transition-colors">{item.filename}</h4>
-                                                <p className="text-[9px] font-bold text-slate-400 uppercase tracking-tighter mt-1">{new Date(item.created_at).toLocaleString()}</p>
+                                                <p className="text-[9px] font-bold text-slate-400 uppercase tracking-tighter mt-1">{new Date(item.timestamp).toLocaleString()}</p>
                                             </div>
                                         </div>
                                         <div className="flex items-center gap-6">

@@ -2,8 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { Users, UserPlus, Shield, Star, Briefcase, User as UserIcon, X, Search, MoreVertical, Trash2, ArrowRight, Loader2, LogOut } from 'lucide-react';
+import {
+    Users, UserPlus, Shield, Star, Briefcase, User as UserIcon,
+    X, Search, MoreVertical, Trash2, ArrowRight, Loader2,
+    LogOut, History, FileText, Calendar, ExternalLink
+} from 'lucide-react';
 import { toast } from 'react-toastify';
+import { useTranslations } from 'next-intl';
 
 interface User {
     id: number;
@@ -18,7 +23,7 @@ interface AdminDashboardProps {
 }
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
-    const { token, logout } = useAuth();
+    const { token, logout, user } = useAuth();
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
@@ -32,6 +37,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
     const [submitting, setSubmitting] = useState(false);
     const [updatingUserId, setUpdatingUserId] = useState<number | null>(null);
     const [deletingUserId, setDeletingUserId] = useState<number | null>(null);
+
+    // History View State
+    const [selectedUserHistory, setSelectedUserHistory] = useState<any[]>([]);
+    const [showHistoryModal, setShowHistoryModal] = useState(false);
+    const [historyLoading, setHistoryLoading] = useState(false);
+    const [selectedUser, setSelectedUser] = useState<User | null>(null);
+
+    const t = useTranslations('Admin');
 
     useEffect(() => {
         fetchUsers();
@@ -102,6 +115,25 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
         }
     };
 
+    const fetchUserHistory = async (targetUser: User) => {
+        setSelectedUser(targetUser);
+        setShowHistoryModal(true);
+        setHistoryLoading(true);
+        try {
+            const resp = await fetch(`http://localhost:8000/admin/users/${targetUser.id}/history`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (resp.ok) {
+                const data = await resp.json();
+                setSelectedUserHistory(data);
+            }
+        } catch (err) {
+            toast.error('Failed to retrieve user archives');
+        } finally {
+            setHistoryLoading(false);
+        }
+    };
+
     const handleAddUser = async (e: React.FormEvent) => {
         e.preventDefault();
         setSubmitting(true);
@@ -123,7 +155,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
                 toast.success('User Synthesized Successfully');
                 setShowAddModal(false);
                 fetchUsers();
-                // Reset form
                 setNewEmail(''); setNewPass(''); setNewName('');
             } else {
                 const err = await resp.json();
@@ -151,17 +182,17 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
     );
 
     return (
-        <div className={onClose ? "fixed inset-0 z-[150] flex items-center justify-center p-6 sm:p-10" : "min-h-screen bg-slate-950 p-6 sm:p-10"}>
-            {onClose && <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-xl" onClick={onClose}></div>}
-
-            <div className={`bg-white dark:bg-slate-900 w-full max-w-6xl ${onClose ? 'h-[85vh]' : 'min-h-[90vh]'} rounded-[3rem] shadow-2xl relative z-10 flex flex-col overflow-hidden border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-500 mx-auto`}>
+        <div className="relative pt-32 pb-20 px-6 sm:px-10 min-h-screen bg-slate-950/10 flex flex-col items-center" suppressHydrationWarning>
+            <div className={`bg-white dark:bg-slate-900 w-full max-w-6xl min-h-[80vh] rounded-[3rem] shadow-2xl relative z-10 flex flex-col overflow-hidden border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-500 mx-auto`}>
                 {/* Header */}
                 <div className="p-10 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/50 dark:bg-slate-900/50">
                     <div>
                         <h2 className="text-4xl font-black tracking-tighter flex items-center gap-4">
                             <Shield className="w-10 h-10 text-brand-500" /> Command Cluster
                         </h2>
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.5em] mt-2">Neural Tier & Access Management</p>
+                        <div className="flex items-center gap-3 mt-2">
+                            <p className="text-[10px] font-black text-brand-500 uppercase tracking-[0.5em]">Neural Tier Management</p>
+                        </div>
                     </div>
                     <div className="flex items-center gap-4">
                         <button
@@ -169,20 +200,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
                             className="px-8 py-4 bg-brand-500 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl shadow-brand-500/20 hover:scale-[1.05] active:scale-95 transition-all flex items-center gap-3"
                         >
                             <UserPlus className="w-4 h-4" /> Synthesize User
-                        </button>
-                        <button
-                            onClick={() => {
-                                logout();
-                                if (onClose) onClose();
-                                toast.info("Logged out successfully");
-                            }}
-                            className="p-4 bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xl hover:shadow-brand-500/10 transition-all text-slate-400 hover:text-rose-500"
-                            title="Logout"
-                        >
-                            <LogOut className="w-6 h-6" />
-                        </button>
-                        <button onClick={onClose} className="p-4 bg-slate-100 dark:bg-slate-800 rounded-2xl hover:bg-slate-200 transition-all">
-                            <X className="w-6 h-6" />
                         </button>
                     </div>
                 </div>
@@ -262,76 +279,165 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
                                         <p className="text-[8px] font-black text-slate-400 uppercase tracking-tighter">Organization</p>
                                         <p className="text-[10px] font-bold text-slate-600 dark:text-slate-300">{user.company || 'Private Sector'}</p>
                                     </div>
-                                    <button
-                                        onClick={() => handleDeleteUser(user.id, user.email)}
-                                        disabled={deletingUserId === user.id}
-                                        className="p-3 bg-slate-50 dark:bg-slate-800 rounded-xl hover:bg-rose-500 hover:text-white transition-all disabled:opacity-50"
-                                    >
-                                        {deletingUserId === user.id ? (
-                                            <Loader2 className="w-4 h-4 animate-spin" />
-                                        ) : (
-                                            <Trash2 className="w-4 h-4" />
-                                        )}
-                                    </button>
+                                    <div className="flex items-center gap-2">
+                                        <button
+                                            onClick={() => fetchUserHistory(user)}
+                                            className="p-3 bg-brand-500/10 text-brand-500 rounded-xl hover:bg-brand-500 hover:text-white transition-all flex items-center gap-2 text-[10px] font-black uppercase tracking-widest"
+                                        >
+                                            <History className="w-4 h-4" /> {t('viewHistory')}
+                                        </button>
+                                        <button
+                                            onClick={() => handleDeleteUser(user.id, user.email)}
+                                            disabled={deletingUserId === user.id}
+                                            className="p-3 bg-slate-50 dark:bg-slate-800 rounded-xl hover:bg-rose-500 hover:text-white transition-all disabled:opacity-50"
+                                        >
+                                            {deletingUserId === user.id ? (
+                                                <Loader2 className="w-4 h-4 animate-spin" />
+                                            ) : (
+                                                <Trash2 className="w-4 h-4" />
+                                            )}
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         ))}
                     </div>
                 </div>
+            </div>
 
-                {/* Add User Modal Overlay */}
-                {showAddModal && (
-                    <div className="absolute inset-0 z-50 flex items-center justify-center p-6 bg-slate-950/40 backdrop-blur-md">
-                        <div className="bg-white dark:bg-slate-900 w-full max-w-md p-10 rounded-[3rem] shadow-2xl border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-300">
-                            <div className="text-center mb-10">
-                                <UserPlus className="w-12 h-12 text-brand-500 mx-auto mb-4" />
-                                <h3 className="text-3xl font-black tracking-tighter">Synthesize Identity</h3>
-                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">Manual Access Injection</p>
-                            </div>
-                            <form onSubmit={handleAddUser} className="space-y-4">
-                                <input
-                                    type="email" required placeholder="Neural ID (Email)"
-                                    className="w-full px-6 py-4 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl focus:ring-4 focus:ring-brand-500/10 outline-none transition-all font-bold text-sm"
-                                    value={newEmail} onChange={e => setNewEmail(e.target.value)}
-                                />
-                                <input
-                                    type="password" required placeholder="Access Code"
-                                    className="w-full px-6 py-4 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl focus:ring-4 focus:ring-brand-500/10 outline-none transition-all font-bold text-sm"
-                                    value={newPass} onChange={e => setNewPass(e.target.value)}
-                                />
-                                <input
-                                    type="text" placeholder="Full Name"
-                                    className="w-full px-6 py-4 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl focus:ring-4 focus:ring-brand-500/10 outline-none transition-all font-bold text-sm"
-                                    value={newName} onChange={e => setNewName(e.target.value)}
-                                />
-                                <select
-                                    className="w-full px-6 py-4 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl focus:ring-4 focus:ring-brand-500/10 outline-none transition-all font-bold text-sm"
-                                    value={newRole} onChange={e => setNewRole(e.target.value)}
+            {/* Add User Modal Overlay */}
+            {showAddModal && (
+                <div className="absolute inset-0 z-50 flex items-center justify-center p-6 bg-slate-950/40 backdrop-blur-md">
+                    <div className="bg-white dark:bg-slate-900 w-full max-w-md p-10 rounded-[3rem] shadow-2xl border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-300">
+                        <div className="text-center mb-10">
+                            <UserPlus className="w-12 h-12 text-brand-500 mx-auto mb-4" />
+                            <h3 className="text-3xl font-black tracking-tighter">Synthesize Identity</h3>
+                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">Manual Access Injection</p>
+                        </div>
+                        <form onSubmit={handleAddUser} className="space-y-4">
+                            <input
+                                type="email" required placeholder="Neural ID (Email)"
+                                className="w-full px-6 py-4 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl focus:ring-4 focus:ring-brand-500/10 outline-none transition-all font-bold text-sm"
+                                value={newEmail} onChange={e => setNewEmail(e.target.value)}
+                            />
+                            <input
+                                type="password" required placeholder="Access Code"
+                                className="w-full px-6 py-4 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl focus:ring-4 focus:ring-brand-500/10 outline-none transition-all font-bold text-sm"
+                                value={newPass} onChange={e => setNewPass(e.target.value)}
+                            />
+                            <input
+                                type="text" placeholder="Full Name"
+                                className="w-full px-6 py-4 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl focus:ring-4 focus:ring-brand-500/10 outline-none transition-all font-bold text-sm"
+                                value={newName} onChange={e => setNewName(e.target.value)}
+                            />
+                            <select
+                                className="w-full px-6 py-4 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl focus:ring-4 focus:ring-brand-500/10 outline-none transition-all font-bold text-sm"
+                                value={newRole} onChange={e => setNewRole(e.target.value)}
+                            >
+                                <option value="recruiter">Recruiter</option>
+                                <option value="vip">VIP (High Bandwidth)</option>
+                                <option value="applier">Candidate</option>
+                                <option value="admin">Administrator</option>
+                            </select>
+                            <div className="flex gap-4 pt-6">
+                                <button
+                                    type="button" onClick={() => setShowAddModal(false)}
+                                    className="flex-1 py-4 bg-slate-100 dark:bg-slate-800 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all"
                                 >
-                                    <option value="recruiter">Recruiter</option>
-                                    <option value="vip">VIP (High Bandwidth)</option>
-                                    <option value="applier">Candidate</option>
-                                    <option value="admin">Administrator</option>
-                                </select>
-                                <div className="flex gap-4 pt-6">
-                                    <button
-                                        type="button" onClick={() => setShowAddModal(false)}
-                                        className="flex-1 py-4 bg-slate-100 dark:bg-slate-800 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all"
-                                    >
-                                        Abort
-                                    </button>
-                                    <button
-                                        type="submit" disabled={submitting}
-                                        className="flex-[2] py-4 bg-brand-500 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl shadow-brand-500/20 transition-all flex items-center justify-center gap-2"
-                                    >
-                                        {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <>Complete Injection <ArrowRight className="w-4 h-4" /></>}
-                                    </button>
+                                    Abort
+                                </button>
+                                <button
+                                    type="submit" disabled={submitting}
+                                    className="flex-[2] py-4 bg-brand-500 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl shadow-brand-500/20 transition-all flex items-center justify-center gap-2"
+                                >
+                                    {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <>Complete Injection <ArrowRight className="w-4 h-4" /></>}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* History Modal */}
+            {showHistoryModal && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-300">
+                    <div className="bg-white dark:bg-slate-900 w-full max-w-4xl max-h-[90vh] rounded-[3rem] shadow-2xl relative z-10 flex flex-col overflow-hidden border border-slate-100 dark:border-slate-800">
+                        {/* Modal Header */}
+                        <div className="p-8 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/50 dark:bg-slate-900/50">
+                            <div>
+                                <h2 className="text-2xl font-black tracking-tighter flex items-center gap-4">
+                                    <FileText className="w-8 h-8 text-brand-500" /> {t('userVault')}
+                                </h2>
+                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.5em] mt-1">
+                                    {selectedUser?.email} • {t('archiveSubtitle')}
+                                </p>
+                            </div>
+                            <button
+                                onClick={() => setShowHistoryModal(false)}
+                                className="p-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 hover:bg-slate-50 transition-colors"
+                            >
+                                <X className="w-5 h-5 text-slate-500" />
+                            </button>
+                        </div>
+
+                        {/* Modal Content */}
+                        <div className="flex-1 overflow-y-auto p-8 space-y-4">
+                            {historyLoading ? (
+                                <div className="py-20 flex flex-col items-center justify-center space-y-4">
+                                    <Loader2 className="w-10 h-10 text-brand-500 animate-spin" />
+                                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest text-center animate-pulse">Scanning Archive...</p>
                                 </div>
-                            </form>
+                            ) : selectedUserHistory.length === 0 ? (
+                                <div className="py-20 text-center space-y-4">
+                                    <div className="w-20 h-20 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto opacity-50">
+                                        <History className="w-10 h-10 text-slate-400" />
+                                    </div>
+                                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">{t('noHistory')}</p>
+                                </div>
+                            ) : (
+                                <div className="grid gap-4">
+                                    {selectedUserHistory.map((item) => (
+                                        <div key={item.id} className="group bg-slate-50 dark:bg-slate-950 p-6 rounded-3xl border border-slate-100 dark:border-slate-800 hover:border-brand-500/30 transition-all flex flex-col md:flex-row md:items-center justify-between gap-6">
+                                            <div className="flex items-center gap-6">
+                                                <div className="w-14 h-14 bg-white dark:bg-slate-900 rounded-2xl flex items-center justify-center border border-slate-100 dark:border-slate-800 group-hover:bg-brand-500 group-hover:text-white transition-all">
+                                                    <FileText className="w-6 h-6" />
+                                                </div>
+                                                <div className="space-y-1">
+                                                    <h4 className="font-black text-slate-900 dark:text-white">{item.full_name || item.filename}</h4>
+                                                    <div className="flex items-center gap-4 text-[10px] font-bold text-slate-400 uppercase tracking-tighter">
+                                                        <span className="flex items-center gap-1.5"><Calendar className="w-3 h-3" /> {new Date(item.timestamp).toLocaleDateString()}</span>
+                                                        {item.score !== null && (
+                                                            <span className="flex items-center gap-1.5 px-2 py-0.5 bg-brand-500/10 text-brand-500 rounded-full">
+                                                                Neural Score: {item.score}%
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center gap-3">
+                                                <div className="text-right hidden md:block">
+                                                    <p className="text-[8px] font-black text-slate-400 uppercase tracking-tighter line-clamp-1">{item.seniority_level || 'General Profile'}</p>
+                                                    <p className="text-[10px] font-bold text-slate-600 dark:text-slate-300">{item.years_of_experience ? `${item.years_of_experience}y Exp` : 'No Exp Listed'}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Modal Footer */}
+                        <div className="p-8 border-t border-slate-100 dark:border-slate-800 bg-slate-50/30 dark:bg-slate-900/10 flex justify-end">
+                            <button
+                                onClick={() => setShowHistoryModal(false)}
+                                className="px-10 py-4 bg-slate-900 dark:bg-white dark:text-slate-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest hover:scale-95 transition-all"
+                            >
+                                {t('backToCluster')}
+                            </button>
                         </div>
                     </div>
-                )}
-            </div>
+                </div>
+            )}
         </div>
     );
 };

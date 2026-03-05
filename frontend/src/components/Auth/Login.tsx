@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { Mail, Lock, Loader2, ArrowRight, ShieldCheck, Cpu } from 'lucide-react';
 import { toast } from 'react-toastify';
+import { Button } from '@/components/Button';
+import { useTranslations, useLocale } from 'next-intl';
 
 interface LoginProps {
     onSuccess: () => void;
@@ -11,6 +13,8 @@ interface LoginProps {
 }
 
 export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToRegister }) => {
+    const t = useTranslations('Auth.login');
+    const locale = useLocale();
     const { login: authLogin } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -34,15 +38,15 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToRegister }) =
 
             if (resp.ok) {
                 const data = await resp.json();
-                authLogin(data.access_token, data.role, email, data.full_name);
-                toast.success('Signed in successfully');
+                authLogin(data.access_token, data.role, email, data.full_name, data.scans_remaining);
+                toast.success(t('success'));
                 onSuccess();
             } else {
                 const err = await resp.json();
-                toast.error(err.detail || 'Unable to sign in');
+                toast.error(err.detail || t('error'));
             }
         } catch (err) {
-            toast.error('Unable to reach the server');
+            toast.error(t('serverError'));
         } finally {
             setLoading(false);
         }
@@ -53,7 +57,7 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToRegister }) =
         try {
             const params = new URLSearchParams({
                 client_id: "996038162784-udrp3areaeda8o342cm8cij83uto0uu6.apps.googleusercontent.com",
-                redirect_uri: "http://localhost:3000",
+                redirect_uri: `http://localhost:3000/${locale}`,
                 response_type: "code",
                 scope: "openid email profile",
                 access_type: "offline",
@@ -61,7 +65,7 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToRegister }) =
             });
             window.location.href = `https://accounts.google.com/o/oauth2/auth?${params.toString()}`;
         } catch {
-            toast.error("Unable to initiate Google sign-in");
+            toast.error(t('googleError'));
             setGoogleLoading(false);
         }
     };
@@ -79,8 +83,8 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToRegister }) =
                             <Cpu className="w-10 h-10 text-brand-500" />
                         </div>
                     </div>
-                    <h2 className="text-5xl font-black tracking-tighter">Welcome back</h2>
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.5em]">Sign in to your account</p>
+                    <h2 className="text-5xl font-black tracking-tighter">{t('title')}</h2>
+                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.5em]">{t('subtitle')}</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -90,7 +94,7 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToRegister }) =
                             <input
                                 type="text"
                                 required
-                                placeholder="Email"
+                                placeholder={t('email')}
                                 className="w-full pl-14 pr-6 py-5 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-[1.5rem] focus:ring-4 focus:ring-brand-500/10 outline-none transition-all font-bold text-sm"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
@@ -101,7 +105,7 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToRegister }) =
                             <input
                                 type="password"
                                 required
-                                placeholder="Password"
+                                placeholder={t('password')}
                                 className="w-full pl-14 pr-6 py-5 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-[1.5rem] focus:ring-4 focus:ring-brand-500/10 outline-none transition-all font-bold text-sm"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
@@ -109,56 +113,54 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToRegister }) =
                         </div>
                     </div>
 
-                    <div className="space-y-3">
-                        <button
-                            type="submit"
-                            disabled={loading || googleLoading}
-                            className="w-full py-5 bg-brand-600 hover:bg-brand-700 text-white rounded-[1.5rem] font-black text-[10px] uppercase tracking-[0.3em] shadow-2xl shadow-brand-500/30 active:scale-[0.98] transition-all flex items-center justify-center gap-4 disabled:opacity-50 group"
+                    <div className="space-y-4">
+                        <Button
+                            type="button"
+                            onClick={handleGoogleLogin}
+                            isLoading={googleLoading}
+                            disabled={loading}
+                            variant="white"
+                            size="lg"
+                            className="w-full dark:bg-slate-800 dark:border-slate-700 dark:text-white"
                         >
-                            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (
-                                <>
-                                    Establish Neural Link <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                                </>
+                            {!googleLoading && (
+                                <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-slate-50 mr-3 border border-slate-100">
+                                    <span className="text-base font-black text-brand-600">G</span>
+                                </span>
                             )}
-                        </button>
+                            {t('google')}
+                        </Button>
 
-                        <div className="flex items-center gap-3 text-[10px] text-slate-400 font-black uppercase tracking-[0.3em]">
+                        <div className="flex items-center gap-3 text-[10px] text-slate-400 font-black uppercase tracking-[0.3em] py-2">
                             <span className="h-px flex-1 bg-slate-200 dark:bg-slate-800" />
-                            <span>Or continue with</span>
+                            <span>{t('flow')}</span>
                             <span className="h-px flex-1 bg-slate-200 dark:bg-slate-800" />
                         </div>
 
-                        <button
-                            type="button"
-                            onClick={handleGoogleLogin}
-                            disabled={loading || googleLoading}
-                            className="w-full py-4 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-100 rounded-[1.5rem] border border-slate-200 dark:border-slate-700 font-black text-[10px] uppercase tracking-[0.3em] active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+                        <Button
+                            type="submit"
+                            isLoading={loading}
+                            disabled={googleLoading}
+                            variant="primary"
+                            size="lg"
+                            className="w-full group"
                         >
-                            {googleLoading ? (
-                                <Loader2 className="w-4 h-4 animate-spin" />
-                            ) : (
-                                <>
-                                    <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-white">
-                                        <span className="text-base font-black text-[#4285F4]">G</span>
-                                    </span>
-                                    Sign in with Google
-                                </>
-                            )}
-                        </button>
+                            {t('submit')} <ArrowRight className={`ml-3 w-5 h-5 group-hover:translate-x-1 transition-transform ${locale === 'ar' ? 'rotate-180 group-hover:-translate-x-1' : ''}`} />
+                        </Button>
                     </div>
                 </form>
 
                 <div className="pt-6 border-t border-slate-100 dark:border-slate-800">
                     <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
                         <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest text-center sm:text-left">
-                            New here?{' '}
+                            {t('newHere')}{' '}
                             <button onClick={onSwitchToRegister} className="text-brand-500 hover:text-brand-400 transition-colors">
-                                Create an account
+                                {t('createAccount')}
                             </button>
                         </p>
                         <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 dark:bg-slate-800/50 rounded-full border border-slate-100 dark:border-slate-800">
                             <ShieldCheck className="w-3 h-3 text-emerald-500" />
-                            <span className="text-[8px] font-black text-slate-400 uppercase tracking-tighter">Biometric Encrypted</span>
+                            <span className="text-[8px] font-black text-slate-400 uppercase tracking-tighter">{t('encrypted')}</span>
                         </div>
                     </div>
                 </div>

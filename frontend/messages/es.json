@@ -1,0 +1,244 @@
+{
+    "Navbar": {
+        "brand": "CVScore PRO",
+        "intel": "Inteligencia Neural",
+        "links": {
+            "services": "Servicios",
+            "info": "Info",
+            "contact": "Contacto"
+        },
+        "profile": {
+            "dashboard": "Panel de Control",
+            "history": "Bóveda Neural",
+            "logout": "Cerrar Sesión"
+        },
+        "auth": {
+            "login": "Iniciar Sesión",
+            "getStarted": "Comenzar"
+        }
+    },
+    "Home": {
+        "hero": {
+            "badge": "Preselecciona mejores candidatos, más rápido",
+            "titlePart1": "Estructurado, justo",
+            "titlePart2": "Neural",
+            "titlePart3": "revisión",
+            "description": "CVScore te ayuda a convertir una pila de CVs en una lista corta clara y defendible, con puntuación consistente, criterios transparentes y notas listas para entrevistas para cada candidato.",
+            "cta": "Empieza Gratis"
+        },
+        "engine": {
+            "title": "Motor Neural",
+            "subtitle": "Puntuación de Alineación Instantánea",
+            "balance": "Saldo de Prueba",
+            "scans": "ANÁLISIS",
+            "locked": "Núcleo Neural Bloqueado",
+            "lockedDesc": "Se requiere verificación de identidad para inicializar el procesamiento neural y los créditos de prueba.",
+            "unlockBtn": "Regístrate para Desbloquear",
+            "unlockSub": "3 Análisis Neurales Gratis Incluidos",
+            "dropCV": "Suelta el CV para procesar",
+            "active": "Enlace Neural Activo...",
+            "awaiting": "Esperando envío de artefacto"
+        },
+        "dossier": {
+            "title": "Expediente Neural",
+            "anonymous": "Candidato Anónimo",
+            "exp": "Experiencia",
+            "observation": "Observación",
+            "newAnalysis": "Nuevo Análisis",
+            "universalDashboard": "Panel Universal"
+        },
+        "history": {
+            "title": "Busca tu historial",
+            "subtitle": "Reabre evaluaciones anteriores y gestiona tus candidatos preseleccionados",
+            "btn": "Abrir Panel"
+        },
+        "howItWorks": {
+            "badge": "Cómo funciona",
+            "title": "De CVs en bruto a una lista corta de confianza",
+            "description": "Sube CVs en PDF, ajusta lo que significa 'excelente' para este puesto y deja que el motor extraiga datos estructurados, puntúe candidatos y genere listas cortas listas para entrevistas en segundos.",
+            "step1": {
+                "badge": "01 • Ingerir",
+                "title": "Sube tus CVs",
+                "desc": "Arrastra y suelta uno o varios CVs en PDF. CVScore normaliza los diseños, ejecuta OCR si es necesario y convierte cada perfil a un formato interno coherente."
+            },
+            "step2": {
+                "badge": "02 • Alinear",
+                "title": "Define qué significa 'excelente'",
+                "desc": "Pega tu descripción del puesto, elige un perfil preestablecido y ajusta los pesos de puntuación en impacto, profundidad, comunicación, estabilidad y más."
+            },
+            "step3": {
+                "badge": "03 • Decidir",
+                "title": "Clasifica, compara e informa",
+                "desc": "Visualiza al instante los candidatos clasificados, compara perfiles lado a lado y genera guías de entrevista estructuradas que mantienen la coherencia en cada conversación."
+            }
+        }
+    },
+    "Footer": {
+        "description": "Evaluador de artefactos neurales de alta precisión para la próxima generación de contratación. Justo, rápido y basado en datos.",
+        "platform": "Plataforma",
+        "launchApp": "Lanzar App",
+        "neuralServices": "Servicios Neurales",
+        "identityVault": "Bóveda de Identidad",
+        "securitySpecs": "Especificaciones de Seguridad",
+        "governance": "Gobernanza",
+        "privacyProtocol": "Protocolo de Privacidad",
+        "tos": "Términos de Servicio",
+        "cookiePolicy": "Política de Cookies",
+        "architectInfo": "Info del Arquitecto",
+        "copyright": "© 2026 CVScore Evolution • Todos los sistemas operativos",
+        "sslSecure": "Seguro SSL",
+        "aiVerified": "Verificado por IA"
+    },
+    "AboutDeveloper": {
+        "badge": "Arquitecto y Visionario",
+        "title": "Creado para el Reclutador Pragmático",
+        "description": "Soy un arquitecto de software apasionado por conectar la IA de vanguardia con la productividad cotidiana. CVScore PRO nació de la frustración de la revisión manual de CVs — diseñado para ser rápido, justo y defendible.",
+        "contact": "Contacto",
+        "philosophyTitle": "Filosofía Central",
+        "philosophy": "\"El software debe reducir la carga cognitiva, no aumentarla. Si no resuelve un problema en 10 segundos, no es relevante.\"",
+        "stack": "Stack Tecnológico",
+        "status": "Estado",
+        "statusText": "Disponible para Consultoría SaaS"
+    },
+    "Services": {
+        "title": "Carrera y Reclutamiento",
+        "subtitle": "Servicios",
+        "description": "Combinamos herramientas de IA con experiencia humana real — ya sea que busques empleo o estés construyendo un equipo.",
+        "forCandidates": {
+            "title": "Para Buscadores de Empleo",
+            "subtitle": "Apoyo de Carrera Personalizado",
+            "items": {
+                "i1": "Redacción Profesional de CV y Marca Personal",
+                "i2": "Estrategia de Búsqueda de Empleo con IA",
+                "i3": "Práctica de Entrevistas y Sesiones de Coaching",
+                "i4": "Apoyo Individual para Solicitudes de Empleo"
+            },
+            "cta": "Reserva una Llamada Gratis"
+        },
+        "forCompanies": {
+            "title": "Para Empresas",
+            "subtitle": "Soluciones Inteligentes de Contratación",
+            "items": {
+                "i1": "Reclutamiento Ejecutivo y de Liderazgo de Ciclo Completo",
+                "i2": "Cribado con IA Integrado en tu Flujo de Trabajo",
+                "i3": "Evaluación de Habilidades Técnicas para Equipos Dev",
+                "i4": "Procesamiento Masivo de CVs para Roles de Alto Volumen"
+            },
+            "cta": "Obtener Presupuesto Gratis"
+        },
+        "contact": {
+            "title": "Ponte en Contacto",
+            "subtitle": "Envíanos un mensaje — respondemos en 1 día hábil",
+            "namePlaceholder": "Tu Nombre Completo",
+            "emailPlaceholder": "Tu Email Profesional o Personal",
+            "helpOptions": {
+                "label": "¿Cómo podemos ayudarte?",
+                "cv": "Redacción o Reescritura de CV",
+                "corporate": "Reclutamiento Empresarial o Corporativo",
+                "ai": "Flujo de Contratación IA Personalizado",
+                "other": "Otra Cosa"
+            },
+            "messagePlaceholder": "Cuéntanos sobre tu objetivo o proyecto. ¡Cualquier detalle ayuda!",
+            "submit": "Enviar Mi Mensaje"
+        }
+    },
+    "Auth": {
+        "login": {
+            "title": "Bienvenido de vuelta",
+            "subtitle": "Inicia sesión en tu cuenta",
+            "email": "Email",
+            "password": "Contraseña",
+            "google": "Iniciar sesión con Google",
+            "flow": "Flujo de Identificación",
+            "submit": "Establecer Enlace Neural",
+            "newHere": "¿Nuevo por aquí?",
+            "createAccount": "Crear una cuenta",
+            "encrypted": "Cifrado Biométrico",
+            "footer": "Sincronización de Sesión Neural • CVScore PRO v2.5",
+            "success": "Sesión iniciada correctamente",
+            "error": "No se pudo iniciar sesión",
+            "serverError": "No se pudo contactar con el servidor",
+            "googleError": "No se pudo iniciar el acceso con Google"
+        },
+        "register": {
+            "archetype": {
+                "title": "Elige el tipo de cuenta",
+                "subtitle": "Selecciona tu rol profesional",
+                "recruiter": {
+                    "label": "Reclutador",
+                    "desc": "Revisa y clasifica candidatos para puestos abiertos"
+                },
+                "candidate": {
+                    "label": "Candidato",
+                    "desc": "Ve cómo puntúa tu CV para un puesto"
+                }
+            },
+            "credentials": {
+                "title": "Detalles de la cuenta",
+                "subtitle": "Crea tus credenciales",
+                "email": "Email",
+                "password": "Contraseña"
+            },
+            "profile": {
+                "title": "Perfil profesional",
+                "subtitle": "Ayúdanos a entender tu contexto",
+                "name": "Nombre Legal Completo",
+                "company": "Organización",
+                "industry": "Sector Industrial",
+                "phone": "Identificador Telefónico",
+                "submit": "Forjar Identidad"
+            },
+            "google": "Registrarse con Google",
+            "flow": "Flujo de Síntesis de Identidad",
+            "alreadyAccount": "¿Ya tienes una cuenta?",
+            "signIn": "Iniciar sesión",
+            "back": "Volver",
+            "continue": "Continuar",
+            "footer": "Modo de Síntesis de Identidad • CVScore PRO v2.5",
+            "req": "Credenciales Requeridas",
+            "success": "Identidad Sintetizada con Éxito",
+            "error": "Síntesis Fallida",
+            "offline": "Forja de Identidad Sin Conexión",
+            "googleError": "No se pudo iniciar el registro con Google"
+        }
+    },
+    "Admin": {
+        "viewHistory": "Ver Historial",
+        "userVault": "Bóveda Neural del Usuario",
+        "archiveSubtitle": "Artefactos de desempeño histórico para esta identidad",
+        "noHistory": "No se encontraron artefactos históricos para esta identidad",
+        "backToCluster": "Volver al Clúster de Control"
+    },
+    "History": {
+        "title": "Archivo Neural",
+        "subtitle": "Registro histórico completo de identidades procesadas y puntajes de CV",
+        "table": {
+            "candidate": "Candidato / Archivo",
+            "score": "Puntaje Neural",
+            "seniority": "Seniority",
+            "experience": "Exp",
+            "date": "Cronología",
+            "actions": "Acciones"
+        },
+        "searchPlaceholder": "Filtrar archivos por nombre de candidato o detalles del perfil...",
+        "noResults": "No hay artefactos históricos que coincidan con su búsqueda",
+        "viewDetails": "Ver Detalles",
+        "reload": "Recargar Análisis",
+        "delete": "Eliminar Archivo",
+        "confirmDelete": "¿Estás seguro de que deseas purgar este artefacto de la red neuronal? Esta acción es irreversible.",
+        "purged": "Archivo purgado con éxito",
+        "filters": {
+            "score": "Puntaje Mín",
+            "seniority": "Nivel de Seniority",
+            "date": "Rango de Tiempo",
+            "metrics": {
+                "impact": "Impacto",
+                "tech": "Profundidad Técnica",
+                "soft": "Habilidades Blandas",
+                "growth": "Potencial de Crecimiento",
+                "stability": "Estabilidad",
+                "readability": "Legibilidad"
+            }
+        }
+    }
+}

@@ -1,0 +1,205 @@
+{
+    "Navbar": {
+        "brand": "CVScore PRO",
+        "intel": "Intelligence Neurale",
+        "links": {
+            "services": "Services",
+            "info": "Info",
+            "contact": "Contact"
+        },
+        "profile": {
+            "dashboard": "Tableau de Bord",
+            "history": "Voûte Neurale",
+            "logout": "Terminer la Session"
+        },
+        "auth": {
+            "login": "Connexion",
+            "getStarted": "Commencer"
+        }
+    },
+    "Home": {
+        "hero": {
+            "badge": "Sélectionnez de meilleures recrues, plus rapidement",
+            "titlePart1": "Structuré, équitable",
+            "titlePart2": "Neural",
+            "titlePart3": "révision",
+            "description": "CVScore vous aide à transformer une pile de CV en une liste restreinte claire et défendable - avec une notation cohérente, des critères transparents et des notes prêtes pour l'entretien pour chaque candidat.",
+            "cta": "Commencer Gratuitement"
+        },
+        "engine": {
+            "title": "Moteur Neural",
+            "subtitle": "Score d'Alignement Instantané",
+            "balance": "Solde d'Essai",
+            "scans": "SCANS",
+            "locked": "Noyau Neural Verrouillé",
+            "lockedDesc": "Vérification d'identité requise pour initialiser le traitement neural et les crédits d'essai.",
+            "unlockBtn": "S'inscrire pour Déverrouiller",
+            "unlockSub": "3 Scans Neuraux Gratuits Inclus",
+            "dropCV": "Déposer le CV pour traiter",
+            "active": "Lien Neural Actif...",
+            "awaiting": "En attente de soumission d'artifact"
+        },
+        "dossier": {
+            "title": "Dossier Neural",
+            "anonymous": "Candidat anonyme",
+            "exp": "Expérience",
+            "observation": "Observation",
+            "newAnalysis": "Nouvelle Analyse",
+            "universalDashboard": "Tableau de bord Universel"
+        },
+        "history": {
+            "title": "Recherchez dans votre historique",
+            "subtitle": "Rouvrez les évaluations précédentes et gérez vos candidats sélectionnés",
+            "btn": "Ouvrir le Tableau de Bord"
+        },
+        "howItWorks": {
+            "badge": "Comment ça marche",
+            "title": "Des CV bruts à une liste restreinte de confiance",
+            "description": "Téléchargez des CV au format PDF, définissez ce que signifie « excellent » pour ce poste et laissez le moteur extraire des données structurées, noter les candidats et faire émerger des listes restreintes prêtes pour l'entretien en quelques secondes.",
+            "step1": {
+                "badge": "01 • Ingérer",
+                "title": "Téléchargez vos CV",
+                "desc": "Glissez-déposez un ou plusieurs CV au format PDF. CVScore normalise les mises en page, lance l'OCR si nécessaire et convertit chaque profil dans un format interne cohérent."
+            },
+            "step2": {
+                "badge": "02 • Aligner",
+                "title": "Définissez ce que « excellent » signifie",
+                "desc": "Collez votre description de poste, choisissez un profil prédéfini et réglez les coefficients de pondération sur l'impact, la profondeur, la communication, la stabilité, et plus encore."
+            },
+            "step3": {
+                "badge": "03 • Décider",
+                "title": "Classez, comparez et informez",
+                "desc": "Visualisez instantanément les candidats classés, comparez les profils côte à côte et générez des guides d'entretien structurés qui assurent la cohérence de chaque conversation."
+            }
+        }
+    },
+    "Footer": {
+        "description": "Évaluateur d'artéfacts neuraux de haute précision pour la prochaine génération de recrutement. Équitable, rapide et guidé par les données.",
+        "platform": "Plateforme",
+        "launchApp": "Lancer l'App",
+        "neuralServices": "Services Neuraux",
+        "identityVault": "Voûte d'Identité",
+        "securitySpecs": "Specs de Sécurité",
+        "governance": "Gouvernance",
+        "privacyProtocol": "Protocole de Confidentialité",
+        "tos": "Conditions d'Utilisation",
+        "cookiePolicy": "Politique de Cookies",
+        "architectInfo": "Infos Architecte",
+        "copyright": "© 2026 Évolution CVScore • Tous les systèmes sont opérationnels",
+        "sslSecure": "Sécurisé SSL",
+        "aiVerified": "Vérifié par IA"
+    },
+    "AboutDeveloper": {
+        "badge": "Architecte & Visionnaire",
+        "title": "Conçu pour le Recruteur Pragmatique",
+        "description": "Je suis un architecte logiciel passionné par le rapprochement entre l'IA de pointe et la productivité quotidienne. CVScore PRO est né de la frustration du tri manuel des CV – conçu pour être rapide, équitable et justifiable.",
+        "contact": "Contact",
+        "philosophyTitle": "Philosophie Centrale",
+        "philosophy": "\"Le logiciel doit réduire la charge cognitive, pas l'augmenter. S'il ne résout pas un problème en 10 secondes, il n'est pas pertinent.\"",
+        "stack": "Technologies",
+        "status": "Statut",
+        "statusText": "Disponible pour du Conseil SaaS"
+    },
+    "Services": {
+        "title": "Carrière & Recrutement",
+        "subtitle": "Services",
+        "description": "Nous combinons des outils d'IA avec une expertise humaine réelle — que vous recherchiez un emploi ou que vous construisiez une équipe.",
+        "forCandidates": {
+            "title": "Pour les Chercheurs d'Emploi",
+            "subtitle": "Soutien de Carrière Personnalisé",
+            "items": {
+                "i1": "Rédaction de CV Professionnel & Branding Personnel",
+                "i2": "Stratégie de Recherche d'Emploi Propulsée par l'IA",
+                "i3": "Pratique d'Entretien & Sessions de Coaching",
+                "i4": "Soutien Individuel pour les Candidatures"
+            },
+            "cta": "Réserver un Appel Gratuit"
+        },
+        "forCompanies": {
+            "title": "Pour les Entreprises",
+            "subtitle": "Solutions de Recrutement Intelligentes",
+            "items": {
+                "i1": "Recrutement Exécutif & Leadership Cycle Complet",
+                "i2": "Tri par IA Intégré à Votre Flux de Travail",
+                "i3": "Évaluation des Compétences Techniques pour les Équipes Dev",
+                "i4": "Traitement de CV en Masse pour les Rôles à Haut Volume"
+            },
+            "cta": "Obtenir un Devis Gratuit"
+        },
+        "contact": {
+            "title": "Contactez-nous",
+            "subtitle": "Envoyez-nous un message — nous répondons sous 1 jour ouvré",
+            "namePlaceholder": "Votre Nom Complet",
+            "emailPlaceholder": "Votre Email Professionnel ou Personnel",
+            "helpOptions": {
+                "label": "Comment pouvons-nous vous aider ?",
+                "cv": "Rédaction ou Réécriture de CV",
+                "corporate": "Recrutement d'Entreprise ou Corporatif",
+                "ai": "Flux de Recrutement IA Personnalisé",
+                "other": "Autre Chose"
+            },
+            "messagePlaceholder": "Parlez-nous de votre objectif ou projet. Tout détail est utile !",
+            "submit": "Envoyer Mon Message"
+        }
+    },
+    "Auth": {
+        "login": {
+            "title": "Bon retour",
+            "subtitle": "Connectez-vous à votre compte",
+            "email": "Email",
+            "password": "Mot de passe",
+            "google": "Se connecter avec Google",
+            "flow": "Flux d'Identification",
+            "submit": "Établir le Lien Neural",
+            "newHere": "Nouveau ici ?",
+            "createAccount": "Créer un compte",
+            "encrypted": "Chiffrement Biométrique",
+            "footer": "Synchronisation de Session Neurale • CVScore PRO v2.5",
+            "success": "Connexion réussie",
+            "error": "Impossible de se connecter",
+            "serverError": "Impossible de joindre le serveur",
+            "googleError": "Impossible d'initier la connexion Google"
+        },
+        "register": {
+            "archetype": {
+                "title": "Choisir le type de compte",
+                "subtitle": "Sélectionnez votre rôle professionnel",
+                "recruiter": {
+                    "label": "Recruteur",
+                    "desc": "Examinez et classez les candidats pour les postes ouverts"
+                },
+                "candidate": {
+                    "label": "Candidat",
+                    "desc": "Voyez comment votre CV est noté pour un poste"
+                }
+            },
+            "credentials": {
+                "title": "Détails du compte",
+                "subtitle": "Créez votre identifiant",
+                "email": "Email",
+                "password": "Mot de passe"
+            },
+            "profile": {
+                "title": "Profil professionnel",
+                "subtitle": "Aidez-nous à comprendre votre contexte",
+                "name": "Nom Légal Complet",
+                "company": "Organisation",
+                "industry": "Secteur Industriel",
+                "phone": "Identifiant Téléphonique",
+                "submit": "Forger l'Identité"
+            },
+            "google": "S'inscrire avec Google",
+            "flow": "Flux de Synthèse d'Identité",
+            "alreadyAccount": "Vous avez déjà un compte ?",
+            "signIn": "Se connecter",
+            "back": "Retour",
+            "continue": "Continuer",
+            "footer": "Mode Synthèse d'Identité • CVScore PRO v2.5",
+            "req": "Identifiants Requis",
+            "success": "Identité Synthétisée avec Succès",
+            "error": "Échec de la Synthèse",
+            "offline": "Forge d'Identité Hors Ligne",
+            "googleError": "Impossible d'initier l'inscription Google"
+        }
+    }
+}

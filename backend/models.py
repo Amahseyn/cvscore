@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, ForeignKey, DateTime, JSON
+from sqlalchemy import Column, Integer, String, Text, ForeignKey, DateTime, JSON, Float
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from datetime import datetime
@@ -16,6 +16,7 @@ class User(Base):
     company = Column(String, nullable=True)
     industry = Column(String, nullable=True)
     phone_number = Column(String, nullable=True)
+    scans_remaining = Column(Integer, default=3)
     created_at = Column(DateTime, default=datetime.utcnow)
     
     cv_history = relationship("CVHistory", back_populates="owner")
@@ -40,6 +41,7 @@ class CVHistory(Base):
     keywords = Column(Text, nullable=True) # Stored as comma-separated string
     score = Column(Integer, nullable=True)
     additional_notes = Column(Text, nullable=True)
+    ai_content_score = Column(Float, nullable=True)
     
     timestamp = Column(DateTime, default=datetime.utcnow)
     

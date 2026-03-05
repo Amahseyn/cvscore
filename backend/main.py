@@ -23,7 +23,11 @@ from fastapi.responses import StreamingResponse
 
 # Internal modules
 from .utils_ai import extract_structured_data, score_cv, generate_interview
-from .schemas import CVResult, ExtractionResponse, ExtractedData, AIScore, InterviewScript, InterviewRequest
+from .schemas import (
+    CVResult, ExtractionResponse, ExtractedData, AIScore, 
+    InterviewScript, InterviewRequest, UserCreate, UserOut, 
+    AdminUserAdd, AdminUserUpdateRole, HistoryOut
+)
 from . import models, utils_auth
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
@@ -31,7 +35,7 @@ import requests
 from fastapi import Depends, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import jwt
-from .schemas import UserCreate, UserOut, AdminUserAdd, AdminUserUpdateRole
+# Consolidating imports above
 
 # Configure logging with a more professional format
 logging.basicConfig(
@@ -321,6 +325,14 @@ async def admin_delete_user(
     db.delete(user)
     db.commit()
     return {"message": f"User {user.email} deleted"}
+@app.get("/admin/users/{user_id}/history")
+async def get_user_history_admin(
+    user_id: int,
+    admin: models.User = Depends(check_role(["admin"])),
+    db: Session = Depends(get_db)
+):
+    history = db.query(models.CVHistory).filter(models.CVHistory.user_id == user_id).all()
+    return history
 
 @app.post("/auth/token")
 async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
@@ -332,7 +344,13 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = 
             headers={"WWW-Authenticate": "Bearer"},
         )
     access_token = utils_auth.create_access_token(data={"sub": user.email, "role": user.role})
-    return {"access_token": access_token, "token_type": "bearer", "role": user.role, "full_name": user.full_name}
+    return {
+        "access_token": access_token, 
+        "token_type": "bearer", 
+        "role": user.role, 
+        "full_name": user.full_name,
+        "scans_remaining": user.scans_remaining
+    }
 
 
 @app.get("/auth/google")
@@ -446,6 +464,7 @@ async def google_auth_callback(
         "role": user.role,
         "email": user.email,
         "full_name": user.full_name,
+        "scans_remaining": user.scans_remaining
     }
 
 @app.get("/auth/me")
@@ -469,14 +488,17 @@ async def process_cvs(
     and granular AI analysis.
     """
     # QUOTA ENFORCEMENT
-    user_role = current_user.role if current_user else None
-    quota = ROLE_QUOTAS.get(user_role, 1)
-    
-    if len(files) > quota:
-        logger.warning(f"Quota Exceeded: {current_user.email if current_user else 'Guest'} attempted {len(files)} files (Limit: {quota})")
+    if not current_user:
+        raise HTTPException(
+            status_code=401,
+            detail="Registration required to access the Neural Engine. Guests are restricted from neural uploads."
+        )
+
+    if current_user.role != "admin" and current_user.scans_remaining < len(files):
+        logger.warning(f"Quota Exceeded: {current_user.email} attempted {len(files)} files (Remaining: {current_user.scans_remaining})")
         raise HTTPException(
             status_code=403, 
-            detail=f"Neural Bandwidth Exceeded. '{user_role}' role is capped at {quota} files per batch. Upgrade to VIP or Admin for higher throughput."
+            detail=f"Neural Bandwidth Exceeded. You have {current_user.scans_remaining} scans remaining in your free trial."
         )
 
     results: List[CVResult] = []
@@ -590,7 +612,7 @@ async def process_cvs(
                 db_yoe = ai_score.years_of_experience if ai_score else (ai_data.years_of_experience if ai_data else None)
                 db_keywords = ",".join(ai_data.keywords) if ai_data and ai_data.keywords else ""
                 db_notes = ai_score.additional_notes if ai_score else (ai_data.additional_notes if ai_data else None)
-                
+
                 history_entry = models.CVHistory(
                     user_id=current_user.id,
                     filename=file.filename,
@@ -608,8 +630,12 @@ async def process_cvs(
                     additional_notes=db_notes
                 )
                 db.add(history_entry)
+                if current_user.role != "admin":
+                    current_user.scans_remaining = max(0, current_user.scans_remaining - 1)
+                
+                db.add(current_user)
                 db.commit()
-                logger.debug(f"[{i+1}/{len(files)}] Persisted results for {file.filename} to user history")
+                logger.debug(f"[{i+1}/{len(files)}] Persisted results and updated scan balance for {file.filename}")
 
         except Exception as e:
             logger.error(f"[{i+1}/{len(files)}] Critical failure processing {file.filename}: {str(e)}", exc_info=True)
@@ -714,23 +740,46 @@ async def export_excel(
 
 # --- HISTORY ENDPOINTS ---
 
-@app.get("/history")
+@app.get("/history", response_model=List[HistoryOut])
 async def get_history(current_user: models.User = Depends(get_current_user), db: Session = Depends(get_db)):
-    history = db.query(models.CVHistory).filter(models.CVHistory.user_id == current_user.id).all()
+    history = db.query(models.CVHistory).filter(models.CVHistory.user_id == current_user.id).order_by(models.CVHistory.timestamp.desc()).all()
     return history
 
-@app.get("/history/{item_id}")
-async def get_history_item(item_id: int, current_user: models.User = Depends(get_current_user), db: Session = Depends(get_db)):
-    item = db.query(models.CVHistory).filter(models.CVHistory.id == item_id, models.CVHistory.user_id == current_user.id).first()
+@app.get("/history/{history_id}", response_model=HistoryOut)
+async def get_history_item(
+    history_id: int, 
+    current_user: models.User = Depends(get_current_user), 
+    db: Session = Depends(get_db)
+):
+    item = db.query(models.CVHistory).filter(
+        models.CVHistory.id == history_id,
+        models.CVHistory.user_id == current_user.id
+    ).first()
     if not item:
-        raise HTTPException(status_code=404, detail="History item not found")
+        raise HTTPException(status_code=404, detail="Archive not found in your vault")
     return item
 
-@app.delete("/history/{item_id}")
-async def delete_history_item(item_id: int, current_user: models.User = Depends(get_current_user), db: Session = Depends(get_db)):
-    item = db.query(models.CVHistory).filter(models.CVHistory.id == item_id, models.CVHistory.user_id == current_user.id).first()
+@app.delete("/history/{history_id}")
+async def delete_history_item(
+    history_id: int, 
+    current_user: models.User = Depends(get_current_user), 
+    db: Session = Depends(get_db)
+):
+    item = db.query(models.CVHistory).filter(
+        models.CVHistory.id == history_id,
+        models.CVHistory.user_id == current_user.id
+    ).first()
     if not item:
-        raise HTTPException(status_code=404, detail="History item not found")
+        raise HTTPException(status_code=404, detail="Archive not found in your vault")
+    
     db.delete(item)
     db.commit()
-    return {"message": "Deleted successfully"}
+    return {"message": "Archive successfully purged from the neural net"}
+
+@app.get("/admin/users/{user_id}/history", response_model=List[HistoryOut])
+async def get_user_history_admin(
+    user_id: int,
+    admin: models.User = Depends(check_role(["admin"])),
+    db: Session = Depends(get_db)
+):
+    return db.query(models.CVHistory).filter(models.CVHistory.user_id == user_id).all()

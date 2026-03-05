@@ -16,19 +16,27 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     // Initialize from localStorage or system preference
     useEffect(() => {
         if (typeof window === "undefined") return;
+
         const stored = localStorage.getItem("cvscore_dark");
         if (stored !== null) {
             const dark = stored === "true";
             setIsDark(dark);
             document.documentElement.classList.toggle("dark", dark);
-            return;
-        }
+        } else {
+            const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+            const applyPref = (e: MediaQueryListEvent | MediaQueryList) => {
+                const dark = e.matches;
+                setIsDark(dark);
+                document.documentElement.classList.toggle("dark", dark);
+                localStorage.setItem("cvscore_dark", String(dark));
+            };
 
-        const prefersDark = window.matchMedia &&
-            window.matchMedia("(prefers-color-scheme: dark)").matches;
-        setIsDark(prefersDark);
-        document.documentElement.classList.toggle("dark", prefersDark);
-        localStorage.setItem("cvscore_dark", String(prefersDark));
+            applyPref(prefersDark);
+
+            // Listen for changes
+            prefersDark.addEventListener("change", applyPref);
+            return () => prefersDark.removeEventListener("change", applyPref);
+        }
     }, []);
 
     const applyTheme = (dark: boolean) => {
