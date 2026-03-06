@@ -5,7 +5,7 @@ import logging
 import uuid
 from dotenv import load_dotenv
 from typing import Optional, List
-from fastapi import FastAPI, File, UploadFile, HTTPException, Query, Form, Body
+from fastapi import FastAPI, File, UploadFile, HTTPException, Query, Form, Body, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 
@@ -22,14 +22,18 @@ import io
 from fastapi.responses import StreamingResponse
 
 # Internal modules
-from .utils_ai import extract_structured_data, score_cv, generate_interview
+from .utils_ai import extract_structured_data, score_cv, generate_interview, rank_projects
 from .schemas import (
     CVResult, ExtractionResponse, ExtractedData, AIScore, 
     InterviewScript, InterviewRequest, UserCreate, UserOut, 
-    AdminUserAdd, AdminUserUpdateRole, HistoryOut
+    AdminUserAdd, AdminUserUpdateRole, HistoryOut,
+    LocationUpdate, UserLocationOut, UserDeviceOut, UserProfileCreate,
+    ProjectCreate, ProjectUpdate, ProjectOut,
+    ProjectSuggestion, SuggestionResponse
 )
 from . import models, utils_auth
-from sqlalchemy import create_engine
+from .utils_location import get_location_from_ip, parse_user_agent
+from sqlalchemy import create_engine, func
 from sqlalchemy.orm import sessionmaker, Session
 import requests
 from fastapi import Depends, status
@@ -71,7 +75,7 @@ app.add_middleware(
 
 # Custom Request/Response Logging Middleware
 @app.middleware("http")
-async def log_requests(request: requests.Request, call_next):
+async def log_requests(request: Request, call_next):
     request_id = str(uuid.uuid4())[:8]
     start_time = time.time()
     
@@ -249,7 +253,11 @@ async def register(req: UserCreate, db: Session = Depends(get_db)):
         full_name=req.full_name,
         company=req.company,
         industry=req.industry,
-        phone_number=req.phone_number
+        phone_number=req.phone_number,
+        referral_source=req.referral_source,
+        usage_intent=req.usage_intent,
+        company_size=req.company_size,
+        primary_skill=req.primary_skill
     )
     db.add(new_user)
     db.commit()
@@ -325,6 +333,43 @@ async def admin_delete_user(
     db.delete(user)
     db.commit()
     return {"message": f"User {user.email} deleted"}
+
+@app.get("/admin/stats")
+async def get_admin_stats(
+    admin: models.User = Depends(check_role(["admin"])),
+    db: Session = Depends(get_db)
+):
+    """
+    Aggregate stats for the admin dashboard overview.
+    """
+    total_users = db.query(models.User).count()
+    total_scans = db.query(models.CVHistory).count()
+    
+    # Usage Intent Distribution
+    intent_counts = db.query(models.User.usage_intent, func.count(models.User.id))\
+        .group_by(models.User.usage_intent).all()
+    
+    # Referral Source Distribution
+    source_counts = db.query(models.User.referral_source, func.count(models.User.id))\
+        .group_by(models.User.referral_source).all()
+        
+    # Geographic distribution (based on last known location)
+    geo_counts = db.query(models.UserLocation.country, func.count(models.UserLocation.id))\
+        .filter(models.UserLocation.is_current == 1)\
+        .group_by(models.UserLocation.country).all()
+
+    return {
+        "total_users": total_users,
+        "total_scans": total_scans,
+        "intents": [{"label": i[0] or "Unknown", "value": i[1]} for i in intent_counts],
+        "sources": [{"label": s[0] or "Unknown", "value": s[1]} for s in source_counts],
+        "geo": [{"country": g[0] or "Unknown", "count": g[1]} for g in geo_counts],
+        "advanced": {
+            "work_models": db.query(models.UserProfile.preferred_working_model, func.count(models.UserProfile.id))\
+                .group_by(models.UserProfile.preferred_working_model).all(),
+            "avg_salary_min": db.query(func.avg(models.UserProfile.salary_min)).scalar() or 0
+        }
+    }
 @app.get("/admin/users/{user_id}/history")
 async def get_user_history_admin(
     user_id: int,
@@ -351,6 +396,228 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = 
         "full_name": user.full_name,
         "scans_remaining": user.scans_remaining
     }
+
+# --- PROJECT ENDPOINTS ---
+
+@app.post("/projects", response_model=ProjectOut)
+async def create_project(
+    req: ProjectCreate,
+    current_user: models.User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    project = models.Project(
+        user_id=current_user.id,
+        **req.dict()
+    )
+    db.add(project)
+    db.commit()
+    db.refresh(project)
+    return project
+
+@app.get("/projects", response_model=List[ProjectOut])
+async def list_projects(
+    current_user: models.User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    return db.query(models.Project).filter(
+        models.Project.user_id == current_user.id,
+        models.Project.is_archived == 0
+    ).all()
+
+@app.get("/projects/{project_id}", response_model=ProjectOut)
+async def get_project(
+    project_id: int,
+    current_user: models.User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    project = db.query(models.Project).filter(
+        models.Project.id == project_id,
+        models.Project.user_id == current_user.id
+    ).first()
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+    return project
+
+@app.patch("/projects/{project_id}", response_model=ProjectOut)
+async def update_project(
+    project_id: int,
+    req: ProjectUpdate,
+    current_user: models.User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    project = db.query(models.Project).filter(
+        models.Project.id == project_id,
+        models.Project.user_id == current_user.id
+    ).first()
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+    
+    update_data = req.dict(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(project, key, value)
+    
+    db.commit()
+    db.refresh(project)
+    return project
+
+    db.delete(project)
+    db.commit()
+    return {"message": "Project successfully dissolved"}
+
+@app.get("/projects/suggest/{history_id}", response_model=SuggestionResponse)
+async def suggest_positions(
+    history_id: int,
+    current_user: models.User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Suggest relevant positions for a specific CV from the candidate's history.
+    """
+    history_item = db.query(models.CVHistory).filter(
+        models.CVHistory.id == history_id,
+        models.CVHistory.user_id == current_user.id
+    ).first()
+    
+    if not history_item:
+        raise HTTPException(status_code=404, detail="CV not found in your neural history.")
+        
+    projects = db.query(models.Project).filter(
+        models.Project.user_id == current_user.id,
+        models.Project.is_archived == 0
+    ).all()
+    
+    if not projects:
+        return {"suggestions": []}
+        
+    # Prepare data for AI
+    candidate_summary = f"Full Name: {history_item.full_name}\nSeniority: {history_item.seniority_level}\nSkills: {history_item.keywords}\nExperience: {history_item.years_of_experience} years"
+    projects_list = [{"id": p.id, "name": p.name, "jd": p.job_description or ""} for p in projects]
+    
+    ai_res = rank_projects(candidate_summary, projects_list)
+    return SuggestionResponse(suggestions=ai_res["data"]["suggestions"])
+
+# --- LOCATION & DEVICE ENDPOINTS ---
+
+@app.post("/users/me/location", response_model=UserLocationOut)
+async def update_location(
+    req: LocationUpdate,
+    request: Request,
+    current_user: models.User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Update user's location using one of the three methods: 'browser', 'ip', or 'manual'.
+    Also collects IP address and device data.
+    """
+    # 1. Handle IP-based automatic lookup if needed
+    location_data = req.dict(exclude_unset=True)
+    client_ip = request.client.host if request.client else None
+    
+    if req.method == "ip" and client_ip:
+        enriched_data = get_location_from_ip(client_ip)
+        if enriched_data:
+            location_data.update(enriched_data)
+    
+    # Set all previous locations for this user to not current
+    db.query(models.UserLocation).filter(
+        models.UserLocation.user_id == current_user.id
+    ).update({"is_current": 0})
+    
+    # 2. Create new location record
+    new_location = models.UserLocation(
+        user_id=current_user.id,
+        method=req.method,
+        latitude=location_data.get("latitude"),
+        longitude=location_data.get("longitude"),
+        accuracy=location_data.get("accuracy"),
+        city=location_data.get("city"),
+        region=location_data.get("region"),
+        country=location_data.get("country"),
+        country_code=location_data.get("country_code"),
+        ip_address=client_ip,
+        is_current=1
+    )
+    
+    # 3. Handle device tracking
+    ua_string = request.headers.get("user-agent", "")
+    device_info = parse_user_agent(ua_string)
+    
+    existing_device = db.query(models.UserDevice).filter(
+        models.UserDevice.user_id == current_user.id,
+        models.UserDevice.user_agent == ua_string
+    ).first()
+    
+    if existing_device:
+        existing_device.last_seen = models.datetime.utcnow()
+    else:
+        new_device = models.UserDevice(
+            user_id=current_user.id,
+            **device_info
+        )
+        db.add(new_device)
+        
+    db.add(new_location)
+    db.commit()
+    db.refresh(new_location)
+    return new_location
+
+@app.get("/users/me/location/history", response_model=List[UserLocationOut])
+async def get_location_history(
+    current_user: models.User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    return db.query(models.UserLocation).filter(
+        models.UserLocation.user_id == current_user.id
+    ).order_by(models.UserLocation.timestamp.desc()).all()
+
+@app.get("/users/me/devices", response_model=List[UserDeviceOut])
+async def get_user_devices(
+    current_user: models.User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    return db.query(models.UserDevice).filter(
+        models.UserDevice.user_id == current_user.id
+    ).order_by(models.UserDevice.last_seen.desc()).all()
+
+
+@app.post("/users/me/profile", response_model=UserOut)
+async def update_user_profile(
+    profile_req: UserProfileCreate,
+    current_user: models.User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Update candidate's detailed profile and reward with +2 scans if first time.
+    """
+    # 1. Update or create Profile
+    profile = db.query(models.UserProfile).filter(models.UserProfile.user_id == current_user.id).first()
+    
+    profile_data = profile_req.dict(exclude_unset=True)
+    # Convert lists to comma-separated strings for SQLite (or use JSON if PostgreSQL)
+    if "preferred_roles" in profile_data and profile_data["preferred_roles"]:
+        profile_data["preferred_roles"] = ",".join(profile_data["preferred_roles"])
+    if "skills" in profile_data and profile_data["skills"]:
+        profile_data["skills"] = ",".join(profile_data["skills"])
+
+    if profile:
+        for key, value in profile_data.items():
+            setattr(profile, key, value)
+    else:
+        profile = models.UserProfile(user_id=current_user.id, **profile_data)
+        db.add(profile)
+    
+    # 2. Reward Logic
+    reward_granted = False
+    if current_user.onboarding_completed == 0:
+        current_user.scans_remaining += 2
+        current_user.onboarding_completed = 1
+        reward_granted = True
+        logger.info(f"User {current_user.email} rewarded with 2 scans for completing onboarding.")
+
+    db.commit()
+    db.refresh(current_user)
+    
+    return current_user
 
 
 @app.get("/auth/google")
@@ -396,7 +663,7 @@ async def google_auth_callback(
         "code": code,
         "client_id": GOOGLE_CLIENT_ID,
         "client_secret": GOOGLE_CLIENT_SECRET,
-        "redirect_uri": GOOGLE_REDIRECT_URI,
+        "redirect_uri": payload.get("redirect_uri", GOOGLE_REDIRECT_URI),
         "grant_type": "authorization_code",
     }
 
@@ -480,6 +747,7 @@ async def process_cvs(
     do_ai_score: bool = Form(False),
     do_ai_extract: bool = Form(False),
     jd_text: Optional[str] = Form(None),
+    project_id: Optional[int] = Form(None),
     db: Session = Depends(get_db),
     current_user: Optional[models.User] = Depends(get_optional_current_user)
 ):
@@ -528,6 +796,7 @@ async def process_cvs(
             start = time.time()
             text = ""
             current_method = method
+            model_used = None
 
             # Core Extraction
             if file.filename.lower().endswith(".docx"):
@@ -561,10 +830,20 @@ async def process_cvs(
             # AI Pipeline
             ai_data = None
             ai_score = None
+            
+            # Use specific JD from project if project_id is provided and no jd_text is passed
+            current_jd_text = jd_text
+            if project_id and not current_jd_text:
+                proj = db.query(models.Project).filter(models.Project.id == project_id).first()
+                if proj:
+                    current_jd_text = proj.job_description
+
             if text.strip():
                 if do_ai_extract:
                     try:
-                        ai_data_raw = extract_structured_data(text, api_key=ai_key)
+                        ai_res = extract_structured_data(text, api_key=ai_key)
+                        ai_data_raw = ai_res["data"]
+                        model_used = ai_res["model"]
                         ai_data = ExtractedData(**ai_data_raw)
                     except Exception as e:
                         logger.error(
@@ -573,7 +852,9 @@ async def process_cvs(
                         )
                 if do_ai_score:
                     try:
-                        ai_score_raw = score_cv(text, job_description=jd_text, api_key=ai_key)
+                        ai_res = score_cv(text, job_description=current_jd_text, api_key=ai_key)
+                        ai_score_raw = ai_res["data"]
+                        model_used = ai_res["model"]
                         ai_score = AIScore(**ai_score_raw)
                         
                         # Calculate backend aggregate score (equal weighting for logging)
@@ -599,7 +880,8 @@ async def process_cvs(
                 duration=time.time() - start,
                 text=text,
                 ai_data=ai_data,
-                ai_score=ai_score
+                ai_score=ai_score,
+                model_used=model_used if (do_ai_extract or do_ai_score) else None
             )
             results.append(cv_res)
             logger.info(f"[{i+1}/{len(files)}] Successfully processed {file.filename} in {time.time() - start:.2f}s")
@@ -615,6 +897,7 @@ async def process_cvs(
 
                 history_entry = models.CVHistory(
                     user_id=current_user.id,
+                    project_id=project_id,
                     filename=file.filename,
                     text=text,
                     ai_data=ai_data.dict() if ai_data else None,
@@ -627,7 +910,8 @@ async def process_cvs(
                     seniority_level=db_seniority,
                     keywords=db_keywords,
                     score=db_score,
-                    additional_notes=db_notes
+                    additional_notes=db_notes,
+                    model_used=model_used if (do_ai_extract or do_ai_score) else None
                 )
                 db.add(history_entry)
                 if current_user.role != "admin":
@@ -669,12 +953,13 @@ async def get_interview_script(req: InterviewRequest):
     Generate a tailored interview script based on a specific candidate dossier.
     """
     try:
-        script = generate_interview(
+        res = generate_interview(
             cv_text=req.cv_text,
             dossier_summary=req.dossier_summary,
             job_description=req.jd_text,
             api_key=req.ai_key
         )
+        script = res["data"]
         return InterviewScript(**script)
     except Exception as e:
         logger.error(f"Interview generation failed: {str(e)}")

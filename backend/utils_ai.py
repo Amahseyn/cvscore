@@ -3,19 +3,33 @@ import re
 import json
 import logging
 import time
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 from openai import OpenAI
 
 logger = logging.getLogger("cvscore.ai")
 
 def safe_json_parse(text: str) -> Dict[str, Any]:
     """
-    Robustly parse JSON from AI response, handling markdown blocks and control characters.
+    Robustly parse JSON from AI response, handling markdown blocks, 
+    prefix/suffix text, and control characters.
     """
     if not text:
         return {}
     
-    # Strip markdown code blocks if present
+    # 1. Try to find the first balanced JSON object
+    first_idx = text.find('{')
+    if first_idx != -1:
+        stack = 0
+        for i in range(first_idx, len(text)):
+            if text[i] == '{':
+                stack += 1
+            elif text[i] == '}':
+                stack -= 1
+                if stack == 0:
+                    text = text[first_idx:i+1]
+                    break
+    
+    # 2. Strip standard markdown code blocks (if they were inside or outside)
     text = re.sub(r'^```json\s*', '', text, flags=re.MULTILINE)
     text = re.sub(r'\s*```$', '', text, flags=re.MULTILINE)
     text = text.strip()
@@ -25,16 +39,17 @@ def safe_json_parse(text: str) -> Dict[str, Any]:
     except json.JSONDecodeError as e:
         logger.warning(f"Initial JSON parse failed: {e}. Attempting cleanup...")
         
-        # Remove control characters (except newline, tab, etc. that might be valid in strings)
-        # But actually standard json.loads handles most except literal newlines in non-raw strings.
-        # Let's try to escape literal newlines and tabs if they are causing issues.
+        # 3. Cleanup: remove control characters
         cleaned = re.sub(r'[\x00-\x1F\x7F]', ' ', text)
+        
+        # 4. Handle common LLM bad escapes: \x is not valid in JSON, replace with \u00
+        cleaned = re.sub(r'\\x([0-9a-fA-F]{2})', r'\\u00\1', cleaned)
         
         try:
             return json.loads(cleaned)
         except json.JSONDecodeError as final_e:
             logger.error(f"Critical JSON Parsing Failure: {final_e}")
-            logger.error(f"RAW CONTENT: {text}")
+            logger.error(f"EXTRACTED CONTENT: {text}")
             raise final_e
 
 class PromptLibrary:
@@ -42,7 +57,10 @@ class PromptLibrary:
     
     STRUCTURED_EXTRACT = """
     You are a professional recruiting coordinator. Extract structured data from the provided CV text.
-    Return ONLY a JSON object with:
+    Return ONLY a valid JSON object. Do not include any text outside the JSON block.
+    Ensure all fields are present, using null or [] if information is missing.
+    
+    JSON Schema:
     {
         "full_name": "string",
         "email": "string",
@@ -63,6 +81,9 @@ class PromptLibrary:
     You are a senior technical recruiter and career coach. Evaluate the provided CV text.
     {context_jd}
     
+    Return ONLY a valid JSON object. Do not include any text outside the JSON block.
+    Ensure all fields are present, using null or [] if information is missing.
+    
     Evaluate based on:
     1. Professionalism & Formatting (0-25)
     2. Skill Relevance/Depth (0-25)
@@ -81,36 +102,17 @@ class PromptLibrary:
     If a JD is provided:
     - Include a 'match_percentage' (0-100).
     - Identify 'skill_gaps' (missing critical requirements).
-    - Generate a 'cover_letter': A professional, concise, and persuasive cover letter (approx 200-300 words) tailored specifically to the provided Job Description and the candidate's experience.
+    - Generate a 'cover_letter': A professional, concise, and persuasive cover letter tailored specifically to the provided Job Description.
     
-    Determine the candidate's seniority level (Junior, Mid, Senior, Lead/Principal) and estimate their total years of professional experience.
-    Provide 'additional_notes' highlighting unique strengths or non-obvious details.
+    Determine the candidate's seniority level (Junior, Mid, Senior, Lead/Principal) and estimate total years of experience.
 
-    Return TWO distinct analysis sections:
-    
-    1. RECRUITER ANALYSIS:
-    - executive_summary: High-level overview for a hiring manager.
-    - technical_fit: How well they fit the specific tech stack.
-    - hiring_risks: Any red flags.
-    - verdict: A one-liner recommendation.
-
-    2. CANDIDATE ANALYSIS:
-    - resume_tips: Actionable advice to improve the CV.
-    - market_positioning: Roles/levels to target.
-    - interview_prep: Specific topics to refresh on.
-    - career_growth: Potential next steps.
-    - job_suggestions: List of specific job titles/roles suitable for this candidate.
-    - keywords_skills: Key industry keywords and skills found or recommended for the candidate.
-    - job_targets: Specific target positions the candidate should aim for in the context of the job description if provided.
-    - cover_letter: The generated cover letter text (null if no JD provided).
-
-    Return ONLY a JSON object:
+    JSON Schema:
     {{
         "total_score": int (0-100),
         "match_percentage": int (0-100) or null,
         "ats_compatibility_score": int (0-100),
-        "seniority_level": "string (Junior, Mid, Senior, or Lead/Principal)",
-        "years_of_experience": int (estimated numeric value),
+        "seniority_level": "string",
+        "years_of_experience": int,
         "additional_notes": "string",
         "performance_metrics": {{
             "impact_score": int (0-100),
@@ -127,10 +129,10 @@ class PromptLibrary:
             "experience": int (0-25),
             "education": int (0-25)
         }},
-        "pros": ["list of 3 key strengths"],
-        "cons": ["list of 3 areas for improvement"],
-        "skill_gaps": ["list of missing skills if JD provided"] or [],
-        "overall_feedback": "Short professional feedback",
+        "pros": ["list of 3 strings"],
+        "cons": ["list of 3 strings"],
+        "skill_gaps": ["list of strings"] or [],
+        "overall_feedback": "string",
         "recruiter_analysis": {{
             "executive_summary": "string",
             "technical_fit": "string",
@@ -150,28 +152,71 @@ class PromptLibrary:
     }}
     """
 
+    INTERNAL_RANKING = """
+    You are a career matcher. Given a candidate's CV data and a list of internal Job Descriptions (Projects), rank the projects by relevance.
+    For each project, provide a match score (0-100) and a brief 1-sentence reasoning.
+    
+    Candidate Data:
+    {candidate_data}
+    
+    Internal Projects:
+    {projects_data}
+    
+    Return JSON:
+    {{
+        "suggestions": [
+            {{"project_id": int, "project_name": "string", "match_score": int, "reasoning": "string"}}
+        ]
+    }}
+    """
+
     INTERVIEW_GEN = """
-    You are an expert technical interviewer. Generate a tailored interview script for the candidate.
+    You are an expert technical interviewer. Generate a tailored interview script.
+    Return ONLY a valid JSON object.
     {context_jd}
     
     Candidate Dossier Summary:
     {dossier_summary}
 
-    Generate 10 questions divided into:
-    1. Technical Deep-Dive (focus on their specific tech stack and project experience)
-    2. Behavioral/Soft Skills (focus on collaboration and leadership indicators)
-    3. Culture & Growth (focus on their trajectory and learning potential)
-
-    Return ONLY a JSON object:
-    {
-        "intro": "string (small talk/setup)",
+    Return JSON:
+    {{
+        "intro": "string",
         "questions": [
-            {"category": "Technical", "question": "string", "expected_signal": "what to look for in the answer"},
-            {"category": "Behavioral", "question": "string", "expected_signal": "string"}
+            {{"category": "Technical", "question": "string", "expected_signal": "string"}},
+            {{"category": "Behavioral", "question": "string", "expected_signal": "string"}}
         ],
         "closing": "string"
-    }
+    }}
     """
+
+def rank_projects(candidate_data: str, projects: List[Dict[str, Any]], api_key: Optional[str] = None) -> Dict[str, Any]:
+    logger.info(f"Starting Project Ranking for {len(projects)} positions...")
+    start_time = time.time()
+    client = get_ai_client(api_key)
+    
+    projects_data = "\n".join([f"ID: {p['id']} | Name: {p['name']} | JD: {p['jd'][:500]}..." for p in projects])
+    
+    system_prompt = PromptLibrary.INTERNAL_RANKING.format(
+        candidate_data=candidate_data,
+        projects_data=projects_data
+    )
+    
+    response = client.chat.completions.create(
+        model="openrouter/auto",
+        response_format={"type": "json_object"},
+        messages=[
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": "Rank these internal positions."}
+        ],
+        max_tokens=2000,
+        timeout=60
+    )
+    duration = time.time() - start_time
+    logger.info(f"Project Ranking completed in {duration:.2f}s")
+    return {
+        "data": safe_json_parse(response.choices[0].message.content),
+        "model": response.model or "openrouter/auto"
+    }
 
 def get_ai_client(api_key: Optional[str] = None) -> OpenAI:
     final_key = api_key or os.getenv("OPENROUTER_API_KEY")
@@ -189,11 +234,16 @@ def extract_structured_data(cv_text: str, api_key: Optional[str] = None) -> Dict
         messages=[
             {"role": "system", "content": PromptLibrary.STRUCTURED_EXTRACT},
             {"role": "user", "content": cv_text}
-        ]
+        ],
+        max_tokens=2000,
+        timeout=60
     )
     duration = time.time() - start_time
     logger.info(f"AI Extraction completed in {duration:.2f}s")
-    return safe_json_parse(response.choices[0].message.content)
+    return {
+        "data": safe_json_parse(response.choices[0].message.content),
+        "model": response.model or "openrouter/auto"
+    }
 
 def score_cv(cv_text: str, job_description: Optional[str] = None, api_key: Optional[str] = None) -> Dict[str, Any]:
     logger.info(f"Starting AI CV Scoring (JD provided: {bool(job_description)})...")
@@ -209,11 +259,16 @@ def score_cv(cv_text: str, job_description: Optional[str] = None, api_key: Optio
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": cv_text}
-        ]
+        ],
+        max_tokens=3000,
+        timeout=120
     )
     duration = time.time() - start_time
     logger.info(f"AI Scoring completed in {duration:.2f}s")
-    return safe_json_parse(response.choices[0].message.content)
+    return {
+        "data": safe_json_parse(response.choices[0].message.content),
+        "model": response.model or "openrouter/auto"
+    }
 
 def generate_interview(cv_text: str, dossier_summary: str, job_description: Optional[str] = None, api_key: Optional[str] = None) -> Dict[str, Any]:
     logger.info("Starting AI Interview Generation...")
@@ -232,8 +287,13 @@ def generate_interview(cv_text: str, dossier_summary: str, job_description: Opti
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": f"Candidate CV Text: {cv_text}"}
-        ]
+        ],
+        max_tokens=2500,
+        timeout=90
     )
     duration = time.time() - start_time
     logger.info(f"AI Interview Generation completed in {duration:.2f}s")
-    return safe_json_parse(response.choices[0].message.content)
+    return {
+        "data": safe_json_parse(response.choices[0].message.content),
+        "model": response.model or "openrouter/auto"
+    }

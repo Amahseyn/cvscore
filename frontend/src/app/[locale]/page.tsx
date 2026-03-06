@@ -15,6 +15,7 @@ import { Navbar } from "@/components/Navbar";
 import { AboutDeveloper } from "@/components/AboutDeveloper";
 import { ServicesView } from "@/components/ServicesView";
 import { Footer } from "@/components/Footer";
+import { PricingSection } from "@/components/PricingSection";
 import { useTranslations, useLocale } from 'next-intl';
 
 export default function Home() {
@@ -35,7 +36,10 @@ export default function Home() {
                 const resp = await fetch("http://localhost:8000/auth/google/callback", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ code }),
+                    body: JSON.stringify({
+                        code,
+                        redirect_uri: "http://localhost:3000"
+                    }),
                 });
                 if (!resp.ok) {
                     const err = await resp.json().catch(() => ({}));
@@ -217,9 +221,9 @@ export default function Home() {
                                     {/* Animated stage bars */}
                                     <div className="space-y-4">
                                         {[
-                                            { label: 'Parsing artifact', delay: '0ms', width: '100%' },
-                                            { label: 'Extracting neural data', delay: '300ms', width: '85%' },
-                                            { label: 'Scoring alignment', delay: '600ms', width: '60%' },
+                                            { label: t('engine.stage1'), delay: '0ms', width: '100%' },
+                                            { label: t('engine.stage2'), delay: '300ms', width: '85%' },
+                                            { label: t('engine.stage3'), delay: '600ms', width: '60%' },
                                         ].map(({ label, delay, width }) => (
                                             <div key={label} className="space-y-1.5">
                                                 <div className="flex justify-between items-center">
@@ -374,6 +378,7 @@ export default function Home() {
                 </section>
 
                 {/* New Sections */}
+                <PricingSection />
                 <ServicesView />
                 <AboutDeveloper />
 

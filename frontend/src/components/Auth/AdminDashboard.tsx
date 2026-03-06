@@ -16,6 +16,33 @@ interface User {
     role: string;
     full_name: string | null;
     company: string | null;
+    referral_source?: string;
+    usage_intent?: string;
+    company_size?: string;
+    primary_skill?: string;
+    onboarding_completed?: number;
+    profile?: {
+        id: number;
+        preferred_working_model: string;
+        salary_min: number;
+        salary_max: number;
+        preferred_roles: string;
+        skills: string;
+        career_goals: string;
+    };
+    locations?: any[];
+}
+
+interface AdminStats {
+    total_users: number;
+    total_scans: number;
+    intents: { label: string, value: number }[];
+    sources: { label: string, value: number }[];
+    geo: { country: string, count: number }[];
+    advanced?: {
+        work_models: [string, number][];
+        avg_salary_min: number;
+    };
 }
 
 interface AdminDashboardProps {
@@ -43,12 +70,32 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
     const [showHistoryModal, setShowHistoryModal] = useState(false);
     const [historyLoading, setHistoryLoading] = useState(false);
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
+    const [stats, setStats] = useState<AdminStats | null>(null);
+    const [statsLoading, setStatsLoading] = useState(true);
 
     const t = useTranslations('Admin');
 
     useEffect(() => {
         fetchUsers();
+        fetchStats();
     }, []);
+
+    const fetchStats = async () => {
+        setStatsLoading(true);
+        try {
+            const resp = await fetch('http://localhost:8000/admin/stats', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (resp.ok) {
+                const data = await resp.json();
+                setStats(data);
+            }
+        } catch (err) {
+            console.error('Failed to fetch admin stats');
+        } finally {
+            setStatsLoading(false);
+        }
+    };
 
     const fetchUsers = async () => {
         try {
@@ -183,6 +230,52 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
 
     return (
         <div className="relative pt-32 pb-20 px-6 sm:px-10 min-h-screen bg-slate-950/10 flex flex-col items-center" suppressHydrationWarning>
+            {/* Stats Cards Row */}
+            {!loading && stats && (
+                <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 animate-in fade-in slide-in-from-top-4 duration-700">
+                    <div className="bg-white dark:bg-slate-900 p-8 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{t('stats.totalUsers')}</p>
+                        <div className="flex items-end justify-between mt-4">
+                            <h3 className="text-4xl font-black tracking-tighter">{stats.total_users}</h3>
+                            <Users className="w-8 h-8 text-brand-500 mb-1" />
+                        </div>
+                    </div>
+                    <div className="bg-white dark:bg-slate-900 p-8 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{t('stats.totalScans')}</p>
+                        <div className="flex items-end justify-between mt-4">
+                            <h3 className="text-4xl font-black tracking-tighter">{stats.total_scans}</h3>
+                            <FileText className="w-8 h-8 text-indigo-500 mb-1" />
+                        </div>
+                    </div>
+                    <div className="bg-white dark:bg-slate-900 p-8 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{t('stats.intentDist')}</p>
+                        <div className="mt-4 space-y-2">
+                            {stats.intents.slice(0, 2).map((item, i) => (
+                                <div key={i} className="flex justify-between items-center">
+                                    <span className="text-[9px] font-bold text-slate-500 truncate mr-2">{item.label}</span>
+                                    <span className="text-[9px] font-black text-brand-500">{item.value}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="bg-white dark:bg-slate-900 p-8 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Candidate Intel</p>
+                        <div className="mt-4 space-y-2">
+                            {stats.advanced?.work_models.slice(0, 2).map((item, i) => (
+                                <div key={i} className="flex justify-between items-center">
+                                    <span className="text-[9px] font-bold text-slate-500 truncate mr-2">{item[0] || 'Unknown'}</span>
+                                    <span className="text-[9px] font-black text-indigo-500">{item[1]}</span>
+                                </div>
+                            ))}
+                            <div className="pt-2 border-t border-slate-50 dark:border-slate-800 flex justify-between items-center">
+                                <span className="text-[9px] font-black text-slate-400 uppercase">Avg Min Salary</span>
+                                <span className="text-[10px] font-black text-emerald-500">${Math.round(stats.advanced?.avg_salary_min || 0).toLocaleString()}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             <div className={`bg-white dark:bg-slate-900 w-full max-w-6xl min-h-[80vh] rounded-[3rem] shadow-2xl relative z-10 flex flex-col overflow-hidden border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-500 mx-auto`}>
                 {/* Header */}
                 <div className="p-10 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/50 dark:bg-slate-900/50">
@@ -276,9 +369,17 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
                                 </div>
                                 <div className="mt-6 pt-6 border-t border-slate-50 dark:border-slate-800 flex items-center justify-between">
                                     <div className="space-y-1">
-                                        <p className="text-[8px] font-black text-slate-400 uppercase tracking-tighter">Organization</p>
-                                        <p className="text-[10px] font-bold text-slate-600 dark:text-slate-300">{user.company || 'Private Sector'}</p>
+                                        <p className="text-[8px] font-black text-slate-400 uppercase tracking-tighter">Organization / Skill</p>
+                                        <p className="text-[10px] font-bold text-slate-600 dark:text-slate-300 truncate max-w-[120px]">
+                                            {user.company || user.primary_skill || 'Private Sector'}
+                                        </p>
                                     </div>
+                                    {user.profile && (
+                                        <div className="space-y-1">
+                                            <p className="text-[8px] font-black text-amber-500 uppercase tracking-tighter">Onboarding Reward</p>
+                                            <p className="text-[10px] font-black text-emerald-500">+2 Scans Claimed</p>
+                                        </div>
+                                    )}
                                     <div className="flex items-center gap-2">
                                         <button
                                             onClick={() => fetchUserHistory(user)}

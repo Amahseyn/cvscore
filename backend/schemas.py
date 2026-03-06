@@ -75,6 +75,7 @@ class CVResult(BaseModel):
     text: str
     ai_data: Optional[ExtractedData] = None
     ai_score: Optional[AIScore] = None
+    model_used: Optional[str] = None
     error: Optional[str] = None
 
 class ExtractionResponse(BaseModel):
@@ -109,6 +110,14 @@ class UserOut(BaseModel):
     phone_number: Optional[str] = None
     scans_remaining: int = 3
     
+    # Onboarding Data
+    referral_source: Optional[str] = None
+    usage_intent: Optional[str] = None
+    company_size: Optional[str] = None
+    primary_skill: Optional[str] = None
+    onboarding_completed: bool = False
+    profile: Optional['UserProfileOut'] = None
+    
     class Config:
         from_attributes = True
 
@@ -120,6 +129,12 @@ class UserCreate(BaseModel):
     industry: Optional[str] = None
     phone_number: Optional[str] = None
     role: Optional[str] = "recruiter"
+    
+    # Onboarding Data
+    referral_source: Optional[str] = None
+    usage_intent: Optional[str] = None
+    company_size: Optional[str] = None
+    primary_skill: Optional[str] = None
 
 class AdminUserAdd(BaseModel):
     email: EmailStr
@@ -149,7 +164,104 @@ class HistoryOut(BaseModel):
     score: Optional[int] = None
     additional_notes: Optional[str] = None
     ai_content_score: Optional[float] = None
+    project_id: Optional[int] = None
+    model_used: Optional[str] = None
     timestamp: datetime
 
     class Config:
         from_attributes = True
+
+# --- Location & Device Schemas ---
+
+class LocationUpdate(BaseModel):
+    method: str # 'browser', 'ip', 'manual'
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
+    accuracy: Optional[float] = None
+    city: Optional[str] = None
+    region: Optional[str] = None
+    country: Optional[str] = None
+    country_code: Optional[str] = None
+    ip_address: Optional[str] = None
+
+class UserLocationOut(BaseModel):
+    id: int
+    method: str
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
+    accuracy: Optional[float] = None
+    city: Optional[str] = None
+    region: Optional[str] = None
+    country: Optional[str] = None
+    timestamp: datetime
+    is_current: bool
+
+    class Config:
+        from_attributes = True
+
+class UserDeviceOut(BaseModel):
+    id: int
+    device_type: Optional[str] = None
+    os: Optional[str] = None
+    browser: Optional[str] = None
+    last_seen: datetime
+
+    class Config:
+        from_attributes = True
+
+class UserProfileCreate(BaseModel):
+    preferred_working_model: Optional[str] = None
+    salary_min: Optional[int] = None
+    salary_max: Optional[int] = None
+    preferred_roles: Optional[List[str]] = None
+    skills: Optional[List[str]] = None
+    career_goals: Optional[str] = None
+
+class UserProfileOut(BaseModel):
+    id: int
+    preferred_working_model: Optional[str] = None
+    salary_min: Optional[int] = None
+    salary_max: Optional[int] = None
+    preferred_roles: Optional[str] = None
+    skills: Optional[str] = None
+    career_goals: Optional[str] = None
+
+    class Config:
+        from_attributes = True
+
+class ProjectBase(BaseModel):
+    name: str
+    description: Optional[str] = None
+    job_description: Optional[str] = None
+    evaluation_criteria: Optional[Dict] = {}
+    is_archived: int = 0
+
+class ProjectCreate(ProjectBase):
+    pass
+
+class ProjectUpdate(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    job_description: Optional[str] = None
+    evaluation_criteria: Optional[Dict] = None
+    is_archived: Optional[int] = None
+
+class ProjectOut(ProjectBase):
+    id: int
+    user_id: int
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+class ProjectSuggestion(BaseModel):
+    project_id: int
+    project_name: str
+    match_score: int
+    reasoning: str
+
+class SuggestionResponse(BaseModel):
+    suggestions: List[ProjectSuggestion]
+
+# Re-update to resolve ForwardRef
+UserOut.model_rebuild()

@@ -201,5 +201,134 @@
             "offline": "Forge d'Identité Hors Ligne",
             "googleError": "Impossible d'initier l'inscription Google"
         }
+    },
+    "Admin": {
+        "backToCluster": "Retour au Command Cluster",
+        "stats": {
+            "title": "Vue d'ensemble Neurale",
+            "totalUsers": "Total des Identités",
+            "totalScans": "Scans Neuraux",
+            "intentDist": "Intention d'Usage",
+            "sourceDist": "Canaux de Parrainage",
+            "geoDist": "Distribution Mondiale"
+        },
+        "details": {
+            "onboarding": "Intelligence d'Intégration",
+            "location": "Dernier Emplacement Connu"
+        }
+    },
+    "History": {
+        "title": "Historique",
+        "subtitle": "Registre historique complet des identités traitées et des scores de CV",
+        "table": {
+            "candidate": "Candidat / Nom de fichier",
+            "score": "Score Neural",
+            "seniority": "Séniorité",
+            "experience": "Exp",
+            "date": "Chronologie",
+            "actions": "Actions"
+        },
+        "searchPlaceholder": "Filtrer les archives par nom de candidat ou détails du profil...",
+        "noResults": "Aucun artéfact historique ne correspond à votre recherche",
+        "viewDetails": "Voir les Détails",
+        "reload": "Recharger l'Analyse",
+        "delete": "Supprimer l'Archive",
+        "confirmDelete": "Êtes-vous sûr de vouloir supprimer cet artéfact du réseau neural ? Cette action est irréversible.",
+        "purged": "Archive supprimée avec succès",
+        "filters": {
+            "score": "Score Min",
+            "seniority": "Niveau de Séniorité",
+            "date": "Plage de Temps",
+            "metrics": {
+                "impact": "Impact",
+                "tech": "Profondeur Technique",
+                "soft": "Soft Skills",
+                "readability": "Lisibilité"
+            }
+        }
+    },
+    "Pricing": {
+        "title": "Mise à Niveau du Niveau Neural",
+        "subtitle": "Sélectionnez votre cycle de synchronisation pour étendre votre capacité de traitement neurale",
+        "mission": {
+            "title": "Philosophie de l'aide d'abord",
+            "text": "Le traitement neural est coûteux en ressources informatiques. Ces frais couvrent principalement nos coûts de fournisseur d'IA tiers. Nous sommes là pour aider les équipes et les entreprises à évoluer équitablement, pas pour profiter des frais d'infrastructure."
+        },
+        "cycles": {
+            "demo": "Essai Gratuit",
+            "weekly": "Hebdomadaire",
+            "monthly": "Mensuel",
+            "yearly": "Annuel"
+        },
+        "saveYear": "Économisez 37%",
+        "plans": {
+            "basic": {
+                "name": "Noyau Communautaire",
+                "price": "0",
+                "features": [
+                    "3 Scans Neuraux / semaine",
+                    "Extractions IA de base",
+                    "Voûte Publique (7 jours)",
+                    "Support Communautaire"
+                ]
+            },
+            "weekly": {
+                "name": "Sprint Link",
+                "price": "2.99",
+                "features": [
+                    "25 Scans Neuraux / semaine",
+                    "Perspectives de performance AIP",
+                    "Accès à la voûte neurale pendant 30 jours",
+                    "Support par email prioritaire"
+                ]
+            },
+            "monthly": {
+                "name": "Niveau Professionnel",
+                "price": "7.99",
+                "features": [
+                    "150 Scans Neuraux / mois",
+                    "Analyses avancées complètes",
+                    "Exportation PDF en masse",
+                    "Voûte neurale infinie",
+                    "Traitement IA direct"
+                ]
+            },
+            "yearly": {
+                "name": "Command Cluster",
+                "price": "72.99",
+                "features": [
+                    "Scans illimités",
+                    "Console de surveillance admin",
+                    "Accès au tableau de bord universel",
+                    "Stockage infini dans la voûte",
+                    "Lien neural prioritaire 24/7"
+                ]
+            }
+        },
+        "cta": "Mettre à niveau maintenant",
+        "popular": "Meilleure Valeur",
+        "faq": {
+            "title": "Foire Aux Questions",
+            "subtitle": "Tout ce que vous devez savoir sur les niveaux neuraux",
+            "q1": {
+                "q": "Puis-je annuler mon abonnement à tout moment ?",
+                "a": "Oui, nos liens neuraux ne sont pas contraignants. Vous pouvez mettre fin à la synchronisation à tout moment via votre tableau de bord."
+            },
+            "q2": {
+                "q": "Que se passe-t-il lorsque je n'ai plus de scans ?",
+                "a": "Vous pouvez soit attendre la réinitialisation hebdomadaire, soit passer à un niveau supérieur pour une extension immédiate de la capacité."
+            },
+            "q3": {
+                "q": "Mes données sont-elles sécurisées ?",
+                "a": "Absolument. Toutes les données de CV sont cryptées biométriquement et purgées de nos tampons temporaires après traitement."
+            }
+        },
+        "comparison": {
+            "title": "Comparaison Technique",
+            "feature": "Capacité",
+            "basic": "Base",
+            "pro": "Neural PRO",
+            "unlimited": "Infini"
+        }
     }
 }

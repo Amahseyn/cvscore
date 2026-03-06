@@ -1,5 +1,5 @@
 import React from "react";
-import { CheckCircle2, AlertCircle, TrendingUp, Mail, Phone, Copy, Loader2, Cpu, Sparkles, ExternalLink, Zap, Trophy } from "lucide-react";
+import { CheckCircle2, AlertCircle, TrendingUp, Mail, Phone, Copy, Loader2, Cpu, Sparkles, ExternalLink, Zap, Trophy, Target } from "lucide-react";
 import { RadarAnalytics } from "./RadarAnalytics";
 
 interface DossierViewProps {
@@ -12,6 +12,9 @@ interface DossierViewProps {
     score?: number;
     showRawText: boolean;
     setShowRawText: (v: boolean) => void;
+    projects?: any[];
+    suggestions?: any[];
+    isFetchingSuggestions?: boolean;
 }
 
 export const DossierView: React.FC<DossierViewProps> = ({
@@ -23,7 +26,10 @@ export const DossierView: React.FC<DossierViewProps> = ({
     isGeneratingInterview,
     score,
     showRawText,
-    setShowRawText
+    setShowRawText,
+    projects = [],
+    suggestions = [],
+    isFetchingSuggestions = false
 }) => {
     const analysis = currentResult?.ai_data;
     const ai_score = currentResult?.ai_score;
@@ -84,7 +90,6 @@ export const DossierView: React.FC<DossierViewProps> = ({
                     </div>
                 ) : analysis ? (
                     <div className="space-y-12 animate-in fade-in slide-in-from-right duration-700">
-                        {/* Main Profile Header */}
                         <div className="bg-slate-50/50 dark:bg-slate-900/50 rounded-[3rem] p-10 border border-slate-100/50 dark:border-slate-800/50 shadow-sm relative overflow-hidden group/dossier">
                             <div className="absolute top-0 right-0 w-96 h-96 bg-brand-500/5 rounded-full -mr-48 -mt-48 blur-3xl group-hover/dossier:bg-brand-500/10 transition-all duration-700"></div>
 
@@ -102,31 +107,91 @@ export const DossierView: React.FC<DossierViewProps> = ({
                                             <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-lg">
                                                 <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none">{analysis.years_of_experience || ai_score?.years_of_experience || 0} YOE</p>
                                             </div>
-                                            <span className="text-slate-300 dark:text-slate-700 mx-1">•</span>
+                                        </div>
+                                        <div className="flex flex-wrap gap-4 items-center">
                                             <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">{analysis.location}</p>
+                                            {currentResult.project_id && (
+                                                <div className="px-3 py-1 bg-brand-500/10 border border-brand-500/20 rounded-lg">
+                                                    <p className="text-[10px] font-black text-brand-500 uppercase tracking-widest leading-none">
+                                                        Position: {projects.find(p => p.id === currentResult.project_id)?.name || "External Project"}
+                                                    </p>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className="flex flex-col items-end gap-3 shrink-0">
+                                    {currentResult.model_used && (
+                                        <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800/50 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800">
+                                            <Cpu className="w-3.5 h-3.5 text-slate-400" />
+                                            <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none">
+                                                AI Engine: {currentResult.model_used.split('/').pop()}
+                                            </span>
+                                        </div>
+                                    )}
                                     <div className="flex items-center gap-3">
                                         <a
-                                            href={analysis.links?.[0] || "#"}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
+                                            href={`mailto:${analysis.email}`}
+                                            className="px-8 py-4 bg-brand-500 text-white rounded-3xl font-black text-[10px] uppercase tracking-[0.3em] hover:bg-brand-600 hover:scale-105 active:scale-95 transition-all shadow-xl shadow-brand-500/20"
+                                        >
+                                            Contact Candidate
+                                        </a>
+                                        <button
+                                            onClick={copyToClipboard}
                                             className="p-4 bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-3xl text-slate-400 hover:text-brand-500 hover:scale-110 transition-all shadow-sm"
                                         >
-                                            <ExternalLink className="w-6 h-6" />
-                                        </a>
-                                        <a
-                                            href={`mailto:${analysis.email}`}
-                                            className="px-8 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-3xl font-black text-[10px] uppercase tracking-[0.3em] hover:scale-105 transition-all shadow-xl"
-                                        >
-                                            Contact Profile
-                                        </a>
+                                            <Copy className="w-6 h-6" />
+                                        </button>
                                     </div>
                                 </div>
                             </div>
+
+                            {/* Optional Job Suggestions for Global Pool */}
+                            {!currentResult.project_id && (
+                                <div className="mt-10 p-8 bg-brand-500/5 dark:bg-brand-500/10 rounded-[2.5rem] border border-brand-500/20 relative overflow-hidden group/suggestions">
+                                    <div className="absolute top-0 right-0 w-32 h-32 bg-brand-500/10 rounded-full blur-2xl -mr-16 -mt-16"></div>
+                                    <div className="relative z-10 flex flex-col md:flex-row justify-between items-center gap-6">
+                                        <div className="space-y-2 text-center md:text-left">
+                                            <h4 className="text-[10px] font-black text-brand-500 uppercase tracking-[0.3em] flex items-center justify-center md:justify-start gap-2">
+                                                <Target className="w-4 h-4" /> Strategic Career Matching
+                                            </h4>
+                                            <p className="text-slate-600 dark:text-slate-400 text-xs font-bold">
+                                                Find the most relevant positions for this candidate across all active projects.
+                                            </p>
+                                        </div>
+                                        <button
+                                            onClick={() => (window as any).handleSuggestPositions?.(currentResult.id)}
+                                            disabled={isFetchingSuggestions}
+                                            className="px-6 py-3 bg-white dark:bg-slate-900 border border-brand-500/30 rounded-2xl text-[10px] font-black text-brand-500 uppercase tracking-widest hover:bg-brand-500 hover:text-white transition-all shadow-sm flex items-center gap-2 group/btn"
+                                        >
+                                            {isFetchingSuggestions ? <Loader2 className="w-4 h-4 animate-spin text-brand-500" /> : <Zap className="w-4 h-4 text-brand-500 group-hover/btn:text-white transition-colors" />}
+                                            {isFetchingSuggestions ? "Scanning Matrix..." : "Discover Matches"}
+                                        </button>
+                                    </div>
+
+                                    {suggestions.length > 0 && (
+                                        <div className="mt-8 space-y-4 animate-in slide-in-from-top-4 duration-500">
+                                            <div className="h-px bg-brand-500/20 mb-6"></div>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                {suggestions.map((s, idx) => (
+                                                    <div key={idx} className="p-6 bg-white dark:bg-slate-950 rounded-2xl border border-brand-500/20 shadow-sm group/match hover:border-brand-500/50 transition-all">
+                                                        <div className="flex justify-between items-start mb-3">
+                                                            <h5 className="text-[11px] font-black text-slate-800 dark:text-white uppercase tracking-widest truncate max-w-[70%]">{s.project_name}</h5>
+                                                            <div className="px-2 py-1 bg-brand-500 text-white rounded-lg text-[10px] font-black tracking-tighter">
+                                                                {s.match_score}%
+                                                            </div>
+                                                        </div>
+                                                        <p className="text-[11px] font-bold text-slate-500 dark:text-slate-400 italic line-clamp-2">
+                                                            "{s.reasoning}"
+                                                        </p>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
                         </div>
 
                         {/* AI Strategic Analysis */}
@@ -229,7 +294,7 @@ export const DossierView: React.FC<DossierViewProps> = ({
                                 onClick={() => setShowRawText(!showRawText)}
                                 className="flex items-center gap-3 px-8 py-4 bg-slate-100 dark:bg-slate-950/50 rounded-2xl border border-slate-200 dark:border-slate-800 text-[10px] font-black text-slate-500 uppercase tracking-widest hover:border-brand-500/50 transition-all"
                             >
-                                <Cpu className="w-4 h-4" /> {showRawText ? "Deactivate Neural Archive" : "Activate Neural Archive (Raw Text)"}
+                                <Cpu className="w-4 h-4" /> {showRawText ? "Deactivate History" : "Activate History (Raw Text)"}
                             </button>
                             {showRawText && (
                                 <div className="bg-slate-900 text-slate-400 p-10 rounded-[3rem] border border-slate-800 animate-in slide-in-from-top-4 duration-500 shadow-inner">

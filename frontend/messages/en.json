@@ -1,16 +1,17 @@
 {
     "Navbar": {
         "brand": "CVScore PRO",
-        "intel": "Neural Intelligence",
+        "intel": "Smart AI Reviewer",
         "links": {
             "services": "Services",
+            "pricing": "Pricing",
             "info": "Info",
             "contact": "Contact"
         },
         "profile": {
             "dashboard": "Dashboard",
-            "history": "Neural Vault",
-            "logout": "End Session"
+            "history": "CV Library",
+            "logout": "Sign Out"
         },
         "auth": {
             "login": "Login",
@@ -19,11 +20,11 @@
     },
     "Home": {
         "hero": {
-            "badge": "Shortlist better hires, faster",
-            "titlePart1": "Structured, fair",
-            "titlePart2": "Neural",
-            "titlePart3": "review",
-            "description": "CVScore helps you turn a pile of CVs into a clear, defensible shortlist — with consistent scoring, transparent criteria, and interview-ready notes for every candidate.",
+            "badge": "You have 3 free trials — let's get started!",
+            "titlePart1": "Smart and fair",
+            "titlePart2": "AI",
+            "titlePart3": "Review",
+            "description": "CVScore helps you turn a pile of CVs into a clear list of the best candidates — with easy scores and interview notes for everyone.",
             "cta": "Start for Free"
         },
         "engine": {
@@ -36,16 +37,19 @@
             "unlockBtn": "Try 3 Free Scans",
             "unlockSub": "3 Free Neural Scans Included",
             "dropCV": "Drop CV to process",
-            "active": "Neural Link Active...",
-            "awaiting": "Awaiting artifact submission"
+            "active": "AI Review Active...",
+            "awaiting": "Drop your CV here",
+            "stage1": "Reading document",
+            "stage2": "Finding key info",
+            "stage3": "Calculating score"
         },
         "dossier": {
-            "title": "Neural Dossier",
+            "title": "CV Report",
             "anonymous": "Anonymous Candidate",
             "exp": "Experience",
-            "observation": "Observation",
-            "newAnalysis": "New Analysis",
-            "universalDashboard": "Universal Dashboard"
+            "observation": "AI Feedback",
+            "newAnalysis": "New Review",
+            "universalDashboard": "Main Dashboard"
         },
         "history": {
             "title": "Search your history",
@@ -149,12 +153,12 @@
             "email": "Email",
             "password": "Password",
             "google": "Sign in with Google",
-            "flow": "Identification Flow",
-            "submit": "Establish Neural Link",
+            "flow": "Easy Sign In",
+            "submit": "Sign In Now",
             "newHere": "New here?",
             "createAccount": "Create an account",
-            "encrypted": "Biometric Encrypted",
-            "footer": "Neural Session Sync • CVScore PRO v2.5",
+            "encrypted": "Safe & Private",
+            "footer": "CVScore PRO v2.5",
             "success": "Signed in successfully",
             "error": "Unable to sign in",
             "serverError": "Unable to reach server",
@@ -186,7 +190,54 @@
                 "company": "Organisation",
                 "industry": "Industry Sector",
                 "phone": "Phone Identifier",
-                "submit": "Forge Identity"
+                "submit": "Forge Identity",
+                "onboarding": {
+                    "title": "One Last Thing",
+                    "subtitle": "Help us personalize your experience",
+                    "referral": "How did you hear about us?",
+                    "intent": "What is your primary goal?",
+                    "companySize": "Company Size",
+                    "skill": "Primary Area of Expertise",
+                    "sources": {
+                        "linkedin": "LinkedIn",
+                        "friend": "Friend / Colleague",
+                        "search": "Search Engine",
+                        "other": "Other"
+                    },
+                    "intents": {
+                        "hiring": "I am hiring talent",
+                        "seeking": "I am seeking a job",
+                        "research": "Just researching"
+                    },
+                    "sizes": {
+                        "1-10": "1-10 Employees",
+                        "11-50": "11-50 Employees",
+                        "51-200": "51-200 Employees",
+                        "201+": "201+ Employees"
+                    }
+                }
+            },
+            "dossier": {
+                "title": "Candidate Profile",
+                "subtitle": "Complete your profile and get 2 extra scans!",
+                "workingModel": "Work Style",
+                "salary": "Expected Salary ($)",
+                "roles": "Preferred Roles",
+                "skills": "Top Skills",
+                "goals": "Career Goal",
+                "submit": "Finish & Get Reward",
+                "models": {
+                    "remote": "Remote",
+                    "onsite": "In-Office",
+                    "hybrid": "Hybrid"
+                },
+                "reward": {
+                    "title": "Reward Unlocked!",
+                    "desc": "You received +2 scans for completing your profile.",
+                    "btn": "Go to Dashboard",
+                    "locked": "+2 Scans Locked"
+                },
+                "systemStatus": "Smart AI Engine Active"
             },
             "google": "Sign up with Google",
             "flow": "Identity Synthesis Flow",
@@ -203,14 +254,22 @@
         }
     },
     "Admin": {
-        "viewHistory": "View History",
-        "userVault": "User Neural Vault",
-        "archiveSubtitle": "Historical performance artifacts for this identity",
-        "noHistory": "No historical artifacts found for this identity",
-        "backToCluster": "Back to Command Cluster"
+        "backToCluster": "Back to Command Cluster",
+        "stats": {
+            "title": "Neural Overview",
+            "totalUsers": "Total Identities",
+            "totalScans": "Neural Scans",
+            "intentDist": "Usage Intent",
+            "sourceDist": "Referral Channels",
+            "geoDist": "Global Distribution"
+        },
+        "details": {
+            "onboarding": "Onboarding Intelligence",
+            "location": "Last Known Location"
+        }
     },
     "History": {
-        "title": "Neural Archive",
+        "title": "History",
         "subtitle": "Complete historical record of processed identities and CV scores",
         "table": {
             "candidate": "Candidate / Filename",
@@ -235,10 +294,92 @@
                 "impact": "Impact",
                 "tech": "Technical Depth",
                 "soft": "Soft Skills",
-                "growth": "Growth Potential",
-                "stability": "Stability",
                 "readability": "Readability"
             }
+        }
+    },
+    "Pricing": {
+        "title": "Neural Tier Upgrade",
+        "subtitle": "Select your sync cycle to expand your neural processing capacity",
+        "mission": {
+            "title": "Help-First Philosophy",
+            "text": "Neural Processing is computationally expensive. These fees primarily cover our third-party AI provider costs. We are here to help teams and companies scale fairly, not to profit from infra-fees."
+        },
+        "cycles": {
+            "demo": "Free Trial",
+            "weekly": "Weekly",
+            "monthly": "Monthly",
+            "yearly": "Yearly"
+        },
+        "saveYear": "Save 37%",
+        "plans": {
+            "basic": {
+                "name": "Community Core",
+                "price": "0",
+                "features": [
+                    "3 Neural Scans / week",
+                    "Basic AI Extractions",
+                    "Public Vault (7-Day)",
+                    "Community Support"
+                ]
+            },
+            "weekly": {
+                "name": "Sprint Link",
+                "price": "2.99",
+                "features": [
+                    "25 Neural Scans / week",
+                    "AIP Performance Insights",
+                    "30-Day Neural Vault Access",
+                    "Priority Email Support"
+                ]
+            },
+            "monthly": {
+                "name": "Professional Tier",
+                "price": "7.99",
+                "features": [
+                    "150 Neural Scans / month",
+                    "Full Advanced Analytics",
+                    "Bulk PDF Export",
+                    "Infinite Neural Vault",
+                    "Direct AI Processing"
+                ]
+            },
+            "yearly": {
+                "name": "Command Cluster",
+                "price": "72.99",
+                "features": [
+                    "Unlimited Scans",
+                    "Admin Monitoring Console",
+                    "Universal Dashboard Access",
+                    "Infinite Vault Storage",
+                    "24/7 Priority Neural Link"
+                ]
+            }
+        },
+        "cta": "Upgrade Now",
+        "popular": "Best Value",
+        "faq": {
+            "title": "Frequently Asked Questions",
+            "subtitle": "Everything you need to know about Neural Tiers",
+            "q1": {
+                "q": "Can I cancel my subscription anytime?",
+                "a": "Yes, our Neural Links are non-binding. You can terminate the sync at any point through your dashboard."
+            },
+            "q2": {
+                "q": "What happens when I run out of scans?",
+                "a": "You can either wait for the weekly reset or upgrade to a higher tier for immediate capacity expansion."
+            },
+            "q3": {
+                "q": "Is my data secure?",
+                "a": "Absolutely. All CV data is biometrically encrypted and purged from our temporary buffers after processing."
+            }
+        },
+        "comparison": {
+            "title": "Technical Comparison",
+            "feature": "Capability",
+            "basic": "Core",
+            "pro": "Neural PRO",
+            "unlimited": "Infinite"
         }
     }
 }

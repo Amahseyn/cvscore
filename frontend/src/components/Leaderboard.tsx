@@ -10,6 +10,7 @@ interface LeaderboardProps {
     selectedIndices: number[];
     onToggleSelect: (index: number) => void;
     onExportExcel?: () => void;
+    projects?: any[];
 }
 
 export const Leaderboard: React.FC<LeaderboardProps> = ({
@@ -19,7 +20,8 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
     setCurrentIndex,
     selectedIndices,
     onToggleSelect,
-    onExportExcel
+    onExportExcel,
+    projects = []
 }) => {
     if (results.length === 0) return null;
 
@@ -90,6 +92,13 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                                             <p className="text-[9px] font-bold text-slate-500 uppercase tracking-widest truncate">
                                                 {res.ai_data?.email || "No contact info"}
                                             </p>
+                                            {res.project_id && (
+                                                <div className="mt-1 flex items-center gap-1.5">
+                                                    <span className="text-[8px] font-black text-brand-500 bg-brand-500/5 px-2 py-0.5 rounded-md border border-brand-500/10 uppercase tracking-tighter">
+                                                        {projects.find(p => p.id === res.project_id)?.name || "Project Deleted"}
+                                                    </span>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </td>
@@ -103,14 +112,14 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                                     </div>
                                 </td>
                                 <td className="py-6 px-4">
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden max-w-[100px]">
+                                    <div className="flex items-center gap-3">
+                                        <div className="flex-1 bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden min-w-[120px] shadow-inner">
                                             <div
-                                                className="h-full bg-brand-500 rounded-full group-hover:scale-x-110 transition-transform origin-left"
+                                                className={`h-full rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(59,130,246,0.3)] ${res.score >= 80 ? 'bg-emerald-500' : res.score >= 50 ? 'bg-brand-500' : 'bg-amber-500'}`}
                                                 style={{ width: `${res.score}%` }}
                                             ></div>
                                         </div>
-                                        <span className="text-xs font-black">{res.score}%</span>
+                                        <span className={`text-sm font-black tracking-tighter ${res.score >= 80 ? 'text-emerald-500' : res.score >= 50 ? 'text-brand-500' : 'text-amber-500'}`}>{res.score}%</span>
                                     </div>
                                 </td>
                                 <td className="py-6 px-4">

@@ -49,7 +49,7 @@ export default function HistoryPage() {
                 const data = await resp.json();
                 setHistory(data || []);
             } else {
-                toast.error("Failed to load your neural archive");
+                toast.error("Failed to load your History");
             }
         } catch (err) {
             toast.error("Archive server unreachable");

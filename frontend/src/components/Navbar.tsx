@@ -59,15 +59,13 @@ export const Navbar = () => {
 
     const navLinks = [
         { name: t('links.services'), href: `/${locale}#services` },
+        { name: t('links.pricing'), href: `/${locale}/pricing` },
         { name: t('links.info'), href: `/${locale}/info` },
         { name: t('links.contact'), href: `/${locale}/contact` },
     ];
 
     return (
-        <nav className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${scrolled
-            ? "h-20 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800/50 shadow-sm"
-            : "h-24 bg-transparent"
-            }`}>
+        <nav className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 h-20 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800/50 shadow-sm`}>
             <div className="max-w-7xl mx-auto h-full px-6 flex items-center justify-between relative">
                 {/* Logo Section */}
                 <Link href={`/${locale}`} className="flex items-center gap-4 group shrink-0">

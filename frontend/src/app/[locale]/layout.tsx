@@ -14,6 +14,12 @@ export const metadata: Metadata = {
     description: "AI-driven CV scoring and candidate shortlisting engine.",
 };
 
+const locales = ['en', 'es', 'fr', 'ar', 'hi'];
+
+export function generateStaticParams() {
+    return locales.map((locale) => ({ locale }));
+}
+
 export default async function RootLayout({
     children,
     params: { locale },

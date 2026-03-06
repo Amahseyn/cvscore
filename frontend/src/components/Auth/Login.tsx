@@ -39,7 +39,7 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToRegister }) =
             if (resp.ok) {
                 const data = await resp.json();
                 authLogin(data.access_token, data.role, email, data.full_name, data.scans_remaining);
-                toast.success(t('success'));
+                toast.success("Access Granted");
                 onSuccess();
             } else {
                 const err = await resp.json();
@@ -57,7 +57,7 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToRegister }) =
         try {
             const params = new URLSearchParams({
                 client_id: "996038162784-udrp3areaeda8o342cm8cij83uto0uu6.apps.googleusercontent.com",
-                redirect_uri: `http://localhost:3000/${locale}`,
+                redirect_uri: "http://localhost:3000",
                 response_type: "code",
                 scope: "openid email profile",
                 access_type: "offline",
@@ -71,49 +71,51 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToRegister }) =
     };
 
     return (
-        <div className="w-full max-w-xl bg-white/50 dark:bg-slate-900/50 backdrop-blur-3xl p-10 sm:p-14 rounded-[4rem] border border-white/20 dark:border-slate-800/50 shadow-2xl relative overflow-hidden animate-in fade-in zoom-in duration-700">
+        <div className="w-full max-w-xl bg-white/40 dark:bg-slate-900/40 backdrop-blur-3xl p-12 sm:p-16 rounded-[4rem] border border-white/20 dark:border-slate-800/50 shadow-2xl relative overflow-hidden animate-in fade-in zoom-in duration-700">
             {/* Background Decorative Elements */}
-            <div className="absolute -top-32 -right-32 w-64 h-64 bg-brand-500/10 blur-[100px] rounded-full"></div>
-            <div className="absolute -bottom-32 -left-32 w-64 h-64 bg-indigo-500/10 blur-[100px] rounded-full"></div>
+            <div className="absolute -top-32 -right-32 w-64 h-64 bg-brand-500/10 blur-[100px] rounded-full animate-pulse"></div>
+            <div className="absolute -bottom-32 -left-32 w-64 h-64 bg-indigo-500/10 blur-[100px] rounded-full animate-pulse delay-1000"></div>
 
-            <div className="relative z-10 space-y-10">
-                <div className="text-center space-y-3">
+            <div className="relative z-10 space-y-12">
+                <div className="text-center space-y-4">
                     <div className="flex justify-center mb-6">
-                        <div className="p-4 bg-brand-500/10 rounded-3xl border border-brand-500/20">
+                        <div className="p-4 bg-brand-500/10 rounded-3xl border border-brand-500/20 shadow-inner">
                             <Cpu className="w-10 h-10 text-brand-500" />
                         </div>
                     </div>
-                    <h2 className="text-5xl font-black tracking-tighter">{t('title')}</h2>
+                    <h2 className="text-5xl font-black tracking-tighter bg-gradient-to-br from-slate-900 to-slate-500 dark:from-white dark:to-slate-400 bg-clip-text text-transparent">
+                        Welcome Back
+                    </h2>
                     <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.5em]">{t('subtitle')}</p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-8">
                     <div className="space-y-4">
                         <div className="relative group">
-                            <Mail className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-brand-500 transition-colors" />
+                            <Mail className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-brand-500 transition-colors" />
                             <input
-                                type="text"
+                                type="email"
                                 required
                                 placeholder={t('email')}
-                                className="w-full pl-14 pr-6 py-5 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-[1.5rem] focus:ring-4 focus:ring-brand-500/10 outline-none transition-all font-bold text-sm"
+                                className="w-full pl-16 pr-6 py-6 bg-white/50 dark:bg-slate-950/50 border border-slate-100 dark:border-slate-800 rounded-[2rem] focus:ring-8 focus:ring-brand-500/5 outline-none transition-all font-bold text-sm shadow-sm"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                         </div>
                         <div className="relative group">
-                            <Lock className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-brand-500 transition-colors" />
+                            <Lock className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-brand-500 transition-colors" />
                             <input
                                 type="password"
                                 required
                                 placeholder={t('password')}
-                                className="w-full pl-14 pr-6 py-5 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-[1.5rem] focus:ring-4 focus:ring-brand-500/10 outline-none transition-all font-bold text-sm"
+                                className="w-full pl-16 pr-6 py-6 bg-white/50 dark:bg-slate-950/50 border border-slate-100 dark:border-slate-800 rounded-[2rem] focus:ring-8 focus:ring-brand-500/5 outline-none transition-all font-bold text-sm shadow-sm"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                         </div>
                     </div>
 
-                    <div className="space-y-4">
+                    <div className="space-y-6">
                         <Button
                             type="button"
                             onClick={handleGoogleLogin}
@@ -121,7 +123,7 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToRegister }) =
                             disabled={loading}
                             variant="white"
                             size="lg"
-                            className="w-full dark:bg-slate-800 dark:border-slate-700 dark:text-white"
+                            className="w-full h-16 dark:bg-slate-800 dark:border-slate-700 dark:text-white !rounded-2xl"
                         >
                             {!googleLoading && (
                                 <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-slate-50 mr-3 border border-slate-100">
@@ -131,10 +133,10 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToRegister }) =
                             {t('google')}
                         </Button>
 
-                        <div className="flex items-center gap-3 text-[10px] text-slate-400 font-black uppercase tracking-[0.3em] py-2">
-                            <span className="h-px flex-1 bg-slate-200 dark:bg-slate-800" />
+                        <div className="flex items-center gap-3 text-[10px] text-slate-400 font-black uppercase tracking-[0.3em] py-2 px-4">
+                            <span className="h-px flex-1 bg-slate-100 dark:bg-slate-800" />
                             <span>{t('flow')}</span>
-                            <span className="h-px flex-1 bg-slate-200 dark:bg-slate-800" />
+                            <span className="h-px flex-1 bg-slate-100 dark:bg-slate-800" />
                         </div>
 
                         <Button
@@ -143,14 +145,17 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToRegister }) =
                             disabled={googleLoading}
                             variant="primary"
                             size="lg"
-                            className="w-full group"
+                            className="w-full h-20 !rounded-[2.5rem] group relative overflow-hidden"
                         >
-                            {t('submit')} <ArrowRight className={`ml-3 w-5 h-5 group-hover:translate-x-1 transition-transform ${locale === 'ar' ? 'rotate-180 group-hover:-translate-x-1' : ''}`} />
+                            <span className="relative z-10 flex items-center justify-center gap-3 font-black uppercase tracking-widest text-xs">
+                                {t('submit')} <ArrowRight className={`w-5 h-5 group-hover:translate-x-1 transition-transform ${locale === 'ar' ? 'rotate-180 group-hover:-translate-x-1' : ''}`} />
+                            </span>
+                            <div className="absolute inset-0 bg-gradient-to-r from-brand-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                         </Button>
                     </div>
                 </form>
 
-                <div className="pt-6 border-t border-slate-100 dark:border-slate-800">
+                <div className="pt-8 border-t border-slate-100 dark:border-slate-800">
                     <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
                         <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest text-center sm:text-left">
                             {t('newHere')}{' '}
@@ -158,7 +163,7 @@ export const Login: React.FC<LoginProps> = ({ onSuccess, onSwitchToRegister }) =
                                 {t('createAccount')}
                             </button>
                         </p>
-                        <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 dark:bg-slate-800/50 rounded-full border border-slate-100 dark:border-slate-800">
+                        <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 dark:bg-slate-800/50 rounded-full border border-slate-100 dark:border-slate-800 shadow-sm">
                             <ShieldCheck className="w-3 h-3 text-emerald-500" />
                             <span className="text-[8px] font-black text-slate-400 uppercase tracking-tighter">{t('encrypted')}</span>
                         </div>

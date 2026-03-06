@@ -4,6 +4,7 @@
         "intel": "Inteligencia Neural",
         "links": {
             "services": "Servicios",
+            "pricing": "Precios",
             "info": "Info",
             "contact": "Contacto"
         },
@@ -240,5 +241,66 @@
                 "readability": "Legibilidad"
             }
         }
+    },
+    "Pricing": {
+        "title": "Actualización de Nivel Neural",
+        "subtitle": "Seleccione su ciclo de sincronización para ampliar su capacidad de procesamiento neural",
+        "mission": {
+            "title": "Filosofía de Ayuda Primero",
+            "text": "El procesamiento neural es costoso computacionalmente. Estas tarifas cubren principalmente los costos de nuestros proveedores de IA de terceros. Estamos aquí para ayudar a los equipos y empresas a escalar de manera justa, no para beneficiarnos de las tarifas de infraestructura."
+        },
+        "cycles": {
+            "demo": "Prueba Gratuita",
+            "weekly": "Semanal",
+            "monthly": "Mensual",
+            "yearly": "Anual"
+        },
+        "saveYear": "Ahorra 37%",
+        "plans": {
+            "basic": {
+                "name": "Núcleo Comunitario",
+                "price": "0",
+                "features": [
+                    "3 Escaneos Neurales / semana",
+                    "Extracciones IA Básicas",
+                    "Bóveda Pública (7 días)",
+                    "Soporte Comunitario"
+                ]
+            },
+            "weekly": {
+                "name": "Enlace Sprint",
+                "price": "7.99",
+                "features": [
+                    "25 Escaneos Neurales / semana",
+                    "Información de Rendimiento AIP",
+                    "Acceso a Bóveda Neural por 30 días",
+                    "Soporte por Correo Prioritario"
+                ]
+            },
+            "monthly": {
+                "name": "Nivel Profesional",
+                "price": "19.99",
+                "features": [
+                    "150 Escaneos Neurales / mes",
+                    "Analítica Avanzada Completa",
+                    "Exportación masiva de PDF",
+                    "Bóveda Neural Infinita",
+                    "Procesamiento IA Directo"
+                ]
+            },
+            "yearly": {
+                "name": "Clúster de Comando",
+                "price": "149.99",
+                "features": [
+                    "Escaneos Ilimitados",
+                    "Consola de Monitoreo Admin",
+                    "Acceso al Panel Universal",
+                    "Almacenamiento Infinito en Bóveda",
+                    "Enlace Neural Prioritario 24/7"
+                ]
+            }
+        },
+        "cta": "Sincronizar Núcleo",
+        "popular": "Optimizado"
     }
 }
